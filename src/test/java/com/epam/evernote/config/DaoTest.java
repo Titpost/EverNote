@@ -1,4 +1,4 @@
-package config;
+package com.epam.evernote.config;
 
 import com.epam.evernote.JdbcTemplatePersonDao;
 import com.epam.evernote.PersonDao;

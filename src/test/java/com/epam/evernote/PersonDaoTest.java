@@ -1,6 +1,6 @@
 package com.epam.evernote;
 
-import config.DaoTest;
+import com.epam.evernote.config.DaoTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import org.junit.After;
