@@ -39,16 +39,16 @@ public class IntegralNotepadServiceTest {
     final String Name1 = "Name 1";
     final String Name2 = "Name 2";
 
-    // create one person with hard name
-    Person person1 = Person.builder().name("Name1").active(true).build();
+    // create one person
+    Person person1 = Person.builder().name(Name1).active(true).build();
     personServiceImpl.savePerson(person1);
 
-    // create another person with easy name
-    Person person2 = Person.builder().name("Name2").active(true).build();
+    // create another person
+    Person person2 = Person.builder().name(Name2).active(true).build();
     personServiceImpl.savePerson(person2);
 
     // create new notepad
-    Pad pad = Pad.builder().id(1L).name("Name 1").build();
+    Pad pad = Pad.builder().id(1L).name("Sample Notepad").build();
     padServiceImpl.savePad(pad);
     Assert.assertEquals(padServiceImpl.getAllPads().size(), 1);
   }

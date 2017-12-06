@@ -3,11 +3,15 @@ package com.epam.evernote.dao;
 import com.epam.evernote.model.Pad;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 public class JdbcTemplatePadDao implements PadDao {
 
@@ -22,9 +26,16 @@ public class JdbcTemplatePadDao implements PadDao {
     }
 
     @Override
-    public int save(Pad pad) {
-        String sql = "insert into Pad (id, person) values (?, ?)";
-        return jdbcTemplate.update(sql, pad.getId(), pad.getPersonId());
+    public long save(Pad pad) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("id", pad.getId());
+        parameters.put("person", pad.getPersonId());
+
+        new SimpleJdbcInsert(jdbcTemplate).withTableName("Pad")
+                .execute(new MapSqlParameterSource(parameters));
+
+        // just to return something
+        return pad.getId();
     }
 
     @Override

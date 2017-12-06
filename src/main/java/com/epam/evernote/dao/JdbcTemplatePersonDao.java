@@ -3,12 +3,16 @@ package com.epam.evernote.dao;
 import com.epam.evernote.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JdbcTemplatePersonDao implements PersonDao {
 
@@ -23,9 +27,17 @@ public class JdbcTemplatePersonDao implements PersonDao {
     }
 
     @Override
-    public int save(Person person) {
-        String sql = "insert into Person (name, active) values (?, ?)";
-        return jdbcTemplate.update(sql, person.getName(), person.getActive());
+    public long save(Person person) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("Person").usingGeneratedKeyColumns("Primary_key");
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("name", person.getName());
+        parameters.put("active", person.getActive());
+
+        // execute insert
+        return jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(
+                parameters)).intValue();
     }
 
     @Override

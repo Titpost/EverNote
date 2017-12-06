@@ -42,15 +42,14 @@ public class IntegralPersonServiceImplTest {
 
         // create another person with easy name
         Person person2 = Person.builder().name(easyName).active(true).build();
-        personServiceImpl.savePerson(person2);
+        long id = personServiceImpl.savePerson(person2);
         Assert.assertEquals(personServiceImpl.getAllPersons().size(), 2);
 
         // check if person count returned correctly
         Assert.assertEquals((long) personServiceImpl.getPersonCount(), 2);
 
         // find by id
-        final long id = person2.getId();
-        person2 = personServiceImpl.getPersonById(2/*id*/);
+        person2 = personServiceImpl.getPersonById(id);
         Assert.assertEquals(person2.getName(), easyName);
 
         // find by name
@@ -61,7 +60,7 @@ public class IntegralPersonServiceImplTest {
 
         // update name
         final String newName = "Titov";
-        personServiceImpl.updateName(2/*id*/, newName);
+        personServiceImpl.updateName(id, newName);
 
         // check if number of persons didn't change
         persons = personServiceImpl.getAllPersons();
@@ -69,13 +68,13 @@ public class IntegralPersonServiceImplTest {
         Assert.assertEquals(personServiceImpl.getAllPersons().size(), count);
 
         // check if person was really renamed
-        Assert.assertEquals(personServiceImpl.getPersonById(2/*id*/).getName(), newName);
+        Assert.assertEquals(personServiceImpl.getPersonById(id).getName(), newName);
 
         // delete person
-        personServiceImpl.deletePerson(2/*id*/);
+        personServiceImpl.deletePerson(id);
 
         // check if person was really deleted
-        Assert.assertNull(personServiceImpl.getPersonById(2/*id*/));
+        Assert.assertNull(personServiceImpl.getPersonById(id));
     }
 
     /**

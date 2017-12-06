@@ -14,8 +14,8 @@ public class PersonServiceImpl implements PersonService {
     private PersonDao dao;
 
     @Override
-    public void savePerson(Person person) {
-        dao.save(person);
+    public long savePerson(Person person) {
+        return dao.save(person);
     }
 
     @Override
