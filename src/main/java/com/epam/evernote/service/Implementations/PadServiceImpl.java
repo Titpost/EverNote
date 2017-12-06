@@ -1,7 +1,7 @@
 package com.epam.evernote.service.Implementations;
 
 
-import com.epam.evernote.Model.Pad;
+import com.epam.evernote.model.Pad;
 import com.epam.evernote.dao.PadDao;
 import com.epam.evernote.service.Interfaces.PadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +25,13 @@ public class PadServiceImpl implements PadService {
 
   @Override
   public List<Pad> getAllPads(){
-  return dao.loadAll();
+    return dao.loadAll();
   }
 
   @Override
   public Pad getPadById(long id) {
 
-  return dao.load(id);
+    return dao.load(id);
   }
 
   @Override

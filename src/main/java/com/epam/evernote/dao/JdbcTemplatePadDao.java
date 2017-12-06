@@ -1,6 +1,6 @@
 package com.epam.evernote.dao;
 
-import com.epam.evernote.Model.Pad;
+import com.epam.evernote.model.Pad;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -56,7 +56,7 @@ public class JdbcTemplatePadDao implements PadDao {
     private Pad toPad(ResultSet resultSet) throws SQLException {
         Pad pad = new Pad();
         pad.setId(resultSet.getLong("ID"));
-        pad.getPersonId(resultSet.getLong("PERSON"));
+        pad.setPersonId(resultSet.getLong("PERSON"));
         return pad;
     }
 

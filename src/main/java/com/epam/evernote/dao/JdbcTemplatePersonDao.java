@@ -1,6 +1,6 @@
 package com.epam.evernote.dao;
 
-import com.epam.evernote.Model.Person;
+import com.epam.evernote.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 

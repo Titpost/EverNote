@@ -1,6 +1,6 @@
 package com.epam.evernote.service;
 
-import com.epam.evernote.Model.Person;
+import com.epam.evernote.model.Person;
 import com.epam.evernote.config.IntegralPersonServiceConfig;
 import com.epam.evernote.service.Implementations.PersonServiceImpl;
 import org.junit.*;

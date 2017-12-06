@@ -1,4 +1,4 @@
-package com.epam.evernote.Model;
+package com.epam.evernote.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.epam.evernote.service.Interfaces;
 
-import com.epam.evernote.Model.Pad;
+import com.epam.evernote.model.Pad;
 import java.util.List;
 
 public interface PadService {

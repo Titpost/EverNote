@@ -1,7 +1,7 @@
 package com.epam.evernote.service;
 
-import com.epam.evernote.Model.Pad;
-import com.epam.evernote.Model.Person;
+import com.epam.evernote.model.Pad;
+import com.epam.evernote.model.Person;
 import com.epam.evernote.config.IntegralPadServiceConfig;
 import com.epam.evernote.service.Implementations.PadServiceImpl;
 import com.epam.evernote.service.Implementations.PersonServiceImpl;

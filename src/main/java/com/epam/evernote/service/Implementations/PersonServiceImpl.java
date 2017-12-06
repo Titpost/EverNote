@@ -1,7 +1,7 @@
 package com.epam.evernote.service.Implementations;
 
 
-import com.epam.evernote.Model.Person;
+import com.epam.evernote.model.Person;
 import com.epam.evernote.dao.PersonDao;
 import com.epam.evernote.service.Interfaces.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
