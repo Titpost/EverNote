@@ -9,7 +9,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
 
-public class DaoTest {
+public class IntegralServiceDaoConfig {
 
     @Bean
     public PersonService personService() {

@@ -2,7 +2,6 @@ package com.epam.evernote;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -31,9 +30,7 @@ public class JdbcTemplatePersonDao implements PersonDao {
     @Override
     public Person load(long id) {
         List<Person> persons = jdbcTemplate.query("select * from Person where id =?",
-                new Object[]{id}, (resultSet, i) -> {
-                    return toPerson(resultSet);
-                });
+                new Object[]{id}, (resultSet, i) -> toPerson(resultSet));
 
         if (persons.size() == 1) {
             return persons.get(0);
@@ -59,9 +56,7 @@ public class JdbcTemplatePersonDao implements PersonDao {
 
     @Override
     public List<Person> loadAll() {
-        return jdbcTemplate.query("select * from Person", (resultSet, i) -> {
-            return toPerson(resultSet);
-        });
+        return jdbcTemplate.query("select * from Person", (resultSet, i) -> toPerson(resultSet));
     }
 
     private Person toPerson(ResultSet resultSet) throws SQLException {
