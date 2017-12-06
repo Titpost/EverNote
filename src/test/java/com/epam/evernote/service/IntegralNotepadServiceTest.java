@@ -15,48 +15,51 @@ import java.sql.SQLException;
  * Integral test for Notepad Service.
  */
 public class IntegralNotepadServiceTest {
-    private static AnnotationConfigApplicationContext padTestContext;
-    private static PersonServiceImpl personServiceImpl;
-    private static PadServiceImpl padServiceImpl;
 
-    /**
-     * Database SetUp
-     */
-    @BeforeClass
-    public static void setUpDB() {
-        padTestContext = new AnnotationConfigApplicationContext(IntegralPadServiceConfig.class);
-        personServiceImpl = padTestContext.getBean(PersonServiceImpl.class);
-        padServiceImpl = padTestContext.getBean(PadServiceImpl.class);
-    }
+  private static AnnotationConfigApplicationContext padTestContext;
+  private static PersonServiceImpl personServiceImpl;
+  private static PadServiceImpl padServiceImpl;
 
-    /**
-     * Test with series of operations within Notepad
-     */
-    @Test
-    public void TestNotepadService() {
+  /**
+   * Database SetUp
+   */
+  @BeforeClass
+  public static void setUpDB() {
+    padTestContext = new AnnotationConfigApplicationContext(IntegralPadServiceConfig.class);
+    personServiceImpl = padTestContext.getBean(PersonServiceImpl.class);
+    padServiceImpl = padTestContext.getBean(PadServiceImpl.class);
+  }
 
-        final String Name1 = "Name 1";
-        final String Name2 = "Name 2";
+  /**
+   * Test with series of operations within Notepad
+   */
+  @Test
+  public void TestNotepadService() {
 
-        // create one person with hard name
-        personServiceImpl.savePerson(Person.create(Name1, true));
+    final String Name1 = "Name 1";
+    final String Name2 = "Name 2";
 
-        // create another person with easy name
-        Person person = Person.create(Name2, true);
-        personServiceImpl.savePerson(person);
+    // create one person with hard name
+    Person person1 = Person.builder().name("Name1").active(true).build();
+    personServiceImpl.savePerson(person1);
 
-        // create new notepad
-        Pad pad = Pad.create("Notepad 1", 1);
-        padServiceImpl.savePad(pad);
-        Assert.assertEquals(padServiceImpl.getAllPads().size(), 1);
-    }
+    // create another person with easy name
+    Person person2 = Person.builder().name("Name2").active(true).build();
+    personServiceImpl.savePerson(person2);
 
-    /**
-     * Closes DataBase connection
-     * @throws SQLException if something went wrong with DB connection
-     */
-    @AfterClass
-    public static void tearDown() throws SQLException {
-        padTestContext.getBean(DataSource.class).getConnection().close();
-    }
+    // create new notepad
+    Pad pad = Pad.builder().id(1L).name("Name 1").build();
+    padServiceImpl.savePad(pad);
+    Assert.assertEquals(padServiceImpl.getAllPads().size(), 1);
+  }
+
+  /**
+   * Closes DataBase connection
+   *
+   * @throws SQLException if something went wrong with DB connection
+   */
+  @AfterClass
+  public static void tearDown() throws SQLException {
+    padTestContext.getBean(DataSource.class).getConnection().close();
+  }
 }

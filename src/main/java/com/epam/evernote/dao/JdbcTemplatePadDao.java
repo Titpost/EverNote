@@ -24,7 +24,7 @@ public class JdbcTemplatePadDao implements PadDao {
     @Override
     public int save(Pad pad) {
         String sql = "insert into Pad (id, person) values (?, ?)";
-        return jdbcTemplate.update(sql, pad.getId(), pad.getPerson());
+        return jdbcTemplate.update(sql, pad.getId(), pad.getPersonId());
     }
 
     @Override
@@ -55,8 +55,8 @@ public class JdbcTemplatePadDao implements PadDao {
 
     private Pad toPad(ResultSet resultSet) throws SQLException {
         Pad pad = new Pad();
-        pad.setId(resultSet.getString("ID"));
-        pad.setPerson(resultSet.getLong("PERSON"));
+        pad.setId(resultSet.getLong("ID"));
+        pad.getPersonId(resultSet.getLong("PERSON"));
         return pad;
     }
 

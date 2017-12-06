@@ -36,27 +36,28 @@ public class IntegralPersonServiceImplTest {
         final String easyName = "Sergei";
 
         // create one person with hard name
-        personServiceImpl.savePerson(Person.create(hardName, true));
+        Person person1 = Person.builder().name(hardName).active(true).build();
+        personServiceImpl.savePerson(person1);
         Assert.assertEquals(personServiceImpl.getAllPersons().size(), 1);
 
         // create another person with easy name
-        Person person = Person.create(easyName, true);
-        personServiceImpl.savePerson(person);
+        Person person2 = Person.builder().name(easyName).active(true).build();
+        personServiceImpl.savePerson(person2);
         Assert.assertEquals(personServiceImpl.getAllPersons().size(), 2);
 
         // check if person count returned correctly
         Assert.assertEquals((long) personServiceImpl.getPersonCount(), 2);
 
         // find by id
-        final long id = person.getId();
-        person = personServiceImpl.getPersonById(2/*id*/);
-        Assert.assertEquals(person.getName(), easyName);
+        final long id = person2.getId();
+        person2 = personServiceImpl.getPersonById(2/*id*/);
+        Assert.assertEquals(person2.getName(), easyName);
 
         // find by name
         List<Person> persons = personServiceImpl.getPersonsByName(hardName);
         Assert.assertEquals(persons.size(), 1);
-        person = persons.get(0);
-        Assert.assertEquals(person.getName(), hardName);
+        person1 = persons.get(0);
+        Assert.assertEquals(person1.getName(), hardName);
 
         // update name
         final String newName = "Titov";
