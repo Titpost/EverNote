@@ -1,9 +1,12 @@
 package com.epam.evernote.config;
 
+import com.epam.evernote.JdbcTemplatePadDao;
 import com.epam.evernote.JdbcTemplatePersonDao;
+import com.epam.evernote.dao.PadDao;
 import com.epam.evernote.dao.PersonDao;
-import com.epam.evernote.service.PersonService;
+import com.epam.evernote.service.PadService;
 
+import com.epam.evernote.service.PersonService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -14,9 +17,10 @@ import javax.sql.DataSource;
 /**
  * Configuration for Person Service testing.
  */
-public class IntegralPersonServiceConfig {
+public class IntegralPadServiceConfig {
 
     private static EmbeddedDatabase db = null;
+
 
     @Bean
     public PersonService personService() {
@@ -24,9 +28,21 @@ public class IntegralPersonServiceConfig {
     }
 
     @Bean
+    public PadService padService() {
+        return new PadService();
+    }
+
+
+    @Bean
     public PersonDao jdbcPersonDao() {
         return new JdbcTemplatePersonDao();
     }
+
+    @Bean
+    public PadDao jdbcPadDao() {
+        return new JdbcTemplatePadDao();
+    }
+
 
     @Bean
     public DataSource h2DataSource() {
@@ -38,5 +54,4 @@ public class IntegralPersonServiceConfig {
         }
 
         return db;
-    }
-}
+    }}

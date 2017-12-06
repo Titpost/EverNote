@@ -1,8 +1,11 @@
-package com.epam.evernote;
+package com.epam.evernote.dao;
+
+import com.epam.evernote.Dao;
+import com.epam.evernote.Person;
 
 import java.util.List;
 
-public interface PersonDao extends Dao<Person>{
+public interface PersonDao extends Dao<Person> {
 
     List<Person> findPersonsByName(String name);
 

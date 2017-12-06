@@ -1,5 +1,6 @@
 package com.epam.evernote;
 
+import com.epam.evernote.dao.PersonDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -22,9 +23,9 @@ public class JdbcTemplatePersonDao implements PersonDao {
     }
 
     @Override
-    public void save(Person person) {
+    public int save(Person person) {
         String sql = "insert into Person (name, active) values (?, ?)";
-        jdbcTemplate.update(sql, person.getName(), person.getActive());
+        return jdbcTemplate.update(sql, person.getName(), person.getActive());
     }
 
     @Override

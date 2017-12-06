@@ -1,6 +1,7 @@
 package com.epam.evernote;
 
 import com.epam.evernote.config.IntegralPersonServiceConfig;
+import com.epam.evernote.service.PersonService;
 import org.junit.*;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -41,6 +42,9 @@ public class IntegralPersonServiceTest {
         Person person = Person.create(easyName, true);
         personService.savePerson(person);
         Assert.assertEquals(personService.getAllPersons().size(), 2);
+
+        // check if person count returned correctly
+        Assert.assertEquals((long)personService.getPersonCount(), 2);
 
         // find by id
         final long id = person.getId();

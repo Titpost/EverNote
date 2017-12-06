@@ -1,6 +1,8 @@
-package com.epam.evernote;
+package com.epam.evernote.service;
 
 
+import com.epam.evernote.Person;
+import com.epam.evernote.dao.PersonDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

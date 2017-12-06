@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface Dao<T> {
 
-    void save(T t);
+    int save(T t);
 
     T load(long id);
 
