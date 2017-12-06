@@ -18,48 +18,37 @@ import java.util.logging.Logger;
 public class PersonDaoTest {
     private static final Logger logger = Logger.getLogger(PersonDaoTest.class.getName());
 
-    private AnnotationConfigApplicationContext context;
     private AnnotationConfigApplicationContext daoTestContext;
 
-    //@Autowired
     PersonService personService;
 
     @Before
     public void setUp() {
-
         daoTestContext = new AnnotationConfigApplicationContext(DaoTest.class);
+        personService = daoTestContext.getBean(PersonService.class);
     }
 
     @Test
-    public void testFindByName() {
-
-        personService = daoTestContext.getBean(PersonService.class);
+    public void testAddPerson() {
 
         Person person = Person.create("Sergei", true);
         personService.savePerson(person);
 
         person = Person.create("Andrey", true);
         personService.savePerson(person);
-
-
         logger.info("person count " + personService.getPersonCount());
 
         List<Person> persons = personService.getPersonsByName("Andrey");
-
         logger.info("persons found by name " + persons);
 
         person = personService.getPersonById(2);
-
         logger.info("found person by id : " + person);
-
         logger.info("All persons : " + personService.getAllPersons());
 
         personService.updateName(1, "Titov");
-
         logger.info("Address updated " + personService.getPersonById(1));
 
         personService.deletePerson(2);
-
         logger.info("All persons : " + personService.getAllPersons());
     }
 
