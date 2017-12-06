@@ -1,14 +1,13 @@
-package com.epam.evernote;
+package com.epam.evernote.dao;
 
-import com.epam.evernote.dao.PadDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
+import com.epam.evernote.Model.Pad;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 public class JdbcTemplatePadDao implements PadDao {
 

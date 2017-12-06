@@ -1,10 +1,10 @@
 package com.epam.evernote.service;
 
-import com.epam.evernote.Pad;
-import com.epam.evernote.Person;
+import com.epam.evernote.Model.Pad;
+import com.epam.evernote.Model.Person;
 import com.epam.evernote.config.IntegralPadServiceConfig;
-import com.epam.evernote.service.PadService;
-import com.epam.evernote.service.PersonService;
+import com.epam.evernote.service.Implementations.PadServiceImpl;
+import com.epam.evernote.service.Implementations.PersonServiceImpl;
 import org.junit.*;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -16,8 +16,8 @@ import java.sql.SQLException;
  */
 public class IntegralNotepadServiceTest {
     private static AnnotationConfigApplicationContext padTestContext;
-    private static PersonService personService;
-    private static PadService padService;
+    private static PersonServiceImpl personServiceImpl;
+    private static PadServiceImpl padServiceImpl;
 
     /**
      * Database SetUp
@@ -25,8 +25,8 @@ public class IntegralNotepadServiceTest {
     @BeforeClass
     public static void setUpDB() {
         padTestContext = new AnnotationConfigApplicationContext(IntegralPadServiceConfig.class);
-        personService = padTestContext.getBean(PersonService.class);
-        padService = padTestContext.getBean(PadService.class);
+        personServiceImpl = padTestContext.getBean(PersonServiceImpl.class);
+        padServiceImpl = padTestContext.getBean(PadServiceImpl.class);
     }
 
     /**
@@ -39,16 +39,16 @@ public class IntegralNotepadServiceTest {
         final String Name2 = "Name 2";
 
         // create one person with hard name
-        personService.savePerson(Person.create(Name1, true));
+        personServiceImpl.savePerson(Person.create(Name1, true));
 
         // create another person with easy name
         Person person = Person.create(Name2, true);
-        personService.savePerson(person);
+        personServiceImpl.savePerson(person);
 
         // create new notepad
         Pad pad = Pad.create("Notepad 1", 1);
-        padService.savePad(pad);
-        Assert.assertEquals(padService.getAllPads().size(), 1);
+        padServiceImpl.savePad(pad);
+        Assert.assertEquals(padServiceImpl.getAllPads().size(), 1);
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.epam.evernote;
+package com.epam.evernote.Model;
 
 public class Pad {
     private String id;

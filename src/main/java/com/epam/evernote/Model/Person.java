@@ -1,4 +1,4 @@
-package com.epam.evernote;
+package com.epam.evernote.Model;
 
 public class Person {
     private long id;

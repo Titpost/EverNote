@@ -1,4 +1,4 @@
-package com.epam.evernote;
+package com.epam.evernote.dao;
 
 
 import java.util.List;

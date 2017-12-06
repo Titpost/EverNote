@@ -1,7 +1,6 @@
 package com.epam.evernote.dao;
 
-import com.epam.evernote.Dao;
-import com.epam.evernote.Person;
+import com.epam.evernote.Model.Person;
 
 import java.util.List;
 

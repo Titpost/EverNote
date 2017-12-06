@@ -1,8 +1,8 @@
 package com.epam.evernote.config;
 
-import com.epam.evernote.JdbcTemplatePersonDao;
+import com.epam.evernote.dao.JdbcTemplatePersonDao;
 import com.epam.evernote.dao.PersonDao;
-import com.epam.evernote.service.PersonService;
+import com.epam.evernote.service.Implementations.PersonServiceImpl;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
@@ -19,8 +19,8 @@ public class IntegralPersonServiceConfig {
     private static EmbeddedDatabase db = null;
 
     @Bean
-    public PersonService personService() {
-        return new PersonService();
+    public PersonServiceImpl personService() {
+        return new PersonServiceImpl();
     }
 
     @Bean
