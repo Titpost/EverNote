@@ -15,7 +15,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import javax.sql.DataSource;
 
 /**
- * Configuration for Person Service testing.
+ * Configuration for Notepad Service testing.
  */
 public class IntegralPadServiceConfig {
 
@@ -49,7 +49,7 @@ public class IntegralPadServiceConfig {
         if (null == db) {
             db = new EmbeddedDatabaseBuilder()
                     .setType(EmbeddedDatabaseType.H2)
-                    .addScript("createPersonTable.sql") //script to create person table
+                    .addScript("createPersonTable.sql")
                     .build();
         }
 

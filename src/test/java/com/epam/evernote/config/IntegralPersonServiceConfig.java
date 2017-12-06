@@ -33,7 +33,7 @@ public class IntegralPersonServiceConfig {
         if (null == db) {
             db = new EmbeddedDatabaseBuilder()
                     .setType(EmbeddedDatabaseType.H2)
-                    .addScript("createPersonTable.sql") //script to create person table
+                    .addScript("createPersonTable.sql")
                     .build();
         }
 
