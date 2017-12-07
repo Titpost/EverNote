@@ -5,8 +5,8 @@ import com.epam.evernote.config.IntegralPersonServiceConfig;
 import com.epam.evernote.service.Implementations.PersonServiceImpl;
 import org.junit.*;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * Integral test for Person Service.
  */
 public class IntegralPersonServiceImplTest {
-    private static AnnotationConfigApplicationContext daoTestContext;
+    private static AnnotationConfigApplicationContext personServiceTestContext;
     private static PersonServiceImpl personServiceImpl;
 
     /**
@@ -22,8 +22,8 @@ public class IntegralPersonServiceImplTest {
      */
     @BeforeClass
     public static void setUpDB() {
-        daoTestContext = new AnnotationConfigApplicationContext(IntegralPersonServiceConfig.class);
-        personServiceImpl = daoTestContext.getBean(PersonServiceImpl.class);
+        personServiceTestContext = new AnnotationConfigApplicationContext(IntegralPersonServiceConfig.class);
+        personServiceImpl = personServiceTestContext.getBean(PersonServiceImpl.class);
     }
 
     /**
@@ -83,6 +83,6 @@ public class IntegralPersonServiceImplTest {
      */
     @AfterClass
     public static void tearDown() throws SQLException {
-        daoTestContext.getBean(DataSource.class).getConnection().close();
+        personServiceTestContext.getBean(EmbeddedDatabase.class).shutdown();
     }
 }

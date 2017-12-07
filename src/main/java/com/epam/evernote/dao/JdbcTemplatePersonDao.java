@@ -6,10 +6,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +16,7 @@ import java.util.Map;
 public class JdbcTemplatePersonDao implements PersonDao {
 
     @Autowired
-    private DataSource dataSource;
-
     private JdbcTemplate jdbcTemplate;
-
-    @PostConstruct
-    private void postConstruct() {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
 
     @Override
     public long save(Person person) {
@@ -78,7 +70,6 @@ public class JdbcTemplatePersonDao implements PersonDao {
         person.setName(resultSet.getString("NAME"));
         return person;
     }
-
 
     @Override
     public List<Person> findPersonsByName(String name) {

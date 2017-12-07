@@ -5,6 +5,7 @@ import com.epam.evernote.dao.PersonDao;
 import com.epam.evernote.service.Implementations.PersonServiceImpl;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -29,7 +30,12 @@ public class IntegralPersonServiceConfig {
     }
 
     @Bean
-    public DataSource h2DataSource() {
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(embeddedDatabase());
+    }
+
+    @Bean
+    private EmbeddedDatabase embeddedDatabase() {
         if (null == db) {
             db = new EmbeddedDatabaseBuilder()
                     .setType(EmbeddedDatabaseType.H2)
