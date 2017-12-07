@@ -1,17 +1,19 @@
 package com.epam.evernote.service.Implementations;
 
 
+import com.epam.evernote.dao.JdbcTemplatePersonDao;
 import com.epam.evernote.model.Person;
-import com.epam.evernote.dao.PersonDao;
 import com.epam.evernote.service.Interfaces.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository("personTemplateRepo")
 public class PersonServiceImpl implements PersonService {
 
     @Autowired
-    private PersonDao dao;
+    private JdbcTemplatePersonDao dao;
 
     @Override
     public long savePerson(Person person) {

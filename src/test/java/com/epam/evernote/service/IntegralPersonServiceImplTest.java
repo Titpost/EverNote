@@ -2,28 +2,39 @@ package com.epam.evernote.service;
 
 import com.epam.evernote.model.Person;
 import com.epam.evernote.config.IntegralPersonServiceConfig;
-import com.epam.evernote.service.Implementations.PersonServiceImpl;
+import com.epam.evernote.service.Interfaces.PersonService;
 import org.junit.*;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.sql.SQLException;
 import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Integral test for Person Service.
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = IntegralPersonServiceConfig.class)
 public class IntegralPersonServiceImplTest {
-    private static AnnotationConfigApplicationContext personServiceTestContext;
-    private static PersonServiceImpl personServiceImpl;
+
+    @Autowired
+    @Qualifier("personTemplateRepo")
+    private PersonService personService;
+
+    @Autowired
+    private EmbeddedDatabase db;
 
     /**
      * Database SetUp
      */
-    @BeforeClass
-    public static void setUpDB() {
-        personServiceTestContext = new AnnotationConfigApplicationContext(IntegralPersonServiceConfig.class);
-        personServiceImpl = personServiceTestContext.getBean(PersonServiceImpl.class);
+    @Before
+    public void setUpDB() {
+        assertNotNull(personService);
     }
 
     /**
@@ -37,52 +48,51 @@ public class IntegralPersonServiceImplTest {
 
         // create one person with hard name
         Person person1 = Person.builder().name(hardName).active(true).build();
-        personServiceImpl.savePerson(person1);
-        Assert.assertEquals(personServiceImpl.getAllPersons().size(), 1);
+        personService.savePerson(person1);
+        Assert.assertEquals(personService.getAllPersons().size(), 1);
 
         // create another person with easy name
         Person person2 = Person.builder().name(easyName).active(true).build();
-        long id = personServiceImpl.savePerson(person2);
-        Assert.assertEquals(personServiceImpl.getAllPersons().size(), 2);
+        long id = personService.savePerson(person2);
+        Assert.assertEquals(personService.getAllPersons().size(), 2);
 
         // check if person count returned correctly
-        Assert.assertEquals((long) personServiceImpl.getPersonCount(), 2);
+        Assert.assertEquals((long) personService.getPersonCount(), 2);
 
         // find by id
-        person2 = personServiceImpl.getPersonById(id);
+        person2 = personService.getPersonById(id);
         Assert.assertEquals(person2.getName(), easyName);
 
         // find by name
-        List<Person> persons = personServiceImpl.getPersonsByName(hardName);
+        List<Person> persons = personService.getPersonsByName(hardName);
         Assert.assertEquals(persons.size(), 1);
         person1 = persons.get(0);
         Assert.assertEquals(person1.getName(), hardName);
 
         // update name
         final String newName = "Titov";
-        personServiceImpl.updateName(id, newName);
+        personService.updateName(id, newName);
 
         // check if number of persons didn't change
-        persons = personServiceImpl.getAllPersons();
+        persons = personService.getAllPersons();
         int count = persons.size();
-        Assert.assertEquals(personServiceImpl.getAllPersons().size(), count);
+        Assert.assertEquals(personService.getAllPersons().size(), count);
 
         // check if person was really renamed
-        Assert.assertEquals(personServiceImpl.getPersonById(id).getName(), newName);
+        Assert.assertEquals(personService.getPersonById(id).getName(), newName);
 
         // delete person
-        personServiceImpl.deletePerson(id);
+        personService.deletePerson(id);
 
         // check if person was really deleted
-        Assert.assertNull(personServiceImpl.getPersonById(id));
+        Assert.assertNull(personService.getPersonById(id));
     }
 
     /**
      * Closes DataBase connection
-     * @throws SQLException if something went wrong with DB connection
      */
-    @AfterClass
-    public static void tearDown() throws SQLException {
-        personServiceTestContext.getBean(EmbeddedDatabase.class).shutdown();
+    @After
+    public void tearDown(){
+        db.shutdown();
     }
 }

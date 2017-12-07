@@ -1,31 +1,35 @@
 package com.epam.evernote.config;
 
 import com.epam.evernote.dao.JdbcTemplatePersonDao;
-import com.epam.evernote.dao.PersonDao;
 import com.epam.evernote.service.Implementations.PersonServiceImpl;
 
+import com.epam.evernote.service.Interfaces.PersonService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-import javax.sql.DataSource;
 
 /**
  * Configuration for Person Service testing.
  */
+@Configuration
+@ComponentScan(basePackages = {"com.epam.evernote.service.Implementations"})
 public class IntegralPersonServiceConfig {
 
     private static EmbeddedDatabase db = null;
 
     @Bean
-    public PersonServiceImpl personService() {
+    public PersonService personService() {
         return new PersonServiceImpl();
     }
 
     @Bean
-    public PersonDao jdbcPersonDao() {
+    public JdbcTemplatePersonDao jdbcPersonDao() {
         return new JdbcTemplatePersonDao();
     }
 
@@ -34,8 +38,9 @@ public class IntegralPersonServiceConfig {
         return new JdbcTemplate(embeddedDatabase());
     }
 
+    @Lazy
     @Bean
-    private EmbeddedDatabase embeddedDatabase() {
+    public EmbeddedDatabase embeddedDatabase() {
         if (null == db) {
             db = new EmbeddedDatabaseBuilder()
                     .setType(EmbeddedDatabaseType.H2)
