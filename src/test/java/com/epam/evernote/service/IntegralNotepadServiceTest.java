@@ -13,9 +13,9 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.sql.SQLException;
-
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Integral test for Notepad Service.
@@ -69,11 +69,9 @@ public class IntegralNotepadServiceTest {
 
     /**
      * Closes DataBase connection
-     *
-     * @throws SQLException if something went wrong with DB connection
      */
     @After
-    public void tearDown() throws SQLException {
+    public void tearDown() {
         db.shutdown();
     }
 }
