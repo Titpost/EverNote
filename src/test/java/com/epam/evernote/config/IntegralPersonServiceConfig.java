@@ -34,6 +34,7 @@ public class IntegralPersonServiceConfig {
         return new JdbcTemplatePersonDao();
     }
 
+    // DataBase beans
     @Bean
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(embeddedDatabase());

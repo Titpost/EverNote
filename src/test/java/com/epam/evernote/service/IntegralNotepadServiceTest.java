@@ -29,7 +29,7 @@ public class IntegralNotepadServiceTest {
     private PersonService personService;
 
     @Autowired
-    @Qualifier("personTemplateRepo")
+    @Qualifier("padTemplateRepo")
     private PadService padService;
 
     @Autowired
@@ -72,7 +72,7 @@ public class IntegralNotepadServiceTest {
      *
      * @throws SQLException if something went wrong with DB connection
      */
-    @AfterClass
+    @After
     public void tearDown() throws SQLException {
         db.shutdown();
     }

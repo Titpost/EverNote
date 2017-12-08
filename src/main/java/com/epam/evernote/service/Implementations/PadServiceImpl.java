@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-//@Repository("padTemplateRepo")
+@Repository("padTemplateRepo")
 public class PadServiceImpl implements PadService {
 
-    @Autowired
+    @Autowired(required = false)
     private JdbcTemplatePadDao padDao;
 
     @Override

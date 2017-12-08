@@ -12,7 +12,7 @@ import java.util.List;
 @Repository("personTemplateRepo")
 public class PersonServiceImpl implements PersonService {
 
-    @Autowired
+    @Autowired(required = false)
     private JdbcTemplatePersonDao dao;
 
     @Override
