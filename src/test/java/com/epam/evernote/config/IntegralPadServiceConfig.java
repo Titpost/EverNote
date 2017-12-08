@@ -2,8 +2,6 @@ package com.epam.evernote.config;
 
 import com.epam.evernote.dao.JdbcTemplatePadDao;
 import com.epam.evernote.dao.JdbcTemplatePersonDao;
-import com.epam.evernote.dao.PadDao;
-import com.epam.evernote.dao.PersonDao;
 import com.epam.evernote.service.Implementations.PadServiceImpl;
 
 import com.epam.evernote.service.Implementations.PersonServiceImpl;
@@ -17,8 +15,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-
-import javax.sql.DataSource;
 
 /**
  * Configuration for Notepad Service testing.
@@ -66,7 +62,7 @@ public class IntegralPadServiceConfig {
         if (null == db) {
             db = new EmbeddedDatabaseBuilder()
                     .setType(EmbeddedDatabaseType.H2)
-                    .addScript("createNotepadServiceTestSchema.sql")
+                    .addScript("createPersonServiceTestSchema.sql")
                     .build();
         }
 

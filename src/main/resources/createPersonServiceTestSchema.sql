@@ -4,3 +4,26 @@ CREATE TABLE IF NOT EXISTS person
     name VARCHAR(255),
     active BOOLEAN
 );
+
+CREATE TABLE IF NOT EXISTS pad
+(
+    id VARCHAR(255)  PRIMARY KEY,
+    person BIGINT,
+    FOREIGN KEY (person) REFERENCES person(id)
+);
+
+CREATE TABLE IF NOT EXISTS note
+(
+    id VARCHAR(255)  PRIMARY KEY,
+    pad VARCHAR(255),
+    text TEXT,
+    FOREIGN KEY (pad) REFERENCES pad(id)
+);
+
+CREATE TABLE IF NOT EXISTS tag
+(
+    id VARCHAR(255)  PRIMARY KEY,
+    note VARCHAR(255),
+    FOREIGN KEY (note) REFERENCES note(id)
+);
+
