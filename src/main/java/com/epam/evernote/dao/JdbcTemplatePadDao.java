@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
+//@Repository("padTemplateRepo")
 public class JdbcTemplatePadDao implements PadDao {
 
     @Autowired
@@ -31,7 +33,7 @@ public class JdbcTemplatePadDao implements PadDao {
         parameters.put("id", pad.getId());
         parameters.put("person", pad.getPersonId());
 
-        new SimpleJdbcInsert(jdbcTemplate).withTableName("Pad")
+        new SimpleJdbcInsert(jdbcTemplate).withTableName("зad")
                 .execute(new MapSqlParameterSource(parameters));
 
         // just to return something
@@ -40,7 +42,7 @@ public class JdbcTemplatePadDao implements PadDao {
 
     @Override
     public Pad load(long id) {
-        List<Pad> pads = jdbcTemplate.query("select * from Pad where id =?",
+        List<Pad> pads = jdbcTemplate.query("SELECT * FROM зad WHERE id =?",
                 new Object[]{id}, (resultSet, i) -> toPad(resultSet));
 
         if (pads.size() == 1) {
@@ -51,7 +53,7 @@ public class JdbcTemplatePadDao implements PadDao {
 
     @Override
     public void delete(long id) {
-        jdbcTemplate.update("delete from PERSON where id = ?", id);
+        jdbcTemplate.update("DELETE FROM pad WHERE id = ?", id);
     }
 
     @Override
@@ -61,20 +63,20 @@ public class JdbcTemplatePadDao implements PadDao {
 
     @Override
     public List<Pad> loadAll() {
-        return jdbcTemplate.query("select * from Pad", (resultSet, i) -> toPad(resultSet));
+        return jdbcTemplate.query("SELECT * FROM pad", (resultSet, i) -> toPad(resultSet));
     }
 
     private Pad toPad(ResultSet resultSet) throws SQLException {
         Pad pad = new Pad();
-        pad.setId(resultSet.getLong("ID"));
-        pad.setPersonId(resultSet.getLong("PERSON"));
+        pad.setId(resultSet.getLong("id"));
+        pad.setPersonId(resultSet.getLong("person"));
         return pad;
     }
 
 
     @Override
     public Long getPadCount() {
-        return jdbcTemplate.queryForObject("select count(*) from PAD",
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM pad",
                 Long.class);
     }
 

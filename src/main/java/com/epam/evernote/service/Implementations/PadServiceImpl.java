@@ -5,37 +5,39 @@ import com.epam.evernote.model.Pad;
 import com.epam.evernote.dao.PadDao;
 import com.epam.evernote.service.Interfaces.PadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+//@Repository("padTemplateRepo")
 public class PadServiceImpl implements PadService {
 
-  @Autowired
-  private PadDao dao;
+    @Autowired
+    private PadDao dao;
 
-  @Override
-  public void savePad(Pad pad) {
+    @Override
+    public void savePad(Pad pad) {
     dao.save(pad);
-  }
+    }
 
-  @Override
-  public Long getPadCount() {
+    @Override
+    public Long getPadCount() {
     return dao.getPadCount();
-  }
+    }
 
-  @Override
-  public List<Pad> getAllPads(){
+    @Override
+    public List<Pad> getAllPads(){
     return dao.loadAll();
-  }
+    }
 
-  @Override
-  public Pad getPadById(long id) {
+    @Override
+    public Pad getPadById(long id) {
 
     return dao.load(id);
-  }
+    }
 
-  @Override
-  public void deletePad(long id) {
+    @Override
+    public void deletePad(long id) {
     dao.delete(id);
-  }
+    }
 }

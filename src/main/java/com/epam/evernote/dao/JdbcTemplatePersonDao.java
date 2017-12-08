@@ -23,7 +23,7 @@ public class JdbcTemplatePersonDao implements PersonDao {
     @Override
     public long save(Person person) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("Person").usingGeneratedKeyColumns("Primary_key");
+        jdbcInsert.withTableName("person").usingGeneratedKeyColumns("Primary_key");
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("name", person.getName());
@@ -36,7 +36,7 @@ public class JdbcTemplatePersonDao implements PersonDao {
 
     @Override
     public Person load(long id) {
-        List<Person> persons = jdbcTemplate.query("select * from Person where id =?",
+        List<Person> persons = jdbcTemplate.query("SELECT * FROM person WHERE id =?",
                 new Object[]{id}, (resultSet, i) -> toPerson(resultSet));
 
         if (persons.size() == 1) {
@@ -47,7 +47,7 @@ public class JdbcTemplatePersonDao implements PersonDao {
 
     @Override
     public void delete(long id) {
-        jdbcTemplate.update("delete from PERSON where id = ?", id);
+        jdbcTemplate.update("DELETE from PERSON where id = ?", id);
     }
 
     @Override
@@ -57,31 +57,31 @@ public class JdbcTemplatePersonDao implements PersonDao {
 
     @Override
     public void updateName(long id, String newName) {
-        jdbcTemplate.update("update PERSON set NAME = ? where ID = ?"
+        jdbcTemplate.update("UPDATE PERSON SET name = ? WHERE id = ?"
                 , newName, id);
     }
 
     @Override
     public List<Person> loadAll() {
-        return jdbcTemplate.query("select * from Person", (resultSet, i) -> toPerson(resultSet));
+        return jdbcTemplate.query("SELECT * FROM person", (resultSet, i) -> toPerson(resultSet));
     }
 
     private Person toPerson(ResultSet resultSet) throws SQLException {
         Person person = new Person();
-        person.setId(resultSet.getLong("ID"));
-        person.setName(resultSet.getString("NAME"));
+        person.setId(resultSet.getLong("id"));
+        person.setName(resultSet.getString("name"));
         return person;
     }
 
     @Override
     public List<Person> findPersonsByName(String name) {
-        return jdbcTemplate.query("select * from Person where NAME = ?",
+        return jdbcTemplate.query("SELECT * FROM person WHERE name = ?",
                 new Object[]{name}, (resultSet, i) -> toPerson(resultSet));
     }
 
     @Override
     public Long getPersonCount() {
-        return jdbcTemplate.queryForObject("select count(*) from PERSON",
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM person",
                 Long.class);
     }
 }

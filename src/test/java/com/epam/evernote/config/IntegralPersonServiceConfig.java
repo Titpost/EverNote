@@ -13,7 +13,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-
 /**
  * Configuration for Person Service testing.
  */
@@ -22,6 +21,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 public class IntegralPersonServiceConfig {
 
     private static EmbeddedDatabase db = null;
+
 
     @Bean
     public PersonService personService() {
@@ -44,7 +44,7 @@ public class IntegralPersonServiceConfig {
         if (null == db) {
             db = new EmbeddedDatabaseBuilder()
                     .setType(EmbeddedDatabaseType.H2)
-                    .addScript("createPersonTable.sql")
+                    .addScript("createPersonServiceTestSchema.sql")
                     .build();
         }
 

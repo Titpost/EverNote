@@ -8,6 +8,8 @@ import com.epam.evernote.service.Implementations.PadServiceImpl;
 
 import com.epam.evernote.service.Implementations.PersonServiceImpl;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -17,6 +19,8 @@ import javax.sql.DataSource;
 /**
  * Configuration for Notepad Service testing.
  */
+@Configuration
+@ComponentScan(basePackages = {"com.epam.evernote.service.Implementations"})
 public class IntegralPadServiceConfig {
 
     private static EmbeddedDatabase db = null;
@@ -49,7 +53,7 @@ public class IntegralPadServiceConfig {
         if (null == db) {
             db = new EmbeddedDatabaseBuilder()
                     .setType(EmbeddedDatabaseType.H2)
-                    .addScript("createPersonTable.sql")
+                    .addScript("createPersonServiceTestSchema.sql")
                     .build();
         }
 
