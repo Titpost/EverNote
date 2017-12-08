@@ -22,15 +22,15 @@ public class JdbcTemplatePersonDao implements PersonDao {
 
     @Override
     public long save(Person person) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("person").usingGeneratedKeyColumns("Primary_key");
-
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("name", person.getName());
         parameters.put("active", person.getActive());
 
         // execute insert
-        return jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(
+        return new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("person")
+                .usingGeneratedKeyColumns("Primary_key")
+                .executeAndReturnKey(new MapSqlParameterSource(
                 parameters)).intValue();
     }
 

@@ -23,6 +23,7 @@ public class IntegralPersonServiceConfig {
     private static EmbeddedDatabase db = null;
 
 
+    // Person beans
     @Bean
     public PersonService personService() {
         return new PersonServiceImpl();

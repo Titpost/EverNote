@@ -7,6 +7,8 @@ import com.epam.evernote.dao.PersonDao;
 import com.epam.evernote.service.Implementations.PadServiceImpl;
 
 import com.epam.evernote.service.Implementations.PersonServiceImpl;
+import com.epam.evernote.service.Interfaces.PadService;
+import com.epam.evernote.service.Interfaces.PersonService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -26,28 +28,31 @@ public class IntegralPadServiceConfig {
     private static EmbeddedDatabase db = null;
 
 
+    // Person beans
     @Bean
-    public PersonServiceImpl personService() {
+    public PersonService personService() {
         return new PersonServiceImpl();
     }
 
     @Bean
-    public PadServiceImpl padService() {
-        return new PadServiceImpl();
-    }
-
-
-    @Bean
-    public PersonDao jdbcPersonDao() {
+    public JdbcTemplatePersonDao jdbcPersonDao() {
         return new JdbcTemplatePersonDao();
     }
 
+
+    // Pad beans
     @Bean
-    public PadDao jdbcPadDao() {
+    public PadService padService() {
+        return new PadServiceImpl();
+    }
+
+    @Bean
+    public JdbcTemplatePadDao jdbcPadDao() {
         return new JdbcTemplatePadDao();
     }
 
 
+    // DataBase bean
     @Bean
     public DataSource h2DataSource() {
         if (null == db) {

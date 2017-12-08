@@ -18,14 +18,7 @@ import org.springframework.stereotype.Repository;
 public class JdbcTemplatePadDao implements PadDao {
 
     @Autowired
-    private DataSource dataSource;
-
     private JdbcTemplate jdbcTemplate;
-
-    @PostConstruct
-    private void postConstruct() {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
 
     @Override
     public long save(Pad pad) {
@@ -33,7 +26,8 @@ public class JdbcTemplatePadDao implements PadDao {
         parameters.put("id", pad.getId());
         parameters.put("person", pad.getPersonId());
 
-        new SimpleJdbcInsert(jdbcTemplate).withTableName("зad")
+        new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("pad")
                 .execute(new MapSqlParameterSource(parameters));
 
         // just to return something
