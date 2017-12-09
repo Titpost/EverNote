@@ -1,7 +1,7 @@
 package com.epam.evernote.service;
 
 import com.epam.evernote.model.Person;
-import com.epam.evernote.config.IntegralPersonServiceConfig;
+import com.epam.evernote.config.PersonServiceTestIntegralTestConfig;
 import com.epam.evernote.service.Interfaces.PersonService;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -19,8 +19,8 @@ import static org.junit.Assert.assertEquals;
  * Integral test for Person Service.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = IntegralPersonServiceConfig.class)
-public class IntegralPersonServiceTest {
+@ContextConfiguration(classes = PersonServiceTestIntegralTestConfig.class)
+public class PersonServiceIntegralTest {
 
     private final String hardName = "Some name rea11y hard to meet";
 
