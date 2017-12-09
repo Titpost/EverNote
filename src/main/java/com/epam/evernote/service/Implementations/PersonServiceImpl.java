@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository("personTemplateRepo")
+@Repository("personTemplateRepo")   /// TODO Why is it a Repo, not a Service?
 public class PersonServiceImpl implements PersonService {
 
     @Autowired(required = false)
