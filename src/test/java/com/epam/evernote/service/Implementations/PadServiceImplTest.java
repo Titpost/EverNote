@@ -34,7 +34,7 @@ public class PadServiceImplTest {
   @Test
   public void savePad() throws Exception {
     Pad pad = Pad.builder()
-        .id(1L).name("Name")
+        .name("Name")
         .personId(1L)
         .build();
     padService.savePad(pad);
@@ -56,11 +56,11 @@ public class PadServiceImplTest {
   @Test
   public void getAllPads() throws Exception {
     Pad pad1 = Pad.builder()
-        .id(1L).name("Name1")
+        .name("Name1")
         .personId(1L)
         .build();
     Pad pad2 = Pad.builder()
-        .id(1L).name("Name2")
+        .name("Name2")
         .personId(1L)
         .build();
     List<Pad> pad = new ArrayList<>();
@@ -79,7 +79,7 @@ public class PadServiceImplTest {
   @Test
   public void getPadById() throws Exception {
     Pad pad = Pad.builder()
-        .id(1L).name("Name")
+         .name("Name")
         .personId(1L)
         .build();
     Long padId = 1L;
