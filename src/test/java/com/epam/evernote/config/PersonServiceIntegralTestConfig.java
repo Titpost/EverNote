@@ -8,6 +8,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(basePackages = {"com.epam.evernote.service.Implementations"})
-public class PersonServiceTestIntegralTestConfig extends ServiceIntegralTestConfig {
+public class PersonServiceIntegralTestConfig extends ServiceIntegralTestConfig {
 
 }
