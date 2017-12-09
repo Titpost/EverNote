@@ -23,15 +23,14 @@ public class JdbcTemplatePadDao implements PadDao {
     @Override
     public long save(Pad pad) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("id", pad.getId());
+        parameters.put("name", pad.getName());
         parameters.put("person", pad.getPersonId());
 
         new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("pad")
                 .execute(new MapSqlParameterSource(parameters));
 
-        // just to return something
-        return pad.getId();
+        return 0;
     }
 
     @Override
@@ -47,7 +46,7 @@ public class JdbcTemplatePadDao implements PadDao {
 
     @Override
     public void delete(long id) {
-        jdbcTemplate.update("DELETE FROM pad WHERE id = ?", id);
+        jdbcTemplate.update("DELETE FROM pad WHERE name = ?", id);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class JdbcTemplatePadDao implements PadDao {
 
     private Pad toPad(ResultSet resultSet) throws SQLException {
         Pad pad = new Pad();
-        pad.setId(resultSet.getLong("id"));
+        pad.setName(resultSet.getString("name"));
         pad.setPersonId(resultSet.getLong("person"));
         return pad;
     }

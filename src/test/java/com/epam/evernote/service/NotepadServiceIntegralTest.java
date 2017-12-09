@@ -34,6 +34,7 @@ public class NotepadServiceIntegralTest {
 
     @Autowired
     private EmbeddedDatabase db;
+
     private static EmbeddedDatabase dataBase;
 
     /**
@@ -50,22 +51,20 @@ public class NotepadServiceIntegralTest {
      * Test with series of operations within Notepad
      */
     @Test
-    public void TestNotepadService() {
+    public void createNew() {
 
-        final String Name1 = "Name 1";
-        final String Name2 = "Name 2";
+        final String personName = "Name1";
+        final String padName = "Name2";
 
         // create one person
-        Person person1 = Person.builder().name(Name1).active(true).build();
-        personService.savePerson(person1);
-
-        // create another person
-        Person person2 = Person.builder().name(Name2).active(true).build();
-        personService.savePerson(person2);
+        Person person = Person.builder().name(personName).active(true).build();
+        long personId = personService.savePerson(person);
 
         // create new notepad
-        Pad pad = Pad.builder().id(1L).name("Sample Notepad").build();
+        Pad pad = Pad.builder().name(padName).personId(personId).build();
         padService.savePad(pad);
+
+        // check row count
         Assert.assertEquals(padService.getAllPads().size(), 1);
     }
 
@@ -75,5 +74,6 @@ public class NotepadServiceIntegralTest {
     @AfterClass
     public static void tearDown() {
         dataBase.shutdown();
+        dataBase = null;
     }
 }
