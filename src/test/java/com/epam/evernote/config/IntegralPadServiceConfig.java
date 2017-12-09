@@ -1,17 +1,13 @@
 package com.epam.evernote.config;
 
 import com.epam.evernote.dao.JdbcTemplatePadDao;
-import com.epam.evernote.dao.JdbcTemplatePersonDao;
 import com.epam.evernote.service.Implementations.PadServiceImpl;
 
-import com.epam.evernote.service.Implementations.PersonServiceImpl;
 import com.epam.evernote.service.Interfaces.PadService;
-import com.epam.evernote.service.Interfaces.PersonService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -21,21 +17,9 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
  */
 @Configuration
 @ComponentScan(basePackages = {"com.epam.evernote.service.Implementations"})
-public class IntegralPadServiceConfig {
+public class IntegralPadServiceConfig extends IntegralServiceConfig {
 
     private static EmbeddedDatabase db = null;
-
-
-    // Person beans
-    @Bean
-    public PersonService personService() {
-        return new PersonServiceImpl();
-    }
-
-    @Bean
-    public JdbcTemplatePersonDao jdbcPersonDao() {
-        return new JdbcTemplatePersonDao();
-    }
 
 
     // Pad beans
@@ -49,15 +33,9 @@ public class IntegralPadServiceConfig {
         return new JdbcTemplatePadDao();
     }
 
-
-    // DataBase beans
-    @Bean
-    public JdbcTemplate jdbcTemplate() {
-        return new JdbcTemplate(embeddedDatabase());
-    }
-
     @Lazy
     @Bean
+    @Override
     public EmbeddedDatabase embeddedDatabase() {
         if (null == db) {
             db = new EmbeddedDatabaseBuilder()

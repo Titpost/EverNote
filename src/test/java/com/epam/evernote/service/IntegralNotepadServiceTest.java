@@ -34,6 +34,7 @@ public class IntegralNotepadServiceTest {
 
     @Autowired
     private EmbeddedDatabase db;
+    private static EmbeddedDatabase dataBase;
 
     /**
      * Database SetUp
@@ -42,6 +43,7 @@ public class IntegralNotepadServiceTest {
     public void setUpDB() {
         assertNotNull(personService);
         assertNotNull(padService);
+        dataBase = db;
     }
 
     /**
@@ -70,8 +72,8 @@ public class IntegralNotepadServiceTest {
     /**
      * Closes DataBase connection
      */
-    @After
-    public void tearDown() {
-        db.shutdown();
+    @AfterClass
+    public static void tearDown() {
+        dataBase.shutdown();
     }
 }
