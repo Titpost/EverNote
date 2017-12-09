@@ -7,23 +7,23 @@ CREATE TABLE IF NOT EXISTS person
 
 CREATE TABLE IF NOT EXISTS pad
 (
-    id VARCHAR(255)  PRIMARY KEY,
+    name VARCHAR(255)  PRIMARY KEY,
     person BIGINT,
     FOREIGN KEY (person) REFERENCES person(id)
 );
 
 CREATE TABLE IF NOT EXISTS note
 (
-    id VARCHAR(255)  PRIMARY KEY,
+    name VARCHAR(255)  PRIMARY KEY,
     pad VARCHAR(255),
     text TEXT,
-    FOREIGN KEY (pad) REFERENCES pad(id)
+    FOREIGN KEY (pad) REFERENCES pad(name)
 );
 
 CREATE TABLE IF NOT EXISTS tag
 (
-    id VARCHAR(255)  PRIMARY KEY,
+    name VARCHAR(255)  PRIMARY KEY,
     note VARCHAR(255),
-    FOREIGN KEY (note) REFERENCES note(id)
+    FOREIGN KEY (note) REFERENCES note(name)
 );
 

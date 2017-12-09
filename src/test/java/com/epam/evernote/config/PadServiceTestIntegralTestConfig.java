@@ -19,7 +19,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 @ComponentScan(basePackages = {"com.epam.evernote.service.Implementations"})
 public class PadServiceTestIntegralTestConfig extends ServiceIntegralTestConfig {
 
-    private static EmbeddedDatabase db = null;
+
 
 
     // Pad beans
@@ -33,17 +33,4 @@ public class PadServiceTestIntegralTestConfig extends ServiceIntegralTestConfig 
         return new JdbcTemplatePadDao();
     }
 
-    @Lazy
-    @Bean
-    @Override
-    public EmbeddedDatabase embeddedDatabase() {
-        if (null == db) {
-            db = new EmbeddedDatabaseBuilder()
-                    .setType(EmbeddedDatabaseType.H2)
-                    .addScript("createPersonServiceTestSchema.sql")
-                    .build();
-        }
-
-        return db;
-    }
 }

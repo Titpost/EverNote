@@ -30,6 +30,7 @@ public class PersonServiceIntegralTest {
 
     @Autowired
     private EmbeddedDatabase db;
+
     private static EmbeddedDatabase dataBase;
 
     /**
@@ -124,5 +125,6 @@ public class PersonServiceIntegralTest {
     @AfterClass
     public static void tearDown(){
         dataBase.shutdown();
+        dataBase = null;
     }
 }

@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Pad {
 
-  private Long id;
-  private Long personId;
   private String name;
+  private Long personId;
   private List<Note> notes;
 }
