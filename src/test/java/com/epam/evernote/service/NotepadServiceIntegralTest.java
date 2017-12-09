@@ -65,7 +65,7 @@ public class NotepadServiceIntegralTest {
         padService.savePad(pad);
 
         // check row count
-        Assert.assertEquals(padService.getAllPads().size(), 1);
+        assertEquals(padService.getAllPads().size(), 1);
     }
 
     /**
