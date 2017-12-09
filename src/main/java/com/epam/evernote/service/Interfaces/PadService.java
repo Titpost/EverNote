@@ -11,7 +11,7 @@ public interface PadService {
 
   List<Pad> getAllPads();
 
-  Pad getPadById(long id);
+  Pad getPadById(String name);
 
-  void deletePad(long id);
+  void deletePad(String name);
 }

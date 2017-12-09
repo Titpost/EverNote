@@ -39,7 +39,8 @@ public class ServiceIntegralTestConfig {
     public EmbeddedDatabase embeddedDatabase() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
-                .addScript("createPersonServiceTestSchema.sql")
+                .addScript("create-test-db.sql")
+                .addScript("insert-test-data.sql")
                 .build();
     }
 }

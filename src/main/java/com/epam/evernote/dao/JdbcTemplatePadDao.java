@@ -32,8 +32,8 @@ public class JdbcTemplatePadDao implements PadDao {
     }
 
     @Override
-    public Pad load(long id) {
-        List<Pad> pads = jdbcTemplate.query("SELECT * FROM зad WHERE id =?",
+    public Pad load(String id) {
+        List<Pad> pads = jdbcTemplate.query("SELECT * FROM pad WHERE name =?",
                 new Object[]{id}, (resultSet, i) -> toPad(resultSet));
 
         if (pads.size() == 1) {
@@ -43,7 +43,7 @@ public class JdbcTemplatePadDao implements PadDao {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(String id) {
         jdbcTemplate.update("DELETE FROM pad WHERE name = ?", id);
     }
 

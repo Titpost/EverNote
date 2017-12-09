@@ -31,12 +31,12 @@ public class PadServiceImpl implements PadService {
     }
 
     @Override
-    public Pad getPadById(long id) {
+    public Pad getPadById(String id) {
         return padDao.load(id);
     }
 
     @Override
-    public void deletePad(long id) {
+    public void deletePad(String id) {
         padDao.delete(id);
     }
 }

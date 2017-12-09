@@ -1,4 +1,4 @@
-package com.epam.evernote.service;
+package com.epam.evernote.service.Implementations;
 
 import com.epam.evernote.model.Pad;
 import com.epam.evernote.model.Person;
@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = PadServiceTestIntegralTestConfig.class)
-public class NotepadServiceIntegralTest {
+public class NotepadServiceIntegralTest extends ServiceIntegralTest {
 
     @Autowired
     @Qualifier("personTemplateRepo")
@@ -35,8 +35,6 @@ public class NotepadServiceIntegralTest {
     @Autowired
     private EmbeddedDatabase db;
 
-    private static EmbeddedDatabase dataBase;
-
     /**
      * Database SetUp
      */
@@ -48,7 +46,15 @@ public class NotepadServiceIntegralTest {
     }
 
     /**
-     * Test with series of operations within Notepad
+     * Get notepads count
+     */
+    @Test
+    public void getAll() {
+        assertEquals((long)padService.getPadCount(), padService.getAllPads().size());
+    }
+
+    /**
+     * Create new notepad
      */
     @Test
     public void createNew() {
@@ -56,7 +62,7 @@ public class NotepadServiceIntegralTest {
         final String personName = "Name1";
         final String padName = "Name2";
 
-        // create one person
+        // create new person
         Person person = Person.builder().name(personName).active(true).build();
         long personId = personService.savePerson(person);
 
@@ -65,15 +71,58 @@ public class NotepadServiceIntegralTest {
         padService.savePad(pad);
 
         // check row count
-        assertEquals(padService.getAllPads().size(), 1);
+        assertEquals(3, padService.getAllPads().size());
+        assertEquals(3, (long)padService.getPadCount());
     }
 
     /**
-     * Closes DataBase connection
+     * Find notepad by its ID (name)
      */
-    @AfterClass
-    public static void tearDown() {
-        dataBase.shutdown();
-        dataBase = null;
+    @Test
+    public void findByName() {
+
+        // create notepad with hard name
+        Pad pad = Pad.builder().name(hardName).personId(1L).build();
+        padService.savePad(pad);
+
+        // find notepad by its name
+        pad = padService.getPadById(hardName);
+        assertNotNull(pad);
+        assertEquals(hardName, pad.getName());
+
+        // delete just created notepad
+        padService.deletePad(hardName);
+    }
+
+    /**
+     * Try to find not existing notepad by wrong ID (name)
+     */
+    @Test
+    public void findNotExisting() {
+
+        // find notepad by its name
+        Pad pad = padService.getPadById(hardName);
+        assertNull(pad);
+    }
+
+    /**
+     * Delete notepad
+     */
+    @Test
+    public void deleteByIdAndCheckCount() {
+
+        // create new notepad
+        final String padName = "toDelete";
+        Pad pad = Pad.builder().name(padName).personId(1L).build();
+        padService.savePad(pad);
+        assertNotNull(padService.getPadById(padName));
+        final int count = padService.getAllPads().size();
+
+        // delete just created notepad
+        padService.deletePad(padName);
+        assertNull(padService.getPadById(padName));
+
+        // check if table's row count decremented
+        assertEquals(count - 1, padService.getAllPads().size());
     }
 }
