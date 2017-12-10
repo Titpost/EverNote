@@ -7,7 +7,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-public class ServiceIntegralTestConfig {
+public class ServiceIntegrationTestConfig {
 
     // DataBase beans
     @Bean

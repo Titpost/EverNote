@@ -1,6 +1,6 @@
 package com.epam.evernote.service.Implementations;
 
-import com.epam.evernote.config.TagServiceIntegralTestConfig;
+import com.epam.evernote.config.TagServiceIntegrationTestConfig;
 import com.epam.evernote.model.Tag;
 import com.epam.evernote.service.Interfaces.TagService;
 import org.junit.Before;
@@ -20,8 +20,8 @@ import static org.junit.Assert.assertNull;
  * Integral test for Tag Service.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TagServiceIntegralTestConfig.class)
-public class TagServiceIntegralTest extends ServiceIntegralTest {
+@ContextConfiguration(classes = TagServiceIntegrationTestConfig.class)
+public class TagServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     @Qualifier("tagTemplateRepo")

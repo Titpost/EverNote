@@ -3,10 +3,8 @@ package com.epam.evernote.service.Implementations;
 import org.junit.AfterClass;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 
-/**
- * @author Tit on 09.12.2017
- */
-public class ServiceIntegralTest {
+
+public class ServiceIntegrationTest {
 
     protected static EmbeddedDatabase dataBase;
 

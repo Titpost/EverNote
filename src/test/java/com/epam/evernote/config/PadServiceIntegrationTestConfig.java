@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(basePackages = {"com.epam.evernote.service.Implementations"})
-public class PadServiceIntegralTestConfig extends ServiceIntegralTestConfig {
+public class PadServiceIntegrationTestConfig extends ServiceIntegrationTestConfig {
 
 
     // Pad beans

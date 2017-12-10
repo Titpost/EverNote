@@ -1,7 +1,7 @@
 package com.epam.evernote.service.Implementations;
 
 import com.epam.evernote.model.Pad;
-import com.epam.evernote.config.PadServiceIntegralTestConfig;
+import com.epam.evernote.config.PadServiceIntegrationTestConfig;
 import com.epam.evernote.service.Interfaces.PadService;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,8 +20,8 @@ import static org.junit.Assert.assertEquals;
  * Integral test for Pad Service.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = PadServiceIntegralTestConfig.class)
-public class PadServiceIntegralTest extends ServiceIntegralTest {
+@ContextConfiguration(classes = PadServiceIntegrationTestConfig.class)
+public class PadServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     @Qualifier("padTemplateRepo")

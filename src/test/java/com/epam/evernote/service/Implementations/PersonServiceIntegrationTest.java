@@ -1,7 +1,7 @@
 package com.epam.evernote.service.Implementations;
 
 import com.epam.evernote.model.Person;
-import com.epam.evernote.config.PersonServiceIntegralTestConfig;
+import com.epam.evernote.config.PersonServiceIntegrationTestConfig;
 import com.epam.evernote.service.Interfaces.PersonService;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -21,8 +21,8 @@ import static org.junit.Assert.assertEquals;
  * Integral test for Person Service.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = PersonServiceIntegralTestConfig.class)
-public class PersonServiceIntegralTest extends ServiceIntegralTest {
+@ContextConfiguration(classes = PersonServiceIntegrationTestConfig.class)
+public class PersonServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
     @Qualifier("personTemplateRepo")
