@@ -41,7 +41,7 @@ public class PersonServiceIntegrationTest extends ServiceIntegrationTest {
      */
     @Test
     public void getAll() {
-        assertEquals((long)personService.getPersonCount(), personService.getAllPersons().size());
+        assertEquals(getCount(), personService.getAllPersons().size());
     }
 
     /**
@@ -145,5 +145,9 @@ public class PersonServiceIntegrationTest extends ServiceIntegrationTest {
 
         // check if table's row count decremented
         assertEquals(sizeBefore - 1, (long)personService.getPersonCount());
+    }
+
+    private long getCount() {
+        return personService.getPersonCount();
     }
 }
