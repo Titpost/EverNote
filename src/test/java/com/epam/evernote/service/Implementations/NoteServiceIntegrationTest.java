@@ -1,6 +1,6 @@
 package com.epam.evernote.service.Implementations;
 
-import com.epam.evernote.config.NoteServiceIntegralTestConfig;
+import com.epam.evernote.config.NoteServiceIntegrationTestConfig;
 import com.epam.evernote.model.Note;
 import com.epam.evernote.service.Interfaces.NoteService;
 import org.junit.Before;
@@ -20,8 +20,8 @@ import static org.junit.Assert.assertEquals;
  * Integral test for Note Service.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = NoteServiceIntegralTestConfig.class)
-public class NoteServiceIntegralTest extends ServiceIntegralTest {
+@ContextConfiguration(classes = NoteServiceIntegrationTestConfig.class)
+public class NoteServiceIntegrationTest extends ServiceIntegralTest {
 
     @Autowired
     @Qualifier("noteTemplateRepo")
