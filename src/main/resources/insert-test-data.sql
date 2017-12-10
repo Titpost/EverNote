@@ -9,3 +9,6 @@ INSERT INTO pad VALUES ('Pad2', 1);
 INSERT INTO note VALUES ('Note1', 'Pad1', 'Text1');
 INSERT INTO note VALUES ('Note2', 'Pad1', 'Text2');
 
+INSERT INTO tag VALUES ('Tag1', 'Note1');
+INSERT INTO tag VALUES ('Tag2', 'Note2');
+

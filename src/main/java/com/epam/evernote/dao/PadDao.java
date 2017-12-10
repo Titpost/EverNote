@@ -7,4 +7,6 @@ public interface PadDao extends Dao<Pad, String> {
     Long getPerson();
 
     Long getPadCount();
+
+    Pad loadWithNotes(String id);
 }

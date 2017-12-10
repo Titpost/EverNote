@@ -1,8 +1,10 @@
 package com.epam.evernote.dao;
 
+import com.epam.evernote.model.Note;
 import com.epam.evernote.model.Pad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -45,10 +47,42 @@ public class JdbcTemplatePadDao implements PadDao {
     }
 
     @Override
-    public void delete(String id) {
-        // delete all the notes referencing the pad with this ID
-        jdbcTemplate.update("DELETE FROM note WHERE pad = ?", id);
+    public Pad loadWithNotes(String id) {
+        String sql = "select name, text, pad from note where pad='" + id + "'";
+        return jdbcTemplate.query(sql, new PadWithNotesExtractor());
+    }
 
+    private class PadWithNotesExtractor implements ResultSetExtractor<Pad> {
+        @Override
+        public Pad extractData(ResultSet rs) throws SQLException {
+            Pad pad = null;
+            while (rs.next()) {
+                if (pad == null) {
+                    pad = new Pad();
+                    pad.setName(rs.getString("name"));
+                }
+                Note note = new Note();
+                note.setName(rs.getString("name"));
+                note.setPadId(rs.getString("pad"));
+                note.setText(rs.getString("text"));
+                pad.addNote(note);
+            }
+            return pad;
+        }
+    }
+
+    @Override
+    public void delete(String id) {
+
+        Pad pad = loadWithNotes(id);
+        if (null != pad) {
+            // delete tags
+            for (Note note : pad.getNotes()) {
+                jdbcTemplate.update("DELETE FROM tag WHERE note = ?", note.getName());
+            }
+            // delete notes
+            jdbcTemplate.update("DELETE FROM note WHERE pad = ?", id);
+        }
         // delete the pad
         jdbcTemplate.update("DELETE FROM pad WHERE name = ?", id);
     }

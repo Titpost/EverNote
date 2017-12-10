@@ -1,6 +1,8 @@
 package com.epam.evernote.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +14,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Pad {
 
-  private String name;
-  private Long personId;
-  private List<Note> notes;
+    private String name;
+    private Long personId;
+    private List<Note> notes = new ArrayList<>();
+    public void addNote(Note note) {
+        notes.add(note);
+    }
 }
