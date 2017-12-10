@@ -30,7 +30,6 @@ public class PadServiceUnitTest {
 
     @Before
     public void setUp() {
-
     }
 
     @Test
@@ -48,8 +47,8 @@ public class PadServiceUnitTest {
     public void getPadCount() throws Exception {
         Long padCount = 20L;
         when(padDao.getPadCount()).thenReturn(padCount);
-        Long resultPudCount = padService.getPadCount();
-        assertThat(resultPudCount).isEqualTo(padCount);
+        Long resultPadCount = padService.getPadCount();
+        assertThat(resultPadCount).isEqualTo(padCount);
 
         verify(padDao, times(1)).getPadCount();
         verifyNoMoreInteractions(padDao);
