@@ -7,7 +7,6 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -27,9 +26,6 @@ public class PersonServiceIntegrationTest extends ServiceIntegrationTest {
     @Autowired
     @Qualifier("personTemplateRepo")
     private PersonService personService;
-
-    @Autowired
-    private EmbeddedDatabase db;
 
     /**
      * Database SetUp
