@@ -44,7 +44,7 @@ public class PadServiceIntegralTest extends ServiceIntegralTest {
      */
     @Test
     public void getAll() {
-        assertEquals((long)padService.getPadCount(), padService.getAllPads().size());
+        assertEquals(getCount(), padService.getAllPads().size());
     }
 
     /**
@@ -53,6 +53,8 @@ public class PadServiceIntegralTest extends ServiceIntegralTest {
     @Test
     public void createNew() {
 
+        long prevCount = getCount();
+
         final String padName = "PadName";
 
         // create new pad
@@ -60,8 +62,7 @@ public class PadServiceIntegralTest extends ServiceIntegralTest {
         padService.savePad(pad);
 
         // check row count
-        assertEquals(3, padService.getAllPads().size());
-        assertEquals(3, (long)padService.getPadCount());
+        assertEquals(prevCount + 1, getCount());
     }
 
     /**
@@ -113,5 +114,19 @@ public class PadServiceIntegralTest extends ServiceIntegralTest {
 
         // check if table's row count decremented
         assertEquals(count - 1, padService.getAllPads().size());
+    }
+
+    /**
+     * Delete pad with notes
+     */
+    @Test
+    public void deleteNonEmpty() {
+        // delete pad with notes
+        padService.deletePad("Pad1");
+        assertNull(padService.getPadById("Pad1"));
+    }
+
+    private long getCount() {
+        return padService.getPadCount();
     }
 }

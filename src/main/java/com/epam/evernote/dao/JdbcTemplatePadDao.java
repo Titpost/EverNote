@@ -46,6 +46,10 @@ public class JdbcTemplatePadDao implements PadDao {
 
     @Override
     public void delete(String id) {
+        // delete all the notes referencing the pad with this ID
+        jdbcTemplate.update("DELETE FROM note WHERE pad = ?", id);
+
+        // delete the pad
         jdbcTemplate.update("DELETE FROM pad WHERE name = ?", id);
     }
 

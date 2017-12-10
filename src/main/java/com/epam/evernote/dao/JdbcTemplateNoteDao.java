@@ -51,7 +51,6 @@ public class JdbcTemplateNoteDao implements NoteDao {
 
     @Override
     public void update(Note note) {
-
     }
 
     @Override
