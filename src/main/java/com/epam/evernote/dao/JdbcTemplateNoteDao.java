@@ -73,7 +73,7 @@ public class JdbcTemplateNoteDao implements NoteDao {
     }
 
     @Override
-    public Long getPad() {
+    public String getPad() {
         return null;
     }
 }

@@ -4,7 +4,7 @@ import com.epam.evernote.model.Note;
 
 public interface NoteDao extends Dao<Note, String> {
 
-    Long getPad();
+    String getPad();
 
     Long getNoteCount();
 }
