@@ -1,16 +1,18 @@
 package com.epam.evernote.dao;
 
 import com.epam.evernote.model.Pad;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository("padTemplateRepo")
 public class JdbcTemplatePadDao implements PadDao {

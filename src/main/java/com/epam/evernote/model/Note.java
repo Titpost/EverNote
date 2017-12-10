@@ -13,9 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Note {
 
-  private Long id;
-  private Long personId;
   private String name;
-  private String body;
-  private List<Note> notes;
+  private String padId;
+  private String text;
+  private List<Tag> notes;
 }

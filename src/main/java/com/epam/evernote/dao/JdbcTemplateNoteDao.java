@@ -1,7 +1,6 @@
 package com.epam.evernote.dao;
 
 import com.epam.evernote.model.Note;
-import com.epam.evernote.model.Pad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class JdbcTemplateNoteDao implements NoteDao {
     public long save(Note note) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("name", note.getName());
-        parameters.put("person", note.getPersonId());
+        parameters.put("person", note.getPadId());
 
         new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("note")
@@ -62,7 +62,7 @@ public class JdbcTemplateNoteDao implements NoteDao {
     private Note toNote(ResultSet resultSet) throws SQLException {
         Note note = new Note();
         note.setName(resultSet.getString("name"));
-        note.setPersonId(resultSet.getLong("person"));
+        note.setPadId(resultSet.getString("pad"));
         return note;
     }
 
