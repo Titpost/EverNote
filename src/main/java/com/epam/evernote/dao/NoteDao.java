@@ -7,4 +7,6 @@ public interface NoteDao extends Dao<Note, String> {
     String getPad();
 
     Long getNoteCount();
+
+    Note loadWithTags(String id);
 }

@@ -37,7 +37,7 @@ public class JdbcTemplatePadDao implements PadDao {
 
     @Override
     public Pad load(String id) {
-        List<Pad> pads = jdbcTemplate.query("SELECT * FROM pad WHERE name =?",
+        List<Pad> pads = jdbcTemplate.query("SELECT * FROM pad WHERE name = ?",
                 new Object[]{id}, (resultSet, i) -> toPad(resultSet));
 
         if (pads.size() == 1) {
@@ -48,7 +48,7 @@ public class JdbcTemplatePadDao implements PadDao {
 
     @Override
     public Pad loadWithNotes(String id) {
-        String sql = "select name, text, pad from note where pad='" + id + "'";
+        String sql = "select name, text, pad from note where pad = '" + id + "'";
         return jdbcTemplate.query(sql, new PadWithNotesExtractor());
     }
 

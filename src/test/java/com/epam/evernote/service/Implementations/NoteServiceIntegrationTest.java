@@ -40,7 +40,7 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
      */
     @Test
     public void getAll() {
-        assertEquals((long)noteService.getNoteCount(), noteService.getAllNotes().size());
+        assertEquals(getCount(), noteService.getAllNotes().size());
     }
 
     /**
@@ -49,6 +49,8 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     public void createNew() {
 
+        long prevCount = getCount();
+
         final String noteName = "NoteName";
 
         // create new note
@@ -56,8 +58,7 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
         noteService.saveNote(note);
 
         // check row count
-        assertEquals(3, noteService.getAllNotes().size());
-        assertEquals(3, (long)noteService.getNoteCount());
+        assertEquals(prevCount + 1, getCount());
     }
 
     /**
@@ -109,5 +110,19 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
 
         // check if table's row count decremented
         assertEquals(count - 1, noteService.getAllNotes().size());
+    }
+
+    /**
+     * Delete note with tags
+     */
+    @Test
+    public void deleteReferred() {
+        // delete note with tags
+        noteService.deleteNote("Note1");
+        assertNull(noteService.getNoteById("Note1"));
+    }
+
+    private long getCount() {
+        return noteService.getNoteCount();
     }
 }

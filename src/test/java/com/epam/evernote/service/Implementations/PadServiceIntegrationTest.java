@@ -116,7 +116,7 @@ public class PadServiceIntegrationTest extends ServiceIntegrationTest {
      * Delete pad with notes
      */
     @Test
-    public void deleteNonEmpty() {
+    public void deleteReferred() {
         // delete pad with notes
         padService.deletePad("Pad1");
         assertNull(padService.getPadById("Pad1"));
