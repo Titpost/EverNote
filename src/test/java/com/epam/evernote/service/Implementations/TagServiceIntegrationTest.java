@@ -49,15 +49,48 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     public void createNew() {
 
-        final String tagName = "TagName";
+        long prevCount = getCount();
 
-        // create new tag
-        Tag tag = Tag.builder().name(tagName).note("Note1").build();
+        // create new tag with name1 for note1
+        Tag tag = Tag.builder().name(hardName).note("Note1").build();
+        tagService.saveTag(tag);
+
+        // create new tag with name2 for note1
+        tag = Tag.builder().name(hardName + "_2").note("Note1").build();
+        tagService.saveTag(tag);
+
+        // create new tag with name1 for note2
+        tag = Tag.builder().name(hardName).note("Note2").build();
+        tagService.saveTag(tag);
+
+        // create new tag with name2 for note2
+        tag = Tag.builder().name(hardName +"_2").note("Note2").build();
         tagService.saveTag(tag);
 
         // check row count
-        assertEquals(3, tagService.getAllTags().size());
-        assertEquals(3, (long)tagService.getTagCount());
+        assertEquals(prevCount + 4, getCount());
+    }
+
+    /**
+     * Create 2 non unique tags
+     */
+    @Test
+    public void createNotUniques() {
+
+        long initialCount = getCount();
+
+        // create new tag
+        Tag tag = Tag.builder().name(hardName + "_nonUnique").note("Note1").build();
+        tagService.saveTag(tag);
+
+        // must be +1
+        assertEquals(initialCount + 1, getCount());
+
+        // create new tag with same name and note
+        tagService.saveTag(tag);
+
+        // must be + 1 (not + 2)
+        assertEquals(initialCount + 1, getCount());
     }
 
     /**
@@ -109,5 +142,9 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
 
         // check if table's row count decremented
         assertEquals(count - 1, tagService.getAllTags().size());
+    }
+
+    private long getCount() {
+        return tagService.getTagCount();
     }
 }

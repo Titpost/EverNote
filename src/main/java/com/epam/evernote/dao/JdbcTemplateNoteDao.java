@@ -3,6 +3,7 @@ package com.epam.evernote.dao;
 import com.epam.evernote.model.Note;
 import com.epam.evernote.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -28,11 +29,14 @@ public class JdbcTemplateNoteDao implements NoteDao {
         parameters.put("name", note.getName());
         parameters.put("person", note.getPadId());
 
-        new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("note")
-                .execute(new MapSqlParameterSource(parameters));
-
-        return 0;
+        try {
+            new SimpleJdbcInsert(jdbcTemplate)
+                    .withTableName("note")
+                    .execute(new MapSqlParameterSource(parameters));
+        } catch (DuplicateKeyException e) {
+            return 0;
+        }
+        return 1;
     }
 
     @Override

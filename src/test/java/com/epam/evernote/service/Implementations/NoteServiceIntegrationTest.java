@@ -2,6 +2,7 @@ package com.epam.evernote.service.Implementations;
 
 import com.epam.evernote.config.NoteServiceIntegrationTestConfig;
 import com.epam.evernote.model.Note;
+import com.epam.evernote.model.Pad;
 import com.epam.evernote.service.Interfaces.NoteService;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,6 +60,27 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
 
         // check row count
         assertEquals(prevCount + 1, getCount());
+    }
+
+    /**
+     * Create 2 non unique notes
+     */
+    @Test
+    public void createNotUniques() {
+
+        long initialCount = getCount();
+
+        Note note = Note.builder().name(hardName + "_nonUnique").padId("Pad1").build();
+        noteService.saveNote(note);
+
+        // must be +1
+        assertEquals(initialCount + 1, getCount());
+
+        // create new note with same name and pad
+        noteService.saveNote(note);
+
+        // must be + 1 (not + 2)
+        assertEquals(initialCount + 1, getCount());
     }
 
     /**

@@ -2,6 +2,7 @@ package com.epam.evernote.dao;
 
 import com.epam.evernote.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -25,11 +26,14 @@ public class JdbcTemplateTagDao implements TagDao {
         parameters.put("name", tag.getName());
         parameters.put("note", tag.getNote());
 
-        new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("tag")
-                .execute(new MapSqlParameterSource(parameters));
-
-        return 0;
+        try {
+            new SimpleJdbcInsert(jdbcTemplate)
+                    .withTableName("tag")
+                    .execute(new MapSqlParameterSource(parameters));
+        } catch (DuplicateKeyException e) {
+            return 0;
+        }
+        return 1;
     }
 
     @Override
