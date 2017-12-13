@@ -2,13 +2,11 @@ package com.epam.evernote.service.Implementations;
 
 import com.epam.evernote.config.NoteServiceIntegrationTestConfig;
 import com.epam.evernote.model.Note;
-import com.epam.evernote.model.Pad;
 import com.epam.evernote.service.Interfaces.NoteService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
