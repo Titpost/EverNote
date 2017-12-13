@@ -5,11 +5,11 @@ import com.epam.evernote.dao.JdbcTemplatePersonDao;
 import com.epam.evernote.model.Person;
 import com.epam.evernote.service.Interfaces.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Repository("personTemplateRepo")   /// TODO Why is it a Repo, not a Service?
+@Service("personTemplateRepo")
 public class PersonServiceImpl implements PersonService {
 
     @Autowired(required = false)

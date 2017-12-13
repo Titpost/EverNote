@@ -5,11 +5,11 @@ import com.epam.evernote.dao.JdbcTemplateTagDao;
 import com.epam.evernote.model.Tag;
 import com.epam.evernote.service.Interfaces.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Repository("tagTemplateRepo")
+@Service("tagTemplateRepo")
 public class TagServiceImpl implements TagService {
 
     @Autowired(required = false)

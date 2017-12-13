@@ -5,11 +5,11 @@ import com.epam.evernote.dao.JdbcTemplateNoteDao;
 import com.epam.evernote.model.Note;
 import com.epam.evernote.service.Interfaces.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Repository("noteTemplateRepo")
+@Service("noteTemplateRepo")
 public class NoteServiceImpl implements NoteService {
 
     @Autowired(required = false)
