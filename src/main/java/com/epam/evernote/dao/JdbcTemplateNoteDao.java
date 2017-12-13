@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository("noteTemplateRepo")
+@Repository
 public class JdbcTemplateNoteDao implements NoteDao {
 
     @Autowired
