@@ -24,7 +24,6 @@ import static org.junit.Assert.assertEquals;
 public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
-    @Qualifier("noteTemplateRepo")
     private NoteService noteService;
 
     /**

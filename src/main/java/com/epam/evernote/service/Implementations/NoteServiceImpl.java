@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("noteTemplateRepo")
+@Service
 public class NoteServiceImpl implements NoteService {
 
     @Autowired(required = false)

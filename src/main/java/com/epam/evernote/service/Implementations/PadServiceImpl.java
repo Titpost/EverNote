@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("padTemplateRepo")
+@Service
 public class PadServiceImpl implements PadService {
 
     @Autowired(required = false)

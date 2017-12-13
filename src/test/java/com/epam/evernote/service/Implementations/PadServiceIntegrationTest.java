@@ -2,7 +2,6 @@ package com.epam.evernote.service.Implementations;
 
 import com.epam.evernote.model.Pad;
 import com.epam.evernote.config.PadServiceIntegrationTestConfig;
-import com.epam.evernote.model.Tag;
 import com.epam.evernote.service.Interfaces.PadService;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +23,6 @@ import static org.junit.Assert.assertEquals;
 public class PadServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
-    @Qualifier("padTemplateRepo")
     private PadService padService;
 
     /**

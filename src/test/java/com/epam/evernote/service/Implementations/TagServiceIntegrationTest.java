@@ -23,7 +23,6 @@ import static org.junit.Assert.assertNull;
 public class TagServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
-    @Qualifier("tagTemplateRepo")
     private TagService tagService;
 
     /**

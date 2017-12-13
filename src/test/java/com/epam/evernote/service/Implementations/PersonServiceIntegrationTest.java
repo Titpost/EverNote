@@ -24,7 +24,6 @@ import static org.junit.Assert.assertEquals;
 public class PersonServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
-    @Qualifier("personTemplateRepo")
     private PersonService personService;
 
     /**
