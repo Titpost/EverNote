@@ -32,19 +32,16 @@ public class PersonController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String addPerson(@ModelAttribute("Person") Person person,
-                             ModelMap model) {
-       personService.savePerson(person);
-
+                            ModelMap model) {
+        personService.savePerson(person);
         return "result";
     }
 
 
     @RequestMapping(method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
-
         model.addAttribute("message", "Spring 3 MVC - Hello World");
         return "hello";
-
     }
 
 }
