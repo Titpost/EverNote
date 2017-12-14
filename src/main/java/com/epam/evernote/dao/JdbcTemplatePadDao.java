@@ -1,18 +1,23 @@
 package com.epam.evernote.dao;
 
+import com.epam.evernote.model.Note;
 import com.epam.evernote.model.Pad;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-@Repository("padTemplateRepo")
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Repository
 public class JdbcTemplatePadDao implements PadDao {
 
     @Autowired
@@ -24,16 +29,19 @@ public class JdbcTemplatePadDao implements PadDao {
         parameters.put("name", pad.getName());
         parameters.put("person", pad.getPersonId());
 
-        new SimpleJdbcInsert(jdbcTemplate)
+        try {
+            new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("pad")
                 .execute(new MapSqlParameterSource(parameters));
-
-        return 0;
+        } catch (DuplicateKeyException e) {
+            return 0;
+        }
+        return 1;
     }
 
     @Override
-    public Pad load(long id) {
-        List<Pad> pads = jdbcTemplate.query("SELECT * FROM зad WHERE id =?",
+    public Pad load(String id) {
+        List<Pad> pads = jdbcTemplate.query("SELECT * FROM pad WHERE name = ?",
                 new Object[]{id}, (resultSet, i) -> toPad(resultSet));
 
         if (pads.size() == 1) {
@@ -43,7 +51,43 @@ public class JdbcTemplatePadDao implements PadDao {
     }
 
     @Override
-    public void delete(long id) {
+    public Pad loadWithNotes(String id) {
+        String sql = "select name, text, pad from note where pad = '" + id + "'";
+        return jdbcTemplate.query(sql, new PadWithNotesExtractor());
+    }
+
+    private class PadWithNotesExtractor implements ResultSetExtractor<Pad> {
+        @Override
+        public Pad extractData(ResultSet rs) throws SQLException {
+            Pad pad = null;
+            while (rs.next()) {
+                if (pad == null) {
+                    pad = new Pad();
+                    pad.setName(rs.getString("name"));
+                }
+                Note note = new Note();
+                note.setName(rs.getString("name"));
+                note.setPadId(rs.getString("pad"));
+                note.setText(rs.getString("text"));
+                pad.addNote(note);
+            }
+            return pad;
+        }
+    }
+
+    @Override
+    public void delete(String id) {
+
+        Pad pad = loadWithNotes(id);
+        if (null != pad) {
+            // delete tags
+            for (Note note : pad.getNotes()) {
+                jdbcTemplate.update("DELETE FROM tag WHERE note = ?", note.getName());
+            }
+            // delete notes
+            jdbcTemplate.update("DELETE FROM note WHERE pad = ?", id);
+        }
+        // delete the pad
         jdbcTemplate.update("DELETE FROM pad WHERE name = ?", id);
     }
 

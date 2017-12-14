@@ -22,8 +22,9 @@ CREATE TABLE IF NOT EXISTS note
 
 CREATE TABLE IF NOT EXISTS tag
 (
-    name VARCHAR(255)  PRIMARY KEY,
-    note VARCHAR(255),
+    name VARCHAR(255) NOT NULL,
+    note VARCHAR(255) NOT NULL,
+    UNIQUE KEY ukey (name, note),
     FOREIGN KEY (note) REFERENCES note(name)
 );
 

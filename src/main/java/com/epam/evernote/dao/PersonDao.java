@@ -4,7 +4,7 @@ import com.epam.evernote.model.Person;
 
 import java.util.List;
 
-public interface PersonDao extends Dao<Person> {
+public interface PersonDao extends Dao<Person, Long> {
 
     List<Person> findPersonsByName(String name);
 

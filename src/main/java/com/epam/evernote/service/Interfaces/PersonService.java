@@ -3,9 +3,6 @@ package com.epam.evernote.service.Interfaces;
 import com.epam.evernote.model.Person;
 import java.util.List;
 
-/**
- * Created by Andrey on 06.12.2017.
- */
 public interface PersonService {
 
   long savePerson(Person person);

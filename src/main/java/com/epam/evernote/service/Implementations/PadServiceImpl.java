@@ -5,11 +5,11 @@ import com.epam.evernote.dao.JdbcTemplatePadDao;
 import com.epam.evernote.model.Pad;
 import com.epam.evernote.service.Interfaces.PadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Repository("padTemplateRepo") /// TODO Why is it a Repo, not a Service?
+@Service
 public class PadServiceImpl implements PadService {
 
     @Autowired(required = false)
@@ -31,12 +31,12 @@ public class PadServiceImpl implements PadService {
     }
 
     @Override
-    public Pad getPadById(long id) {
+    public Pad getPadById(String id) {
         return padDao.load(id);
     }
 
     @Override
-    public void deletePad(long id) {
+    public void deletePad(String id) {
         padDao.delete(id);
     }
 }

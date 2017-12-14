@@ -1,15 +1,15 @@
-package com.epam.evernote.service;
+package com.epam.evernote.service.Implementations;
 
 import com.epam.evernote.model.Person;
-import com.epam.evernote.config.PersonServiceTestIntegralTestConfig;
+import com.epam.evernote.config.PersonServiceIntegrationTestConfig;
 import com.epam.evernote.service.Interfaces.PersonService;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
@@ -19,19 +19,11 @@ import static org.junit.Assert.assertEquals;
  * Integral test for Person Service.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = PersonServiceTestIntegralTestConfig.class)
-public class PersonServiceIntegralTest {
-
-    private final String hardName = "Some name rea11y hard to meet";
+@ContextConfiguration(classes = PersonServiceIntegrationTestConfig.class)
+public class PersonServiceIntegrationTest extends ServiceIntegrationTest {
 
     @Autowired
-    @Qualifier("personTemplateRepo")
     private PersonService personService;
-
-    @Autowired
-    private EmbeddedDatabase db;
-
-    private static EmbeddedDatabase dataBase;
 
     /**
      * Database SetUp
@@ -40,6 +32,37 @@ public class PersonServiceIntegralTest {
     public void setUpDB() {
         assertNotNull(personService);
         dataBase = db;
+    }
+
+    /**
+     * Get persons count
+     */
+    @Test
+    public void getAll() {
+        assertEquals(getCount(), personService.getAllPersons().size());
+    }
+
+    /**
+     * Find notepad by its ID (name)
+     */
+    @Test
+    public void findByName() {
+
+        // find person by his name
+        Person person = personService.getPersonById(1);
+        assertNotNull(person);
+        assertEquals("Name1", person.getName());
+    }
+
+    /**
+     * Try to find not existing notepad by wrong ID (name)
+     */
+    @Test
+    public void findNotExisting() {
+
+        // find person by his name
+        Person person = personService.getPersonById(9999);
+        assertNull(person);
     }
 
     /**
@@ -57,7 +80,7 @@ public class PersonServiceIntegralTest {
         long id = personService.savePerson(person);
 
         // check for table size
-        assertEquals(personService.getAllPersons().size(), sizeBefore + 1);
+        assertEquals(sizeBefore + 1, personService.getAllPersons().size());
 
         // find just created person by id
         person = personService.getPersonById(id);
@@ -86,12 +109,15 @@ public class PersonServiceIntegralTest {
         personService.updateName(id, name2);
 
         // check if number of persons didn't change
-        assertEquals(personService.getAllPersons().size(), sizeBefore);
+        assertEquals(sizeBefore, personService.getAllPersons().size());
 
         // check if person was really renamed
-        assertEquals(personService.getPersonById(id).getName(), name2);
+        assertEquals(name2, personService.getPersonById(id).getName());
 
         // find person by his new name
+        List<Person> personList = personService.getPersonsByName(name2);
+        assertEquals(1, personList.size());
+        assertEquals(name2, personList.get(0).getName());
     }
 
     /**
@@ -116,15 +142,10 @@ public class PersonServiceIntegralTest {
         assertNull(personService.getPersonById(id));
 
         // check if table's row count decremented
-        assertEquals((long)personService.getPersonCount(), sizeBefore - 1);
+        assertEquals(sizeBefore - 1, (long)personService.getPersonCount());
     }
 
-    /**
-     * Closes DataBase connection
-     */
-    @AfterClass
-    public static void tearDown(){
-        dataBase.shutdown();
-        dataBase = null;
+    private long getCount() {
+        return personService.getPersonCount();
     }
 }

@@ -5,13 +5,13 @@ import java.util.List;
 
 public interface PadService {
 
-  void savePad(Pad pad);
+    void savePad(Pad pad);
 
-  Long getPadCount();
+    Long getPadCount();
 
-  List<Pad> getAllPads();
+    List<Pad> getAllPads();
 
-  Pad getPadById(long id);
+    Pad getPadById(String name);
 
-  void deletePad(long id);
+    void deletePad(String name);
 }

@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository("personTemplateRepo")
+@Repository
 public class JdbcTemplatePersonDao implements PersonDao {
 
     @Autowired
@@ -35,7 +35,7 @@ public class JdbcTemplatePersonDao implements PersonDao {
     }
 
     @Override
-    public Person load(long id) {
+    public Person load(Long id) {
         List<Person> persons = jdbcTemplate.query("SELECT * FROM person WHERE id =?",
                 new Object[]{id}, (resultSet, i) -> toPerson(resultSet));
 
@@ -46,7 +46,7 @@ public class JdbcTemplatePersonDao implements PersonDao {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Long id) {
         jdbcTemplate.update("DELETE from PERSON where id = ?", id);
     }
 
