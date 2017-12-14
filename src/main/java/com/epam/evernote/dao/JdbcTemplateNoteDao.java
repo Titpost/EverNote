@@ -1,6 +1,7 @@
 package com.epam.evernote.dao;
 
 import com.epam.evernote.model.Note;
+import com.epam.evernote.model.Pad;
 import com.epam.evernote.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -26,22 +27,26 @@ public class JdbcTemplateNoteDao implements NoteDao {
     @Override
     public long save(Note note) {
         Map<String, Object> parameters = new HashMap<>();
+        parameters.put("pad", note.getPadId());
         parameters.put("name", note.getName());
-        parameters.put("person", note.getPadId());
+        parameters.put("text", note.getText());
 
+        // execute insert
         try {
-            new SimpleJdbcInsert(jdbcTemplate)
+            return new SimpleJdbcInsert(jdbcTemplate)
                     .withTableName("note")
-                    .execute(new MapSqlParameterSource(parameters));
+                    .usingGeneratedKeyColumns("Primary_key")
+                    .executeAndReturnKey(new MapSqlParameterSource(
+                            parameters)).intValue();
         } catch (DuplicateKeyException e) {
-            return 0;
+            e.printStackTrace();
         }
-        return 1;
+        return -1;
     }
 
     @Override
-    public Note load(String id) {
-        List<Note> notes = jdbcTemplate.query("SELECT * FROM note WHERE name = ?",
+    public Note load(Long id) {
+        List<Note> notes = jdbcTemplate.query("SELECT * FROM note WHERE id = ?",
                 new Object[]{id}, (resultSet, i) -> toNote(resultSet));
 
         if (notes.size() == 1) {
@@ -51,7 +56,7 @@ public class JdbcTemplateNoteDao implements NoteDao {
     }
 
     @Override
-    public Note loadWithTags(String id) {
+    public Note loadWithTags(long id) {
         String sql = "select name, note from tag where note = '" + id + "'";
         return jdbcTemplate.query(sql, new JdbcTemplateNoteDao.NoteWithTagsExtractor());
     }
@@ -75,13 +80,13 @@ public class JdbcTemplateNoteDao implements NoteDao {
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
 
         // delete tags
         jdbcTemplate.update("DELETE FROM tag WHERE note = ?", id);
 
-        // delete the pad
-        jdbcTemplate.update("DELETE FROM note WHERE name = ?", id);
+        // delete the note
+        jdbcTemplate.update("DELETE FROM note WHERE id = ?", id);
     }
 
     @Override
@@ -95,20 +100,32 @@ public class JdbcTemplateNoteDao implements NoteDao {
 
     private Note toNote(ResultSet resultSet) throws SQLException {
         Note note = new Note();
+        note.setId(resultSet.getLong("id"));
+        note.setPadId(resultSet.getLong("pad"));
         note.setName(resultSet.getString("name"));
-        note.setPadId(resultSet.getString("pad"));
         return note;
+    }
+
+    @Override
+    public Note findNoteByOwnerAndName(long person, String name) {
+        List<Note> notes = jdbcTemplate.query("SELECT * FROM note WHERE person = ? AND name = ?",
+                new Object[]{person, name}, (resultSet, i) -> toNote(resultSet));
+
+        if (notes.size() == 1) {
+            return notes.get(0);
+        }
+        return null;
     }
 
 
     @Override
-    public Long getNoteCount() {
+    public long getNoteCount() {
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM note",
                 Long.class);
     }
 
     @Override
-    public String getPad() {
-        return null;
+    public long getPad() {
+        return 0;
     }
 }

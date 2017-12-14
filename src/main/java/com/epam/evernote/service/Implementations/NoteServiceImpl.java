@@ -3,6 +3,7 @@ package com.epam.evernote.service.Implementations;
 
 import com.epam.evernote.dao.JdbcTemplateNoteDao;
 import com.epam.evernote.model.Note;
+import com.epam.evernote.model.Pad;
 import com.epam.evernote.service.Interfaces.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,12 @@ public class NoteServiceImpl implements NoteService {
     private JdbcTemplateNoteDao noteDao;
 
     @Override
-    public void saveNote(Note note) {
-        noteDao.save(note);
+    public long saveNote(Note note) {
+        return noteDao.save(note);
     }
 
     @Override
-    public Long getNoteCount() {
+    public long getNoteCount() {
         return noteDao.getNoteCount();
     }
 
@@ -31,12 +32,17 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Note getNoteById(String id) {
+    public Note getNoteById(long id) {
         return noteDao.load(id);
     }
 
     @Override
-    public void deleteNote(String id) {
+    public Note getNoteByOwnerAndName(Long person, String name) {
+        return noteDao.findNoteByOwnerAndName(person, name);
+    }
+
+    @Override
+    public void deleteNote(long id) {
         noteDao.delete(id);
     }
 }

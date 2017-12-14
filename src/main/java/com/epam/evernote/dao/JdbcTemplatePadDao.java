@@ -54,7 +54,7 @@ public class JdbcTemplatePadDao implements PadDao {
     }
 
     @Override
-    public Pad loadWithNotes(Long id) {
+    public Pad loadWithNotes(long id) {
         String sql = "select name, text, pad from note where pad = '" + id + "'";
         return jdbcTemplate.query(sql, new PadWithNotesExtractor());
     }
@@ -69,8 +69,8 @@ public class JdbcTemplatePadDao implements PadDao {
                     pad.setName(rs.getString("name"));
                 }
                 Note note = new Note();
+                note.setPadId(rs.getLong("pad"));
                 note.setName(rs.getString("name"));
-                note.setPadId(rs.getString("pad"));
                 note.setText(rs.getString("text"));
                 pad.addNote(note);
             }
@@ -114,7 +114,7 @@ public class JdbcTemplatePadDao implements PadDao {
 
 
     @Override
-    public Pad findPadByOwnerAndName(Long person, String name) {
+    public Pad findPadByOwnerAndName(long person, String name) {
         List<Pad> pads = jdbcTemplate.query("SELECT * FROM pad WHERE person = ? AND name = ?",
                 new Object[]{person, name}, (resultSet, i) -> toPad(resultSet));
 
@@ -125,13 +125,13 @@ public class JdbcTemplatePadDao implements PadDao {
     }
 
     @Override
-    public Long getPadCount() {
+    public long getPadCount() {
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM pad",
                 Long.class);
     }
 
     @Override
-    public Long getPerson() {
-        return null;
+    public long getPerson() {
+        return 0;
     }
 }

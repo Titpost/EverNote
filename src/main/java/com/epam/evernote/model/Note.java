@@ -14,11 +14,16 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Note {
 
+    private long id;
+    private long padId;
     private String name;
-    private String padId;
     private String text;
-    private List<Tag> tags = new ArrayList<>();
+
     public void addTag(Tag tag) {
         tags.add(tag);
     }
+
+    @Builder.Default
+    private List<Tag> tags = new ArrayList<>();
+
 }

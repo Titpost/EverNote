@@ -15,10 +15,13 @@ import lombok.NoArgsConstructor;
 public class Pad {
 
     private long id;
-    private Long personId;
+    private long personId;
     private String name;
-    private List<Note> notes = new ArrayList<>();
+
     public void addNote(Note note) {
         notes.add(note);
     }
+
+    @Builder.Default
+    private List<Note> notes = new ArrayList<>();
 }

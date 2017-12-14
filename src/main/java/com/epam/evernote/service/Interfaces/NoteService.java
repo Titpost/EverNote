@@ -1,17 +1,20 @@
 package com.epam.evernote.service.Interfaces;
 
 import com.epam.evernote.model.Note;
+
 import java.util.List;
 
 public interface NoteService {
 
-    void saveNote(Note note);
+    long saveNote(Note note);
 
-    Long getNoteCount();
+    long getNoteCount();
 
     List<Note> getAllNotes();
 
-    Note getNoteById(String name);
+    Note getNoteById(long id);
 
-    void deleteNote(String name);
+    Note getNoteByOwnerAndName(Long person, String name);
+
+    void deleteNote(long id);
 }

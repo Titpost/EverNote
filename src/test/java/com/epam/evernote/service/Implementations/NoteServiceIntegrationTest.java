@@ -2,6 +2,7 @@ package com.epam.evernote.service.Implementations;
 
 import com.epam.evernote.config.NoteServiceIntegrationTestConfig;
 import com.epam.evernote.model.Note;
+import com.epam.evernote.model.Pad;
 import com.epam.evernote.service.Interfaces.NoteService;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +53,7 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
         final String noteName = "NoteName";
 
         // create new note
-        Note note = Note.builder().name(noteName).padId("Pad1").text("Some Text").build();
+        Note note = Note.builder().name(noteName).padId(2).text("Some Text").build();
         noteService.saveNote(note);
 
         // check row count
@@ -67,7 +68,7 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
 
         long initialCount = getCount();
 
-        Note note = Note.builder().name(hardName + "_nonUnique").padId("Pad1").build();
+        Note note = Note.builder().name(hardName + "_nonUnique").padId(2L).build();
         noteService.saveNote(note);
 
         // must be +1
@@ -80,23 +81,18 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
         assertEquals(initialCount + 1, getCount());
     }
 
+
     /**
-     * Find note by its ID (name)
+     * Find pad by its owner and Name
      */
     @Test
-    public void findById() {
+    public void findByOwnerAndName() {
 
-        // create note with hard name
-        Note note = Note.builder().name(hardName).padId("Pad1").build();
-        noteService.saveNote(note);
-
-        // find note by its name
-        note = noteService.getNoteById(hardName);
+        // find pad by its name
+        final String name = "Pad2";
+        Note note = noteService.getNoteByOwnerAndName(1L, name);
         assertNotNull(note);
-        assertEquals(hardName, note.getName());
-
-        // delete just created note
-        noteService.deleteNote(hardName);
+        assertEquals(name, note.getName());
     }
 
     /**
@@ -106,7 +102,7 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
     public void findNotExisting() {
 
         // find note by its name
-        Note note = noteService.getNoteById(hardName);
+        Note note = noteService.getNoteById(9999);
         assertNull(note);
     }
 
@@ -118,14 +114,14 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
 
         // create new notepad
         final String padName = "toDelete";
-        Note note = Note.builder().name(padName).padId("Pad1").build();
-        noteService.saveNote(note);
-        assertNotNull(noteService.getNoteById(padName));
+        Note note = Note.builder().name(padName).build();
+        final long id = noteService.saveNote(note);
+        assertNotNull(noteService.getNoteById(id));
         final int count = noteService.getAllNotes().size();
 
         // delete just created note
-        noteService.deleteNote(padName);
-        assertNull(noteService.getNoteById(padName));
+        noteService.deleteNote(id);
+        assertNull(noteService.getNoteById(id));
 
         // check if table's row count decremented
         assertEquals(count - 1, noteService.getAllNotes().size());
@@ -137,8 +133,8 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     public void deleteReferred() {
         // delete note with tags
-        noteService.deleteNote("Note1");
-        assertNull(noteService.getNoteById("Note1"));
+        noteService.deleteNote(1L);
+        assertNull(noteService.getNoteById(1L));
     }
 
     private long getCount() {

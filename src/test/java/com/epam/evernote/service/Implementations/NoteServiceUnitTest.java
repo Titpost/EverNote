@@ -34,8 +34,8 @@ public class NoteServiceUnitTest {
     @Test
     public void saveNote() throws Exception {
         Note note = Note.builder()
+                .padId(1)
                 .name("Name")
-                .padId("Pad")
                 .build();
         noteService.saveNote(note);
         verify(noteDao, times(1)).save(note);
@@ -56,12 +56,12 @@ public class NoteServiceUnitTest {
     @Test
     public void getAllNotes() throws Exception {
         Note note1 = Note.builder()
+                .padId(1)
                 .name("Name1")
-                .padId("Pad1")
                 .build();
         Note note2 = Note.builder()
+                .padId(1)
                 .name("Name2")
-                .padId("Pad1")
                 .build();
         List<Note> note = new ArrayList<>();
         note.add(note1);
@@ -78,12 +78,13 @@ public class NoteServiceUnitTest {
 
     @Test
     public void getNoteById() throws Exception {
-        String noteId = "Name";
+        long noteId = 1;
+        String noteName = "Name";
         Note note = Note.builder()
-                .name(noteId)
-                .padId("Pad")
+                .padId(1)
+                .name(noteName)
                 .build();
-        when(noteDao.load(noteId)).thenReturn(note);
+        when(noteDao.load(1L)).thenReturn(note);
         Note resultNote = noteService.getNoteById(noteId);
         assertThat(resultNote).isEqualTo(note);
 
@@ -93,7 +94,7 @@ public class NoteServiceUnitTest {
 
     @Test
     public void deleteNote() throws Exception {
-        String noteId = "Name";
+        long noteId = 1;
         noteService.deleteNote(noteId);
         verify(noteDao, times(1)).delete(noteId);
         verifyNoMoreInteractions(noteDao);

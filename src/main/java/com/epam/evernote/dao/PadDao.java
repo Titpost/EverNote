@@ -5,11 +5,11 @@ import com.epam.evernote.model.Pad;
 
 public interface PadDao extends Dao<Pad, Long> {
 
-    Pad findPadByOwnerAndName(Long person, String name);
+    Pad findPadByOwnerAndName(long person, String name);
 
-    Long getPadCount();
+    long getPadCount();
 
-    Pad loadWithNotes(Long id);
+    Pad loadWithNotes(long id);
 
-    Long getPerson();
+    long getPerson();
 }
