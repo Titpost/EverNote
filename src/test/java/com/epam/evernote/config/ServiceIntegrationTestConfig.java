@@ -7,9 +7,11 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
+/**
+ *  DataBase beans.
+ */
 public class ServiceIntegrationTestConfig {
 
-    // DataBase beans
     @Bean
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(embeddedDatabase());

@@ -1,9 +1,7 @@
 package com.epam.evernote.config;
 
 import com.epam.evernote.dao.JdbcTemplateNoteDao;
-import com.epam.evernote.service.Implementations.NoteServiceImpl;
 import com.epam.evernote.service.Interfaces.NoteService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,19 +9,13 @@ import org.springframework.context.annotation.Configuration;
  * Configuration for Note Service testing.
  */
 @Configuration
-@ComponentScan(basePackages = {"com.epam.evernote.service.Implementations"})
+@ComponentScan(basePackages = {
+        "com.epam.evernote.service.Implementations",
+        "com.epam.evernote.dao"
+})
 public class NoteServiceIntegrationTestConfig extends ServiceIntegrationTestConfig {
 
+    public NoteService noteService;
 
-    // Note beans
-    @Bean
-    public NoteService noteService() {
-        return new NoteServiceImpl();
-    }
-
-    @Bean
-    public JdbcTemplateNoteDao jdbcNoteDao() {
-        return new JdbcTemplateNoteDao();
-    }
-
+    public JdbcTemplateNoteDao jdbcNoteDao;
 }
