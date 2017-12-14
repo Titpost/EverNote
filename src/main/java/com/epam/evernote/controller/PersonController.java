@@ -19,24 +19,32 @@ public class PersonController {
     private PersonService personService;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public String list(Model model) {
+    public String getAllPerson(Model model) {
         model.addAttribute("all", personService.getAllPersons());
         return "all";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String person(Long id, Model model) {
+    public String getPerson(Long id, Model model) {
         model.addAttribute("id", personService.getPersonById(id));
         return "id";
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public String addStudent(@ModelAttribute("Person") Person person,
+    public String addPerson(@ModelAttribute("Person") Person person,
                              ModelMap model) {
-        model.addAttribute("name",person.getName());
-        model.addAttribute("age",person.getPassword());
+       personService.savePerson(person);
 
         return "result";
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String printWelcome(ModelMap model) {
+
+        model.addAttribute("message", "Spring 3 MVC - Hello World");
+        return "hello";
+
     }
 
 }
