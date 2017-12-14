@@ -83,32 +83,26 @@ public class PadServiceIntegrationTest extends ServiceIntegrationTest {
     }
 
     /**
-     * Find pad by its ID (name)
+     * Find pad by its owner and Name
      */
     @Test
-    public void findByName() {
-
-        // create pad with hard name
-        Pad pad = Pad.builder().name(hardName).personId(1L).build();
-        padService.savePad(pad);
+    public void findByOwnerAndName() {
 
         // find pad by its name
-        pad = padService.getPadById(hardName);
+        final String name = "Pad2";
+        Pad pad = padService.getPadByOwnerAndName(1L, name);
         assertNotNull(pad);
-        assertEquals(hardName, pad.getName());
-
-        // delete just created pad
-        padService.deletePad(hardName);
+        assertEquals(name, pad.getName());
     }
 
     /**
-     * Try to find not existing pad by wrong ID (name)
+     * Try to find not existing pad by wrong ID
      */
     @Test
     public void findNotExisting() {
 
-        // find pad by its name
-        Pad pad = padService.getPadById(hardName);
+        // find pad by its id
+        Pad pad = padService.getPadById(7777L);
         assertNull(pad);
     }
 
@@ -121,13 +115,13 @@ public class PadServiceIntegrationTest extends ServiceIntegrationTest {
         // create new pad
         final String padName = "toDelete";
         Pad pad = Pad.builder().name(padName).personId(1L).build();
-        padService.savePad(pad);
-        assertNotNull(padService.getPadById(padName));
+        Long newId = padService.savePad(pad);
+        assertNotNull(padService.getPadById(newId));
         final int count = padService.getAllPads().size();
 
         // delete just created pad
-        padService.deletePad(padName);
-        assertNull(padService.getPadById(padName));
+        padService.deletePad(newId);
+        assertNull(padService.getPadById(newId));
 
         // check if table's row count decremented
         assertEquals(count - 1, padService.getAllPads().size());
@@ -139,8 +133,8 @@ public class PadServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     public void deleteReferred() {
         // delete pad with notes
-        padService.deletePad("Pad1");
-        assertNull(padService.getPadById("Pad1"));
+        padService.deletePad(1L);
+        assertNull(padService.getPadById(1L));
     }
 
     private long getCount() {

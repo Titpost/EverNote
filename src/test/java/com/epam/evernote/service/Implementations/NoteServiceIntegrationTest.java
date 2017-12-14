@@ -84,7 +84,7 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
      * Find note by its ID (name)
      */
     @Test
-    public void findByName() {
+    public void findById() {
 
         // create note with hard name
         Note note = Note.builder().name(hardName).padId("Pad1").build();

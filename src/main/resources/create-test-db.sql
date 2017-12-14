@@ -7,8 +7,9 @@ CREATE TABLE IF NOT EXISTS person
 
 CREATE TABLE IF NOT EXISTS pad
 (
-    name VARCHAR(255)  PRIMARY KEY,
+    id BIGINT  PRIMARY KEY AUTO_INCREMENT,
     person BIGINT,
+    name VARCHAR(255),
     FOREIGN KEY (person) REFERENCES person(id)
 );
 

@@ -79,10 +79,12 @@ public class PadServiceUnitTest {
 
     @Test
     public void getPadById() throws Exception {
-        String padId = "Name";
+        Long padId = 1L;
+        String padName = "Name";
         Pad pad = Pad.builder()
-                .name(padId)
+                .id(padId)
                 .personId(1L)
+                .name(padName)
                 .build();
         when(padDao.load(padId)).thenReturn(pad);
         Pad resultPad = padService.getPadById(padId);
@@ -94,7 +96,7 @@ public class PadServiceUnitTest {
 
     @Test
     public void deletePad() throws Exception {
-        String padId = "Name";
+        Long padId = 1L;
         padService.deletePad(padId);
         verify(padDao, times(1)).delete(padId);
         verifyNoMoreInteractions(padDao);

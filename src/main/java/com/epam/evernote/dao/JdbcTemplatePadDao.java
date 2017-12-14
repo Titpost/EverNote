@@ -26,22 +26,25 @@ public class JdbcTemplatePadDao implements PadDao {
     @Override
     public long save(Pad pad) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("name", pad.getName());
         parameters.put("person", pad.getPersonId());
+        parameters.put("name", pad.getName());
 
+        // execute insert
         try {
-            new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("pad")
-                .execute(new MapSqlParameterSource(parameters));
+            return new SimpleJdbcInsert(jdbcTemplate)
+                    .withTableName("pad")
+                    .usingGeneratedKeyColumns("Primary_key")
+                    .executeAndReturnKey(new MapSqlParameterSource(
+                            parameters)).intValue();
         } catch (DuplicateKeyException e) {
-            return 0;
+            e.printStackTrace();
         }
-        return 1;
+        return -1;
     }
 
     @Override
-    public Pad load(String id) {
-        List<Pad> pads = jdbcTemplate.query("SELECT * FROM pad WHERE name = ?",
+    public Pad load(Long id) {
+        List<Pad> pads = jdbcTemplate.query("SELECT * FROM pad WHERE id = ?",
                 new Object[]{id}, (resultSet, i) -> toPad(resultSet));
 
         if (pads.size() == 1) {
@@ -51,7 +54,7 @@ public class JdbcTemplatePadDao implements PadDao {
     }
 
     @Override
-    public Pad loadWithNotes(String id) {
+    public Pad loadWithNotes(Long id) {
         String sql = "select name, text, pad from note where pad = '" + id + "'";
         return jdbcTemplate.query(sql, new PadWithNotesExtractor());
     }
@@ -76,7 +79,7 @@ public class JdbcTemplatePadDao implements PadDao {
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
 
         Pad pad = loadWithNotes(id);
         if (null != pad) {
@@ -88,7 +91,7 @@ public class JdbcTemplatePadDao implements PadDao {
             jdbcTemplate.update("DELETE FROM note WHERE pad = ?", id);
         }
         // delete the pad
-        jdbcTemplate.update("DELETE FROM pad WHERE name = ?", id);
+        jdbcTemplate.update("DELETE FROM pad WHERE id = ?", id);
     }
 
     @Override
@@ -103,11 +106,23 @@ public class JdbcTemplatePadDao implements PadDao {
 
     private Pad toPad(ResultSet resultSet) throws SQLException {
         Pad pad = new Pad();
+        pad.setId(resultSet.getLong("id"));
         pad.setName(resultSet.getString("name"));
         pad.setPersonId(resultSet.getLong("person"));
         return pad;
     }
 
+
+    @Override
+    public Pad findPadByOwnerAndName(Long person, String name) {
+        List<Pad> pads = jdbcTemplate.query("SELECT * FROM pad WHERE person = ? AND name = ?",
+                new Object[]{person, name}, (resultSet, i) -> toPad(resultSet));
+
+        if (pads.size() == 1) {
+            return pads.get(0);
+        }
+        return null;
+    }
 
     @Override
     public Long getPadCount() {

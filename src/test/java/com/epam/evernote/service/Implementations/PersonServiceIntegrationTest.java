@@ -43,19 +43,19 @@ public class PersonServiceIntegrationTest extends ServiceIntegrationTest {
     }
 
     /**
-     * Find notepad by its ID (name)
+     * Find person by its ID
      */
     @Test
-    public void findByName() {
+    public void findById() {
 
-        // find person by his name
+        // find person by his id
         Person person = personService.getPersonById(1);
         assertNotNull(person);
         assertEquals("Name1", person.getName());
     }
 
     /**
-     * Try to find not existing notepad by wrong ID (name)
+     * Try to find not existing person by wrong ID
      */
     @Test
     public void findNotExisting() {
@@ -66,7 +66,7 @@ public class PersonServiceIntegrationTest extends ServiceIntegrationTest {
     }
 
     /**
-     * Create new user
+     * Create new person
      * check if table's row count incremented
      * find user by its ID, check its name
      */

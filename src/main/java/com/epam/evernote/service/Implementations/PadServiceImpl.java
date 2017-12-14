@@ -16,8 +16,8 @@ public class PadServiceImpl implements PadService {
     private JdbcTemplatePadDao padDao;
 
     @Override
-    public void savePad(Pad pad) {
-        padDao.save(pad);
+    public long savePad(Pad pad) {
+        return padDao.save(pad);
     }
 
     @Override
@@ -31,12 +31,17 @@ public class PadServiceImpl implements PadService {
     }
 
     @Override
-    public Pad getPadById(String id) {
+    public Pad getPadById(Long id) {
         return padDao.load(id);
     }
 
     @Override
-    public void deletePad(String id) {
+    public Pad getPadByOwnerAndName(Long person, String name) {
+        return padDao.findPadByOwnerAndName(person, name);
+    }
+
+    @Override
+    public void deletePad(Long id) {
         padDao.delete(id);
     }
 }

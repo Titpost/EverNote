@@ -14,8 +14,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Pad {
 
-    private String name;
+    private long id;
     private Long personId;
+    private String name;
     private List<Note> notes = new ArrayList<>();
     public void addNote(Note note) {
         notes.add(note);

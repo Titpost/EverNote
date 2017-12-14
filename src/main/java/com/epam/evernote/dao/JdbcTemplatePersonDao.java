@@ -31,7 +31,7 @@ public class JdbcTemplatePersonDao implements PersonDao {
                 .withTableName("person")
                 .usingGeneratedKeyColumns("Primary_key")
                 .executeAndReturnKey(new MapSqlParameterSource(
-                parameters)).intValue();
+                        parameters)).intValue();
     }
 
     @Override
