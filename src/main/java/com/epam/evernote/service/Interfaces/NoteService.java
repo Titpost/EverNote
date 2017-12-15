@@ -14,7 +14,7 @@ public interface NoteService {
 
     Note getNoteById(long id);
 
-    Note getNoteByOwnerAndName(Long person, String name);
+    Note getNoteByNameAndOwner(String name, long person);
 
     void deleteNote(long id);
 }

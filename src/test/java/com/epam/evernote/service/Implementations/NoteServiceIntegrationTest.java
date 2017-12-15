@@ -78,7 +78,7 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
     public void findByOwnerAndName() {
 
         final String name = "Note1";
-        Note note = noteService.getNoteByOwnerAndName(1L, name);
+        Note note = noteService.getNoteByNameAndOwner(name, 1);
         assertNotNull(note);
         assertEquals(name, note.getName());
     }

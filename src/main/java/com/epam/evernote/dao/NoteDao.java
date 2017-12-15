@@ -5,7 +5,7 @@ import com.epam.evernote.model.Note;
 
 public interface NoteDao extends Dao<Note, Long> {
 
-    Note findNoteByOwnerAndName(long person, String name);
+    Note findNoteByNameAndOwner(String name, long person);
 
     long getNoteCount();
 
