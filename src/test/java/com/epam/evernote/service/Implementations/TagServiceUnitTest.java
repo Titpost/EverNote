@@ -35,7 +35,7 @@ public class TagServiceUnitTest {
     public void saveTag() throws Exception {
         Tag tag = Tag.builder()
                 .name("Name")
-                .note("Note")
+                .note(1)
                 .build();
         tagService.saveTag(tag);
         verify(tagDao, times(1)).save(tag);
@@ -57,11 +57,11 @@ public class TagServiceUnitTest {
     public void getAllTags() throws Exception {
         Tag tag1 = Tag.builder()
                 .name("Name1")
-                .note("Note1")
+                .note(1)
                 .build();
         Tag tag2 = Tag.builder()
                 .name("Name2")
-                .note("Note1")
+                .note(1)
                 .build();
         List<Tag> tag = new ArrayList<>();
         tag.add(tag1);
@@ -81,7 +81,7 @@ public class TagServiceUnitTest {
         String tagId = "Name";
         Tag tag = Tag.builder()
                 .name(tagId)
-                .note("Note")
+                .note(1)
                 .build();
         when(tagDao.load(tagId)).thenReturn(tag);
         Tag resultTag = tagService.getTagById(tagId);

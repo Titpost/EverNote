@@ -55,7 +55,7 @@ public class JdbcTemplatePadDao implements PadDao {
 
     @Override
     public Pad loadWithNotes(long id) {
-        String sql = "select name, text, pad from note where pad = '" + id + "'";
+        String sql = "select id, name, text, pad from note where pad = '" + id + "'";
         return jdbcTemplate.query(sql, new PadWithNotesExtractor());
     }
 
@@ -69,6 +69,7 @@ public class JdbcTemplatePadDao implements PadDao {
                     pad.setName(rs.getString("name"));
                 }
                 Note note = new Note();
+                note.setId(rs.getLong("id"));
                 note.setPadId(rs.getLong("pad"));
                 note.setName(rs.getString("name"));
                 note.setText(rs.getString("text"));
@@ -85,7 +86,7 @@ public class JdbcTemplatePadDao implements PadDao {
         if (null != pad) {
             // delete tags
             for (Note note : pad.getNotes()) {
-                jdbcTemplate.update("DELETE FROM tag WHERE note = ?", note.getName());
+                jdbcTemplate.update("DELETE FROM tag WHERE note = ?", note.getId());
             }
             // delete notes
             jdbcTemplate.update("DELETE FROM note WHERE pad = ?", id);

@@ -72,7 +72,7 @@ public class JdbcTemplateNoteDao implements NoteDao {
                 }
                 Tag tag = new Tag();
                 tag.setName(rs.getString("name"));
-                tag.setNote(rs.getString("note"));
+                tag.setNote(rs.getLong("note"));
                 note.addTag(tag);
             }
             return note;

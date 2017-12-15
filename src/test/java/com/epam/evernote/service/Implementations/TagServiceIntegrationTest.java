@@ -50,19 +50,21 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
         long prevCount = getCount();
 
         // create new tag with name1 for note1
-        Tag tag = Tag.builder().name(hardName).note("Note1").build();
+        final int id1 = 1;
+        Tag tag = Tag.builder().name(hardName).note(id1).build();
         tagService.saveTag(tag);
 
         // create new tag with name2 for note1
-        tag = Tag.builder().name(hardName + "_2").note("Note1").build();
+        tag = Tag.builder().name(hardName + "_2").note(id1).build();
         tagService.saveTag(tag);
 
         // create new tag with name1 for note2
-        tag = Tag.builder().name(hardName).note("Note2").build();
+        final int id2 = 2;
+        tag = Tag.builder().name(hardName).note(id2).build();
         tagService.saveTag(tag);
 
         // create new tag with name2 for note2
-        tag = Tag.builder().name(hardName +"_2").note("Note2").build();
+        tag = Tag.builder().name(hardName +"_2").note(id2).build();
         tagService.saveTag(tag);
 
         // check row count
@@ -78,7 +80,7 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
         long initialCount = getCount();
 
         // create new tag
-        Tag tag = Tag.builder().name(hardName + "_nonUnique").note("Note1").build();
+        Tag tag = Tag.builder().name(hardName + "_nonUnique").note(1).build();
         tagService.saveTag(tag);
 
         // must be +1
@@ -98,7 +100,7 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
     public void findByName() {
 
         // create note with hard name
-        Tag tag = Tag.builder().name(hardName).note("Note1").build();
+        Tag tag = Tag.builder().name(hardName).note(1).build();
         tagService.saveTag(tag);
 
         // find tag by its name
@@ -129,7 +131,7 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
 
         // create new tag
         final String tagName = "toDelete";
-        Tag tag = Tag.builder().name(tagName).note("Note1").build();
+        Tag tag = Tag.builder().name(tagName).note(1).build();
         tagService.saveTag(tag);
         assertNotNull(tagService.getTagById(tagName));
         final int count = tagService.getAllTags().size();

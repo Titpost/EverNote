@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Tag {
     String name;
-    String note;
+    long note;
 }

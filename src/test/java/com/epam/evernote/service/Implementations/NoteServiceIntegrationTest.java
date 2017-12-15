@@ -60,27 +60,6 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
         assertEquals(prevCount + 1, getCount());
     }
 
-    /**
-     * Create 2 non unique notes
-     */
-    @Test
-    public void createNotUniques() {
-
-        long initialCount = getCount();
-
-        Note note = Note.builder().name(hardName + "_nonUnique").padId(2L).build();
-        noteService.saveNote(note);
-
-        // must be +1
-        assertEquals(initialCount + 1, getCount());
-
-        // create new note with same name and pad
-        noteService.saveNote(note);
-
-        // must be + 1 (not + 2)
-        assertEquals(initialCount + 1, getCount());
-    }
-
 
     /**
      * Find note by its owner and Name

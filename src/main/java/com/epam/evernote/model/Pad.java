@@ -22,6 +22,6 @@ public class Pad {
         notes.add(note);
     }
 
-    @Builder.Default
+    //@Builder.Default
     private List<Note> notes = new ArrayList<>();
 }

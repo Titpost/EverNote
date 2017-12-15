@@ -64,7 +64,7 @@ public class JdbcTemplateTagDao implements TagDao {
     private Tag toTag(ResultSet resultSet) throws SQLException {
         Tag tag = new Tag();
         tag.setName(resultSet.getString("name"));
-        tag.setNote(resultSet.getString("note"));
+        tag.setNote(resultSet.getLong("note"));
         return tag;
     }
 
