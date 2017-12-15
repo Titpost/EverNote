@@ -20,7 +20,9 @@ public class Note {
     private String text;
 
     public void addTag(Tag tag) {
-        tags.add(tag);
+        if (null == tags) {
+            tags.add(tag);
+        }
     }
 
     @Builder.Default

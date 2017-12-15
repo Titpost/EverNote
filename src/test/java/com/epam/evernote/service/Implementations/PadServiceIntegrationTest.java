@@ -42,6 +42,18 @@ public class PadServiceIntegrationTest extends ServiceIntegrationTest {
     }
 
     /**
+     * Try to find an existing note by ID
+     */
+    @Test
+    public void findById() {
+
+        final long id = 1;
+        Pad pad  = padService.getPadById(id);
+        assertNotNull(pad);
+        assertEquals(id, pad.getId());
+    }
+
+    /**
      * Create new pad
      */
     @Test
