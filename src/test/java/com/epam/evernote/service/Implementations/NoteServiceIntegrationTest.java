@@ -2,6 +2,7 @@ package com.epam.evernote.service.Implementations;
 
 import com.epam.evernote.config.NoteServiceIntegrationTestConfig;
 import com.epam.evernote.model.Note;
+import com.epam.evernote.model.Tag;
 import com.epam.evernote.service.Interfaces.NoteService;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -113,6 +116,14 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
         // check if table's row count decremented
         assertEquals(count - 1, noteService.getAllNotes().size());
     }
+
+    @Test
+    public void loadWithTags() {
+        Note note = noteService.getNoteWithTags(1);
+        List<Tag> tags = note.getTags();
+        assertNotNull(tags);
+    }
+
 
     /**
      * Delete note with tags

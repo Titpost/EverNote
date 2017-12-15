@@ -36,6 +36,11 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    public Note getNoteWithTags(long id) {
+        return noteDao.loadWithTags(id);
+    }
+
+    @Override
     public Note getNoteByNameAndOwner(String name, long person) {
         return noteDao.findNoteByNameAndOwner(name, person);
     }

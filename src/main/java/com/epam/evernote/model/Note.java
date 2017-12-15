@@ -21,7 +21,7 @@ public class Note {
 
     public void addTag(Tag tag) {
         if (null == tags) {
-            tags.add(tag);
+            tags =  new ArrayList<>();
         }
     }
 
