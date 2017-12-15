@@ -23,6 +23,7 @@ public class Note {
         if (null == tags) {
             tags =  new ArrayList<>();
         }
+        tags.add(tag);
     }
 
     @Builder.Default

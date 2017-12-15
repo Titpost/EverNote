@@ -57,22 +57,26 @@ public class JdbcTemplateNoteDao implements NoteDao {
 
     @Override
     public Note loadWithTags(long id) {
-        String sql = "select name, note from tag where note = '" + id + "'";
-        return jdbcTemplate.query(sql, new JdbcTemplateNoteDao.NoteWithTagsExtractor());
+        String sql = "select name from tag where note = '" + id + "'";
+        return jdbcTemplate.query(sql, new JdbcTemplateNoteDao.NoteWithTagsExtractor(id));
     }
 
     private class NoteWithTagsExtractor implements ResultSetExtractor<Note> {
+        private long id;
+        private NoteWithTagsExtractor(long id) {
+            this.id = id;
+        }
         @Override
         public Note extractData(ResultSet rs) throws SQLException {
             Note note = null;
             while (rs.next()) {
                 if (note == null) {
                     note = new Note();
-                    note.setName(rs.getString("name"));
+                    note.setId(id);
                 }
                 Tag tag = new Tag();
                 tag.setName(rs.getString("name"));
-                tag.setNote(rs.getLong("note"));
+                tag.setNote(id);
                 note.addTag(tag);
             }
             return note;
