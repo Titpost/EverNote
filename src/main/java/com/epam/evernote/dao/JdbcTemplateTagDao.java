@@ -68,6 +68,20 @@ public class JdbcTemplateTagDao implements TagDao {
         return tag;
     }
 
+    @Override
+    public Tag findTagByOwnerAndName(String id, long person) {
+        List<Tag> tags = jdbcTemplate.query("SELECT * FROM tag " +
+                        "JOIN note ON note.id = tag.note " +
+                        "JOIN pad ON pad.id = note.pad AND pad.person = ? " +
+                        "WHERE tag.name = ?",
+                new Object[]{person, id}, (resultSet, i) -> toTag(resultSet));
+
+        if (tags.size() == 1) {
+            return tags.get(0);
+        }
+        return null;
+    }
+
 
     @Override
     public Long getTagCount() {

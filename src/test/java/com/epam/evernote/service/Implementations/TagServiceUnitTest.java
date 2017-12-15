@@ -84,7 +84,7 @@ public class TagServiceUnitTest {
                 .note(1)
                 .build();
         when(tagDao.load(tagId)).thenReturn(tag);
-        Tag resultTag = tagService.getTagById(tagId);
+        Tag resultTag = tagService.getTagByOwnerAndName(1L, tagId);
         assertThat(resultTag).isEqualTo(tag);
 
         verify(tagDao, times(1)).load(tagId);

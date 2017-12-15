@@ -97,19 +97,12 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
      * Find note by its ID (name)
      */
     @Test
-    public void findByName() {
+    public void findByOwnerAndName() {
 
-        // create note with hard name
-        Tag tag = Tag.builder().name(hardName).note(1).build();
-        tagService.saveTag(tag);
-
-        // find tag by its name
-        tag = tagService.getTagById(hardName);
+        final String name = "Tag1";
+        Tag tag = tagService.getTagByOwnerAndName(3L, name);
         assertNotNull(tag);
-        assertEquals(hardName, tag.getName());
-
-        // delete just created tag
-        tagService.deleteTag(hardName);
+        assertEquals(name, tag.getName());
     }
 
     /**
@@ -119,7 +112,7 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
     public void findNotExisting() {
 
         // find tag by its name
-        Tag tag = tagService.getTagById(hardName);
+        Tag tag = tagService.getTagByOwnerAndName(1L, hardName);
         assertNull(tag);
     }
 
@@ -133,12 +126,12 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
         final String tagName = "toDelete";
         Tag tag = Tag.builder().name(tagName).note(1).build();
         tagService.saveTag(tag);
-        assertNotNull(tagService.getTagById(tagName));
+        assertNotNull(tagService.getTagByOwnerAndName(1L, tagName));
         final int count = tagService.getAllTags().size();
 
         // delete just created tag
         tagService.deleteTag(tagName);
-        assertNull(tagService.getTagById(tagName));
+        assertNull(tagService.getTagByOwnerAndName(1L, tagName));
 
         // check if table's row count decremented
         assertEquals(count - 1, tagService.getAllTags().size());

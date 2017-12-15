@@ -12,7 +12,7 @@ public interface TagService {
 
     List<Tag> getAllTags();
 
-    Tag getTagById(String name);
+    Tag getTagByOwnerAndName(Long person, String name);
 
     void deleteTag(String name);
 }
