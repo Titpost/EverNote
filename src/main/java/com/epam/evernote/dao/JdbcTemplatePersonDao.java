@@ -80,7 +80,7 @@ public class JdbcTemplatePersonDao implements PersonDao {
     }
 
     @Override
-    public Long getPersonCount() {
+    public long getPersonCount() {
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM person",
                 Long.class);
     }

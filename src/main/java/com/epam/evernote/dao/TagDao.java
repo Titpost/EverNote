@@ -6,7 +6,7 @@ public interface TagDao extends Dao<Tag, String> {
 
     String getNote();
 
-    Long getTagCount();
+    long getTagCount();
 
     Tag findTagByOwnerAndName(String id, long person);
 }

@@ -102,7 +102,7 @@ public class PadServiceIntegrationTest extends ServiceIntegrationTest {
 
         // find pad by its name
         final String name = "Pad2";
-        Pad pad = padService.getPadByOwnerAndName(1L, name);
+        Pad pad = padService.getPadByNameAndOwner(name, 1);
         assertNotNull(pad);
         assertEquals(name, pad.getName());
     }

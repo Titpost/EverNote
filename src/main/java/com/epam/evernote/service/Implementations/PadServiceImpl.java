@@ -36,8 +36,8 @@ public class PadServiceImpl implements PadService {
     }
 
     @Override
-    public Pad getPadByOwnerAndName(Long person, String name) {
-        return padDao.findPadByOwnerAndName(person, name);
+    public Pad getPadByNameAndOwner(String name, long person) {
+        return padDao.findPadByNameAndOwner(name, person);
     }
 
     @Override

@@ -84,7 +84,7 @@ public class JdbcTemplateTagDao implements TagDao {
 
 
     @Override
-    public Long getTagCount() {
+    public long getTagCount() {
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM tag",
                 Long.class);
     }

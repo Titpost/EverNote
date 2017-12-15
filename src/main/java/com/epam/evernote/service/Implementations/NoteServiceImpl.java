@@ -3,7 +3,6 @@ package com.epam.evernote.service.Implementations;
 
 import com.epam.evernote.dao.JdbcTemplateNoteDao;
 import com.epam.evernote.model.Note;
-import com.epam.evernote.model.Pad;
 import com.epam.evernote.service.Interfaces.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,8 +36,8 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Note getNoteByOwnerAndName(Long person, String name) {
-        return noteDao.findNoteByOwnerAndName(person, name);
+    public Note getNoteByNameAndOwner(String name, long person) {
+        return noteDao.findNoteByNameAndOwner(name, person);
     }
 
     @Override

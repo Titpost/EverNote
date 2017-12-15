@@ -115,7 +115,7 @@ public class JdbcTemplatePadDao implements PadDao {
 
 
     @Override
-    public Pad findPadByOwnerAndName(long person, String name) {
+    public Pad findPadByNameAndOwner(String name, long person) {
         List<Pad> pads = jdbcTemplate.query("SELECT * FROM pad WHERE person = ? AND name = ?",
                 new Object[]{person, name}, (resultSet, i) -> toPad(resultSet));
 

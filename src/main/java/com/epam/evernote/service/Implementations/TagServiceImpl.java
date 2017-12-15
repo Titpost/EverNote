@@ -31,7 +31,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag getTagByOwnerAndName(Long person, String id) {
+    public Tag getTagByOwnerAndName(long person, String id) {
         return tagDao.load(id);
     }
 

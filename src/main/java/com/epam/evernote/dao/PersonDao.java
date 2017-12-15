@@ -8,7 +8,7 @@ public interface PersonDao extends Dao<Person, Long> {
 
     List<Person> findPersonsByName(String name);
 
-    Long getPersonCount();
+    long getPersonCount();
 
     void updateName(long id, String newName);
 }
