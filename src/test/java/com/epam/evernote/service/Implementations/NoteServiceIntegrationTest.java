@@ -83,25 +83,23 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
 
 
     /**
-     * Find pad by its owner and Name
+     * Find note by its owner and Name
      */
     @Test
     public void findByOwnerAndName() {
 
-        // find pad by its name
-        final String name = "Pad2";
+        final String name = "Note1";
         Note note = noteService.getNoteByOwnerAndName(1L, name);
         assertNotNull(note);
         assertEquals(name, note.getName());
     }
 
     /**
-     * Try to find not existing note by wrong ID (name)
+     * Try to find not existing note by wrong ID
      */
     @Test
     public void findNotExisting() {
 
-        // find note by its name
         Note note = noteService.getNoteById(9999);
         assertNull(note);
     }
@@ -112,9 +110,9 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     public void deleteByIdAndCheckCount() {
 
-        // create new notepad
-        final String padName = "toDelete";
-        Note note = Note.builder().name(padName).build();
+        // create new note
+        final String noteName = "toDelete";
+        Note note = Note.builder().name(noteName).padId(1).build();
         final long id = noteService.saveNote(note);
         assertNotNull(noteService.getNoteById(id));
         final int count = noteService.getAllNotes().size();
