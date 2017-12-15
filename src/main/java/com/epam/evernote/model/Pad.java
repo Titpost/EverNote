@@ -19,9 +19,12 @@ public class Pad {
     private String name;
 
     public void addNote(Note note) {
+        if (null == notes) {
+            notes = new ArrayList<>();
+        }
         notes.add(note);
     }
 
-    //@Builder.Default
-    private List<Note> notes = new ArrayList<>();
+    @Builder.Default
+    private List<Note> notes;
 }
