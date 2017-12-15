@@ -13,6 +13,8 @@ public interface PadService {
 
     Pad getPadById(Long person);
 
+    Pad getPadWithNotes(long id);
+
     Pad getPadByNameAndOwner(String name, long person);
 
     void deletePad(Long name);

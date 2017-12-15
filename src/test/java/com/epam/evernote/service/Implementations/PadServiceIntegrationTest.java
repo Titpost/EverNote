@@ -1,5 +1,6 @@
 package com.epam.evernote.service.Implementations;
 
+import com.epam.evernote.model.Note;
 import com.epam.evernote.model.Pad;
 import com.epam.evernote.config.PadServiceIntegrationTestConfig;
 import com.epam.evernote.service.Interfaces.PadService;
@@ -10,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertEquals;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Integral test for Pad Service.
@@ -71,7 +72,6 @@ public class PadServiceIntegrationTest extends ServiceIntegrationTest {
         assertEquals(prevCount + 1, getCount());
     }
 
-
     /**
      * Create 2 non unique pads
      */
@@ -105,6 +105,17 @@ public class PadServiceIntegrationTest extends ServiceIntegrationTest {
         Pad pad = padService.getPadByNameAndOwner(name, 1);
         assertNotNull(pad);
         assertEquals(name, pad.getName());
+    }
+
+    /**
+     * Find pad with its notes
+     */
+    @Test
+    public void loadWithNotes() {
+        Pad pad = padService.getPadWithNotes(1);
+        List<Note> notes = pad.getNotes();
+        assertNotNull(notes);
+        assertTrue(notes.size() > 0);
     }
 
     /**
@@ -145,8 +156,9 @@ public class PadServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     public void deleteReferred() {
         // delete pad with notes
-        padService.deletePad(1L);
-        assertNull(padService.getPadById(1L));
+        final long id = 2;
+        padService.deletePad(id);
+        assertNull(padService.getPadById(id));
     }
 
     private long getCount() {

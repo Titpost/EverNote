@@ -55,22 +55,26 @@ public class JdbcTemplatePadDao implements PadDao {
 
     @Override
     public Pad loadWithNotes(long id) {
-        String sql = "select id, name, text, pad from note where pad = '" + id + "'";
-        return jdbcTemplate.query(sql, new PadWithNotesExtractor());
+        String sql = "select id, name, text from note where pad = '" + id + "'";
+        return jdbcTemplate.query(sql, new PadWithNotesExtractor(id));
     }
 
     private class PadWithNotesExtractor implements ResultSetExtractor<Pad> {
+        private long id;
+        private PadWithNotesExtractor(long id) {
+            this.id = id;
+        }
         @Override
         public Pad extractData(ResultSet rs) throws SQLException {
             Pad pad = null;
             while (rs.next()) {
                 if (pad == null) {
                     pad = new Pad();
-                    pad.setName(rs.getString("name"));
+                    pad.setId(id);
                 }
                 Note note = new Note();
                 note.setId(rs.getLong("id"));
-                note.setPadId(rs.getLong("pad"));
+                note.setPadId(id);
                 note.setName(rs.getString("name"));
                 note.setText(rs.getString("text"));
                 pad.addNote(note);

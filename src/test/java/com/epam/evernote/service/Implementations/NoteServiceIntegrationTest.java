@@ -85,6 +85,17 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
     }
 
     /**
+     * Find note with its tags
+     */
+    @Test
+    public void loadWithTags() {
+        Note note = noteService.getNoteWithTags(1);
+        List<Tag> tags = note.getTags();
+        assertNotNull(tags);
+        assertTrue(tags.size() > 0);
+    }
+
+    /**
      * Try to find not existing note by wrong ID
      */
     @Test
@@ -115,23 +126,15 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
         assertEquals(count - 1, noteService.getAllNotes().size());
     }
 
-    @Test
-    public void loadWithTags() {
-        Note note = noteService.getNoteWithTags(1);
-        List<Tag> tags = note.getTags();
-        assertNotNull(tags);
-        assertTrue(tags.size() > 0);
-    }
-
-
     /**
      * Delete note with tags
      */
     @Test
     public void deleteReferred() {
         // delete note with tags
-        noteService.deleteNote(1L);
-        assertNull(noteService.getNoteById(1L));
+        final long id = 1;
+        noteService.deleteNote(id);
+        assertNull(noteService.getNoteById(id));
     }
 
     private long getCount() {
