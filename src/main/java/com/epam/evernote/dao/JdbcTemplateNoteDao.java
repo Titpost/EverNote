@@ -108,8 +108,7 @@ public class JdbcTemplateNoteDao implements NoteDao {
 
     @Override
     public Note findNoteByOwnerAndName(long person, String name) {
-        List<Note> notes = jdbcTemplate.query(//"SELECT * FROM note WHERE person = ? AND name = ?",
-                "SELECT * FROM note " +
+        List<Note> notes = jdbcTemplate.query("SELECT * FROM note " +
                 "JOIN pad ON pad.id = note.pad AND pad.person = ? WHERE note.name = ?",
                 new Object[]{person, name}, (resultSet, i) -> toNote(resultSet));
 

@@ -2,7 +2,6 @@ package com.epam.evernote.service.Implementations;
 
 import com.epam.evernote.config.NoteServiceIntegrationTestConfig;
 import com.epam.evernote.model.Note;
-import com.epam.evernote.model.Pad;
 import com.epam.evernote.service.Interfaces.NoteService;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,6 +42,18 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
     }
 
     /**
+     * Try to find an existing note by ID
+     */
+    @Test
+    public void findById() {
+
+        final long id = 1;
+        Note note = noteService.getNoteById(id);
+        assertNotNull(note);
+        assertEquals(id, note.getId());
+    }
+
+    /**
      * Create new note
      */
     @Test
@@ -59,7 +70,6 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
         // check row count
         assertEquals(prevCount + 1, getCount());
     }
-
 
     /**
      * Find note by its owner and Name

@@ -38,7 +38,7 @@ public class JdbcTemplateTagDao implements TagDao {
 
     @Override
     public Tag load(String id) {
-        List<Tag> tags = jdbcTemplate.query("SELECT * FROM tag WHERE name =?",
+        List<Tag> tags = jdbcTemplate.query("SELECT * FROM tag WHERE name = ?",
                 new Object[]{id}, (resultSet, i) -> toTag(resultSet));
 
         if (tags.size() == 1) {

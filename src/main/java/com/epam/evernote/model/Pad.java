@@ -26,5 +26,5 @@ public class Pad {
     }
 
     @Builder.Default
-    private List<Note> notes;
+    private List<Note> notes = new ArrayList<>();
 }
