@@ -1,5 +1,6 @@
 package com.epam.evernote.controller;
 
+import com.epam.evernote.controller.Exception.NotFoundException;
 import com.epam.evernote.model.Person;
 import com.epam.evernote.service.Interfaces.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,33 +16,48 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/person")
 public class PersonController {
 
-    @Autowired
-    private PersonService personService;
+  @Autowired
+  private PersonService personService;
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public String getAllPerson(Model model) {
-        model.addAttribute("all", personService.getAllPersons());
-        return "all";
+  @RequestMapping(value = "/all", method = RequestMethod.GET)
+  public String getAllPerson(Model model) {
+    model.addAttribute("all", personService.getAllPersons());
+    return "all";
+  }
+
+  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  public String getPerson(Long id, Model model) throws NotFoundException {
+    Person person = personService.getPersonById(id);
+    if (person == null) {
+      throw new NotFoundException(Person.class, id);
     }
+    model.addAttribute("person", person);
+    return "person";
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String getPerson(Long id, Model model) {
-        model.addAttribute("id", personService.getPersonById(id));
-        return "id";
+  @RequestMapping(method = RequestMethod.POST)
+  public void addPerson(@ModelAttribute("Person") Person person,
+      ModelMap model) {
+    personService.savePerson(person);
+  }
+
+  @RequestMapping(method = RequestMethod.PUT)
+  public void updateName(Long id, String name) throws NotFoundException {
+    Person person = personService.getPersonById(id);
+    if (person == null) {
+      throw new NotFoundException(Person.class, id);
     }
+    personService.updateName(id, name);
+  }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public String addPerson(@ModelAttribute("Person") Person person,
-                            ModelMap model) {
-        personService.savePerson(person);
-        return "result";
+  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+  public void deletePerson(Long id) throws NotFoundException {
+    Person person = personService.getPersonById(id);
+    if (person == null) {
+      throw new NotFoundException(Person.class, id);
     }
+    personService.deletePerson(id);
+  }
 
-
-    @RequestMapping(method = RequestMethod.GET)
-    public String printWelcome(ModelMap model) {
-        model.addAttribute("message", "Spring 3 MVC - Hello World");
-        return "hello";
-    }
 
 }
