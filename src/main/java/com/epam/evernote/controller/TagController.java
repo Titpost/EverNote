@@ -35,13 +35,13 @@ public class TagController {
   }
 
   @RequestMapping(value = "/{id}/tag/{tagName}", method = RequestMethod.POST)
-  public void addPad(@ModelAttribute("Tag") Tag tag,
+  public void addTag(@ModelAttribute("Tag") Tag tag,
       ModelMap model) {
     tagService.saveTag(tag);
   }
 
   @RequestMapping(value = "/{id}/tag/{tagName}", method = RequestMethod.DELETE)
-  public void deletePad(Long id, String name) throws NotFoundException {
+  public void deleteTag(Long id, String name) throws NotFoundException {
     Tag tag = tagService.getTagByOwnerAndName(id, name);
     if (tag == null) {
       throw new NotFoundException(Tag.class, id);

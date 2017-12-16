@@ -35,7 +35,7 @@ public class NoteController {
   }
 
   @RequestMapping(value = "/{id}/pad/{padName}/note/{noteId}", method = RequestMethod.POST)
-  public void addPad(@ModelAttribute("Note") Note note,
+  public void addNote(@ModelAttribute("Note") Note note,
       ModelMap model) {
     noteService.saveNote(note);
   }
