@@ -22,7 +22,7 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
-    // =========================================== Get All Users ==========================================
+    // =========================================== Get All Persons ==========================================
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Person>> getAll() {
