@@ -11,9 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Integral test for Person Service.
@@ -39,7 +37,9 @@ public class PersonServiceIntegrationTest extends ServiceIntegrationTest {
      */
     @Test
     public void getAll() {
-        assertEquals(getCount(), personService.getAllPersons().size());
+        long count = getCount();
+        assertTrue(count >= 2);
+        assertEquals(count, personService.getAllPersons().size());
     }
 
     /**

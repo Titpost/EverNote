@@ -45,12 +45,12 @@ public class PersonControllerUnitTest {
 
     @Test
     public void test_get_all_success() throws Exception {
-        Person person1 = Person.builder().id(1L)
+        Person person1 = Person.builder().id(1)
                 .name("Daenerys Targaryen")
                 .password("hashpassword")
                 .active(true)
                 .build();
-        Person person2 = Person.builder().id(1L)
+        Person person2 = Person.builder().id(2)
                 .name("John Snow")
                 .password("hashpassword")
                 .active(true)
@@ -67,7 +67,7 @@ public class PersonControllerUnitTest {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].name", is("Daenerys Targaryen")))
-//                .andExpect(jsonPath("$[1].id", is(2)))
+                .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].name", is("John Snow")))
         ;
 
