@@ -38,7 +38,7 @@ public class PersonServiceUnitTest {
 
     @Test
     public void savePerson() throws Exception {
-        Person person = Person.builder().id(1L)
+        Person person = Person.builder().id(1)
                 .name("Name")
                 .password("hashpassword")
                 .active(true)
@@ -61,12 +61,12 @@ public class PersonServiceUnitTest {
 
     @Test
     public void getAllPersons() throws Exception {
-        Person person1 = Person.builder().id(1L)
+        Person person1 = Person.builder().id(1)
                 .name("Name1")
                 .password("hashpassword")
                 .active(true)
                 .build();
-        Person person2 = Person.builder().id(1L)
+        Person person2 = Person.builder().id(1)
                 .name("Name2")
                 .password("hashpassword")
                 .active(true)
@@ -87,12 +87,12 @@ public class PersonServiceUnitTest {
 
     @Test
     public void getPersonsByName_PersonIsFind() throws Exception {
-        Person person1 = Person.builder().id(1L)
+        Person person1 = Person.builder().id(1)
                 .name("Name1")
                 .password("hashpassword")
                 .active(true)
                 .build();
-        Person person2 = Person.builder().id(1L)
+        Person person2 = Person.builder().id(1)
                 .name("Name1")
                 .password("hashpassword")
                 .active(true)
@@ -129,7 +129,7 @@ public class PersonServiceUnitTest {
 
     @Test
     public void getPersonById() throws Exception {
-        Person person = Person.builder().id(1L)
+        Person person = Person.builder().id(1)
                 .name("Name")
                 .password("hashpassword")
                 .active(true)

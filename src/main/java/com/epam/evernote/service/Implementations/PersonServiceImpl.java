@@ -41,6 +41,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public boolean exists(Person person) {
+        return dao.exists(person);
+    }
+
+    @Override
     public void updateName(long id, String name) {
         dao.updateName(id, name);
     }

@@ -15,6 +15,8 @@ public interface PersonService {
 
   Person getPersonById(long id);
 
+  boolean exists(Person person);
+
   void updateName(long id, String name);
 
   void deletePerson(long id);

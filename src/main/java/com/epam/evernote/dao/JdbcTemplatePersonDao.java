@@ -45,6 +45,15 @@ public class JdbcTemplatePersonDao implements PersonDao {
         return null;
     }
 
+    public boolean exists(Person person) {
+        List<Person> persons = jdbcTemplate.query("SELECT * FROM person WHERE " +
+                        "id = ?, name = ?",
+                new Object[]{person.getId(), person.getName()}, (resultSet, i) -> toPerson(resultSet));
+
+        return (persons.size() > 0);
+    }
+
+
     @Override
     public void delete(Long id) {
         jdbcTemplate.update("DELETE from PERSON where id = ?", id);
