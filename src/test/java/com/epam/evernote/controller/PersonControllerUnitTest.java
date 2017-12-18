@@ -1,5 +1,6 @@
 package com.epam.evernote.controller;
 
+import com.epam.evernote.filter.CORSFilter;
 import com.epam.evernote.model.Person;
 import com.epam.evernote.service.Interfaces.PersonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +37,7 @@ public class PersonControllerUnitTest {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(personController)
+                .addFilters(new CORSFilter())
                 .build();
     }
 
@@ -237,7 +239,7 @@ public class PersonControllerUnitTest {
 
     // =========================================== CORS Headers ===========================================
 
-//    @Test
+    @Test
     public void test_cors_headers() throws Exception {
         mockMvc.perform(get("/person"))
                 .andExpect(header().string("Access-Control-Allow-Origin", "*"))
