@@ -10,97 +10,98 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/person")
 public class PersonController {
 
-  private final Logger LOG = LoggerFactory.getLogger(PersonController.class);
+    private final Logger LOG = LoggerFactory.getLogger(PersonController.class);
 
-  @Autowired
-  private PersonService personService;
+    @Autowired
+    private PersonService personService;
 
-  // =========================================== Get All Users ==========================================
+    // =========================================== Get All Users ==========================================
 
-  @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity<List<Person>> getAll() {
-    LOG.info("getting all persons");
-    List<Person> persons = personService.getAllPersons();
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<Person>> getAll() {
+        LOG.info("getting all persons");
+        List<Person> persons = personService.getAllPersons();
 
-    if (persons == null || persons.isEmpty()){
-      LOG.info("no persons found");
-      return new ResponseEntity<List<Person>>(HttpStatus.NO_CONTENT);
+        if (persons == null || persons.isEmpty()) {
+            LOG.info("no persons found");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(persons, HttpStatus.OK);
     }
 
-    return new ResponseEntity<List<Person>>(persons, HttpStatus.OK);
-  }
+    // =========================================== Get Person By ID =========================================
 
-  // =========================================== Get Person By ID =========================================
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    public ResponseEntity<Person> get(@PathVariable("id") int id) {
+        LOG.info("getting person with id: {}", id);
+        Person person = personService.getPersonById(id);
 
-  @RequestMapping(value = "{id}", method = RequestMethod.GET)
-  public ResponseEntity<Person> get(@PathVariable("id") int id){
-    LOG.info("getting person with id: {}", id);
-    Person person = personService.getPersonById(id);
+        if (person == null) {
+            LOG.info("person with id {} not found", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-    if (person == null){
-      LOG.info("person with id {} not found", id);
-      return new ResponseEntity<Person>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(person, HttpStatus.OK);
     }
 
-    return new ResponseEntity<Person>(person, HttpStatus.OK);
-  }
+    // =========================================== Create New Person ========================================
 
-  // =========================================== Create New Person ========================================
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> create(@RequestBody Person person, UriComponentsBuilder ucBuilder) {
+        LOG.info("creating new person: {}", person);
 
-  @RequestMapping(method = RequestMethod.POST)
-  public ResponseEntity<Void> create(@RequestBody Person person, UriComponentsBuilder ucBuilder){
-    LOG.info("creating new person: {}", person);
+        if (personService.exists(person)) {
+            LOG.info("a person with name " + person.getName() + " already exists");
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
 
-    if (personService.exists(person)){
-      LOG.info("a person with name " + person.getName() + " already exists");
-      return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+        personService.savePerson(person);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/person/{id}").buildAndExpand(person.getId()).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    personService.savePerson(person);
+    // =========================================== Update Existing Person ===================================
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(ucBuilder.path("/person/{id}").buildAndExpand(person.getId()).toUri());
-    return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-  }
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Person> update(@PathVariable int id, @RequestBody Person person) {
+        LOG.info("updating person: {}", person);
+        Person currentUser = personService.getPersonById(id);
 
-  // =========================================== Update Existing Person ===================================
+        if (currentUser == null) {
+            LOG.info("Person with id {} not found", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-  @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-  public ResponseEntity<Person> update(@PathVariable int id, @RequestBody Person person){
-    LOG.info("updating person: {}", person);
-    Person currentUser = personService.getPersonById(id);
+        currentUser.setId(person.getId());
+        currentUser.setName(person.getName());
 
-    if (currentUser == null){
-      LOG.info("Person with id {} not found", id);
-      return new ResponseEntity<Person>(HttpStatus.NOT_FOUND);
+        personService.updateName(1, person.getName());
+        return new ResponseEntity<>(currentUser, HttpStatus.OK);
     }
 
-    currentUser.setId(person.getId());
-    currentUser.setName(person.getName());
+    // =========================================== Delete Person ============================================
 
-    personService.updateName(1, person.getName());
-    return new ResponseEntity<>(currentUser, HttpStatus.OK);
-  }
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
+        LOG.info("deleting person with id: {}", id);
+        Person person = personService.getPersonById(id);
 
-  // =========================================== Delete Person ============================================
+        if (person == null) {
+            LOG.info("Unable to delete. Person with id {} not found", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-  @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-  public ResponseEntity<Void> delete(@PathVariable("id") int id){
-    LOG.info("deleting person with id: {}", id);
-    Person person = personService.getPersonById(id);
-
-    if (person == null){
-      LOG.info("Unable to delete. Person with id {} not found", id);
-      return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        personService.deletePerson(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    personService.deletePerson(id);
-    return new ResponseEntity<Void>(HttpStatus.OK);
-  }
 }
