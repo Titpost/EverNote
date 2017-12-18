@@ -62,11 +62,11 @@ public class PersonControllerUnitTest {
         mockMvc.perform(get("/person"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-//                .andExpect(jsonPath("$", hasSize(2)))
-//                .andExpect(jsonPath("$[0].id", is(1)))
-//                .andExpect(jsonPath("$[0].name", is("Daenerys Targaryen")))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].name", is("Daenerys Targaryen")))
 //                .andExpect(jsonPath("$[1].id", is(2)))
-//                .andExpect(jsonPath("$[1].name", is("John Snow")))
+                .andExpect(jsonPath("$[1].name", is("John Snow")))
         ;
 
         verify(personService, times(1)).getAllPersons();
@@ -88,8 +88,8 @@ public class PersonControllerUnitTest {
         mockMvc.perform(get("/person/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-//                .andExpect(jsonPath("$.id", is(1)))
-//                .andExpect(jsonPath("$.name", is("Daenerys Targaryen")))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("Daenerys Targaryen")))
         ;
 
         verify(personService, times(1)).getPersonById(1);
