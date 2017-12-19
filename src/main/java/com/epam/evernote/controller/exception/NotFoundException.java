@@ -1,4 +1,4 @@
-package com.epam.evernote.controller.Exception;
+package com.epam.evernote.controller.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,7 +1,7 @@
 package com.epam.evernote.controller;
 
 
-import com.epam.evernote.controller.Exception.NotFoundException;
+import com.epam.evernote.controller.exception.NotFoundException;
 import com.epam.evernote.model.Pad;
 import com.epam.evernote.service.Interfaces.PadService;
 import org.springframework.beans.factory.annotation.Autowired;

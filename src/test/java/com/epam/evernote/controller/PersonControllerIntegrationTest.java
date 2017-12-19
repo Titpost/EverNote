@@ -26,7 +26,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
 @WebAppConfiguration
-//@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebConfig.class})
 public class PersonControllerIntegrationTest {
 
@@ -38,7 +38,7 @@ public class PersonControllerIntegrationTest {
 
     // =========================================== Get All Persons ==========================================
 
-    //@Test
+    @Test
     public void test_get_all_success(){
         ResponseEntity<Person[]> response = template.getForEntity(BASE_URI, Person[].class);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
