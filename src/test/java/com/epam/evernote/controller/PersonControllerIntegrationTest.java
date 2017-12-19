@@ -1,7 +1,7 @@
 package com.epam.evernote.controller;
 
 
-import com.epam.evernote.config.WebConfig;
+import com.epam.evernote.config.ApiControllerIntegrationTest;
 import com.epam.evernote.model.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertThat;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebConfig.class})
+@ContextConfiguration(classes = {ApiControllerIntegrationTest.class})
 public class PersonControllerIntegrationTest {
 
     private static final String BASE_URI = "http://localhost:8080/person";
@@ -36,7 +36,7 @@ public class PersonControllerIntegrationTest {
     @Autowired
     private RestTemplate template;
 
-    // =========================================== Get All Persons ==========================================
+    // =========================================== Get All the Persons ==========================================
 
     @Test
     public void test_get_all_success(){
@@ -47,16 +47,16 @@ public class PersonControllerIntegrationTest {
 
     // =========================================== Get Person By ID =========================================
 
-    //@Test
+    @Test
     public void test_get_by_id_success(){
         ResponseEntity<Person> response = template.getForEntity(BASE_URI + "/1", Person.class);
         Person person = response.getBody();
-        assertThat(person.getId(), is(1));
+        assertThat(person.getId(), is(1L));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         validateCORSHttpHeaders(response.getHeaders());
     }
 
-    //@Test
+    @Test
     public void test_get_by_id_failure_not_found(){
         try {
             ResponseEntity<Person> response = template.getForEntity(BASE_URI + "/" + UNKNOWN_ID, Person.class);
@@ -69,7 +69,7 @@ public class PersonControllerIntegrationTest {
 
     // =========================================== Create New Person ========================================
 
-    //@Test
+    @Test
     public void test_create_new_user_success(){
         Person newPerson = Person.builder().id(777)
                 .name("new username" + Math.random())
@@ -80,7 +80,7 @@ public class PersonControllerIntegrationTest {
         assertThat(location, notNullValue());
     }
 
-    //@Test
+    @Test
     public void test_create_new_user_fail_exists(){
         Person existingPerson = Person.builder().id(1)
                 .name("new username" + Math.random())
@@ -98,7 +98,7 @@ public class PersonControllerIntegrationTest {
 
     // =========================================== Update Existing Person ===================================
 
-    //@Test
+    @Test
     public void test_update_user_success(){
         Person existingPerson = Person.builder().id(3)
                 .name("Name3")
@@ -108,7 +108,7 @@ public class PersonControllerIntegrationTest {
         template.put(BASE_URI + "/" + existingPerson.getId(), existingPerson);
     }
 
-    //@Test
+    @Test
     public void test_update_user_fail(){
         Person existingPerson = Person.builder().id(UNKNOWN_ID)
                 .name("update")
@@ -126,12 +126,12 @@ public class PersonControllerIntegrationTest {
 
     // =========================================== Delete Person ============================================
 
-    //@Test
+    @Test
     public void test_delete_user_success(){
         template.delete(BASE_URI + "/" + getLastPerson().getId());
     }
 
-    //@Test
+    @Test
     public void test_delete_user_fail(){
         try {
             template.delete(BASE_URI + "/" + UNKNOWN_ID);
