@@ -1,15 +1,21 @@
 package com.epam.evernote.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-/**
- *  DataBase beans.
- */
+@Configuration
+@EnableTransactionManagement
+@ComponentScan(basePackages = {
+        "com.epam.evernote.service.Implementations",
+        "com.epam.evernote.dao"
+})
 public class DataBaseConfig {
 
     private static EmbeddedDatabase embeddedDatabase = new EmbeddedDatabaseBuilder()
