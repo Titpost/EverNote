@@ -124,7 +124,7 @@
     </dependencies>
 
     <build>
-        <finalName>mywebapp</finalName>
+        <finalName>AppServer</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
