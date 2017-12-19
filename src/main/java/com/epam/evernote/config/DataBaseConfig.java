@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         "com.epam.evernote.service.Implementations",
         "com.epam.evernote.dao"
 })
-public class DataBaseConfig {
+class DataBaseConfig {
 
     private static EmbeddedDatabase embeddedDatabase = new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
@@ -25,13 +25,13 @@ public class DataBaseConfig {
                 .build();
 
     @Bean
-    public JdbcTemplate jdbcTemplate() {
+    JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(embeddedDatabase());
     }
 
     @Lazy
     @Bean
-    public EmbeddedDatabase embeddedDatabase() {
+    EmbeddedDatabase embeddedDatabase() {
         return embeddedDatabase;
     }
 }
