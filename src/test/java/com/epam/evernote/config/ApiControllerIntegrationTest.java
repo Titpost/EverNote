@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 public class ApiControllerIntegrationTest {
 
     @Bean
-    public RestTemplate restTemplate() {
+    RestTemplate restTemplate() {
         return new RestTemplate();
     }
 }

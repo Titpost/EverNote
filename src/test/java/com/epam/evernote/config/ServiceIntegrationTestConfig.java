@@ -9,19 +9,19 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 @Configuration
-public class ServiceIntegrationTestConfig {
+class ServiceIntegrationTestConfig {
 
     @Bean
-    public JdbcTemplate jdbcTemplate() {
+    JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(embeddedDatabase());
     }
 
 
-    protected static EmbeddedDatabase db = null;
+    static EmbeddedDatabase db = null;
 
     @Lazy
     @Bean
-    public EmbeddedDatabase embeddedDatabase() {
+    EmbeddedDatabase embeddedDatabase() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .addScript("create-test-db.sql")

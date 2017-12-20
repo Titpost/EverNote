@@ -8,11 +8,11 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 public class ServiceIntegrationTest {
 
     @Autowired
-    protected EmbeddedDatabase db;
+    EmbeddedDatabase db;
 
-    protected static EmbeddedDatabase dataBase;
+    static EmbeddedDatabase dataBase;
 
-    protected final String hardName = "Some name rea11y hard to meet";
+    final String hardName = "Some name rea11y hard to meet";
 
     /**
      * Closes DataBase connection

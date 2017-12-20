@@ -3,39 +3,30 @@ package com.epam.evernote.controller;
 
 import com.epam.evernote.config.ApiControllerIntegrationTest;
 import com.epam.evernote.model.Pad;
-import com.epam.evernote.model.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 
 import static junit.framework.TestCase.fail;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ApiControllerIntegrationTest.class})
-public class PadControllerIntegrationTest {
+public class PadControllerIntegrationTest extends ControllerIntegrationTest {
 
-    private static final String BASE_URI = "http://localhost:8080/person/1/pad";
-    private static final int UNKNOWN_ID = Integer.MAX_VALUE;
-
-    @Autowired
-    private RestTemplate template;
+    {
+        BASE_URI += "/1/pad";
+    }
 
     // =========================================== Get All the Pads ==========================================
 
@@ -87,7 +78,7 @@ public class PadControllerIntegrationTest {
                 .personId(1)
                 .build();
         try {
-            URI location = template.postForLocation(BASE_URI, existingPad, Pad.class);
+            template.postForLocation(BASE_URI, existingPad, Pad.class);
             fail("should return 409 conflict");
         } catch (HttpClientErrorException e){
             assertThat(e.getStatusCode(), is(HttpStatus.CONFLICT));
@@ -143,19 +134,5 @@ public class PadControllerIntegrationTest {
         ResponseEntity<Pad[]> response = template.getForEntity(BASE_URI, Pad[].class);
         Pad[] pads = response.getBody();
         return pads[pads.length - 1];
-    }
-
-    // =========================================== CORS Headers ===========================================
-
-    public void validateCORSHttpHeaders(HttpHeaders headers){
-        assertThat(headers.getAccessControlAllowOrigin(), is("*"));
-        assertThat(headers.getAccessControlAllowHeaders(), hasItem("*"));
-        assertThat(headers.getAccessControlMaxAge(), is(3600L));
-        assertThat(headers.getAccessControlAllowMethods(), hasItems(
-                HttpMethod.GET,
-                HttpMethod.POST,
-                HttpMethod.PUT,
-                HttpMethod.OPTIONS,
-                HttpMethod.DELETE));
     }
 }
