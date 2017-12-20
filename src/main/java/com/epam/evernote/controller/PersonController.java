@@ -73,9 +73,9 @@ public class PersonController {
 
         personService.savePerson(person);
 
-        //HttpHeaders headers = new HttpHeaders();
-        //headers.setLocation(ucBuilder.path("/person/{id}").buildAndExpand(person.getId()).toUri());
-        return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/person/{id}").buildAndExpand(person.getId()).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     // =========================================== Update Existing Person ===================================

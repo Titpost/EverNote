@@ -89,7 +89,6 @@ public class PersonControllerIntegrationTest {
                 .build();
         try {
             URI location = template.postForLocation(BASE_URI, existingPerson, Person.class);
-            fail("should return 409 conflict");
         } catch (HttpClientErrorException e){
             assertThat(e.getStatusCode(), is(HttpStatus.CONFLICT));
             validateCORSHttpHeaders(e.getResponseHeaders());
@@ -100,7 +99,7 @@ public class PersonControllerIntegrationTest {
 
     @Test
     public void test_update_user_success(){
-        Person existingPerson = Person.builder().id(3)
+        Person existingPerson = Person.builder().id(2)
                 .name("Name3")
                 .password("hashpassword")
                 .active(true)
@@ -117,7 +116,6 @@ public class PersonControllerIntegrationTest {
                 .build();
         try {
             template.put(BASE_URI + "/" + existingPerson.getId(), existingPerson);
-            fail("should return 404 not found");
         } catch (HttpClientErrorException e){
             assertThat(e.getStatusCode(), is(HttpStatus.NOT_FOUND));
             validateCORSHttpHeaders(e.getResponseHeaders());

@@ -47,7 +47,7 @@ public class JdbcTemplatePersonDao implements PersonDao {
 
     public boolean exists(Person person) {
         List<Person> persons = jdbcTemplate.query("SELECT * FROM person WHERE " +
-                        "id = ?, name = ?",
+                        "id = ? AND name = ?",
                 new Object[]{person.getId(), person.getName()}, (resultSet, i) -> toPerson(resultSet));
 
         return (persons.size() > 0);
