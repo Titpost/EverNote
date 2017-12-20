@@ -32,7 +32,7 @@ class DataBaseConfig {
 
     @Lazy
     @Bean
-    private EmbeddedDatabase embeddedDatabase() {
+    EmbeddedDatabase embeddedDatabase() {
         return embeddedDatabase;
     }
 }
