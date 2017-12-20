@@ -67,7 +67,7 @@ public class PersonController {
         LOG.info("creating new person: {}", person);
 
         if (personService.exists(person)) {
-            LOG.info("a person with name " + person.getName() + " already exists");
+            LOG.info("a person with id " + person.getId() + " already exists");
             return new ResponseEntity<>(responseHeaders, HttpStatus.CONFLICT);
         }
 
