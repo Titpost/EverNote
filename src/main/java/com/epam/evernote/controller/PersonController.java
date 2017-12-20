@@ -2,8 +2,6 @@ package com.epam.evernote.controller;
 
 import com.epam.evernote.model.Person;
 import com.epam.evernote.service.Interfaces.PersonService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,17 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/person")
-public class PersonController {
-
-    private final Logger LOG = LoggerFactory.getLogger(PersonController.class);
-
-    private final static HttpHeaders responseHeaders = new HttpHeaders();
-    static {
-        responseHeaders.set("Access-Control-Allow-Origin", "*");
-        responseHeaders.set("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
-        responseHeaders.set("Access-Control-Allow-Headers", "*");
-        responseHeaders.set("Access-Control-Max-Age", "3600");
-    }
+public class PersonController extends Controller {
 
     @Autowired
     private PersonService personService;
