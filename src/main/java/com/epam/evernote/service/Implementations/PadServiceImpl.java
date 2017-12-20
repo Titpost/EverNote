@@ -31,6 +31,11 @@ public class PadServiceImpl implements PadService {
     }
 
     @Override
+    public List<Pad> getAllPads(long person) {
+        return padDao.loadAll(person);
+    }
+
+    @Override
     public Pad getPadById(Long id) {
         return padDao.load(id);
     }
@@ -41,8 +46,18 @@ public class PadServiceImpl implements PadService {
     }
 
     @Override
-    public Pad getPadByNameAndOwner(String name, long person) {
-        return padDao.findPadByNameAndOwner(name, person);
+    public Pad getPadByIdAndOwner(long id, long person) {
+        return padDao.findPadByIdAndOwner(id, person);
+    }
+
+    @Override
+    public boolean exists(Pad pad) {
+        return padDao.exists(pad);
+    }
+
+    @Override
+    public void updateName(long id, String name) {
+        padDao.updateName(id, name);
     }
 
     @Override

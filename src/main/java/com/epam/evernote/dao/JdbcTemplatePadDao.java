@@ -2,6 +2,7 @@ package com.epam.evernote.dao;
 
 import com.epam.evernote.model.Note;
 import com.epam.evernote.model.Pad;
+import com.epam.evernote.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -83,6 +84,14 @@ public class JdbcTemplatePadDao implements PadDao {
         }
     }
 
+    public boolean exists(Pad pad) {
+        List<Pad> pads = jdbcTemplate.query("SELECT * FROM pad WHERE " +
+                        "id = ?",
+                new Object[]{pad.getId()}, (resultSet, i) -> toPad(resultSet));
+
+        return (pads.size() > 0);
+    }
+
     @Override
     public void delete(Long id) {
 
@@ -101,12 +110,23 @@ public class JdbcTemplatePadDao implements PadDao {
 
     @Override
     public void update(Pad pad) {
+    }
 
+    @Override
+    public void updateName(long id, String newName) {
+        jdbcTemplate.update("UPDATE PAD SET name = ? WHERE id = ?"
+                , newName, id);
     }
 
     @Override
     public List<Pad> loadAll() {
         return jdbcTemplate.query("SELECT * FROM pad", (resultSet, i) -> toPad(resultSet));
+    }
+
+    @Override
+    public List<Pad> loadAll(long person) {
+        return jdbcTemplate.query("SELECT * FROM pad WHERE person = ?",
+                new Object[]{person}, (resultSet, i) -> toPad(resultSet));
     }
 
     private Pad toPad(ResultSet resultSet) throws SQLException {
@@ -117,11 +137,10 @@ public class JdbcTemplatePadDao implements PadDao {
         return pad;
     }
 
-
     @Override
-    public Pad findPadByNameAndOwner(String name, long person) {
-        List<Pad> pads = jdbcTemplate.query("SELECT * FROM pad WHERE person = ? AND name = ?",
-                new Object[]{person, name}, (resultSet, i) -> toPad(resultSet));
+    public Pad findPadByIdAndOwner(long id, long person) {
+        List<Pad> pads = jdbcTemplate.query("SELECT * FROM pad WHERE id = ? AND person = ?",
+                new Object[]{id, person}, (resultSet, i) -> toPad(resultSet));
 
         if (pads.size() == 1) {
             return pads.get(0);

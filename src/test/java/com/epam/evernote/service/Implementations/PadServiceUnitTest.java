@@ -56,34 +56,35 @@ public class PadServiceUnitTest {
 
     @Test
     public void getAllPads() throws Exception {
+        final long person = 1;
         Pad pad1 = Pad.builder()
                 .name("Name1")
-                .personId(1L)
+                .personId(person)
                 .build();
         Pad pad2 = Pad.builder()
                 .name("Name2")
-                .personId(1L)
+                .personId(person)
                 .build();
-        List<Pad> pad = new ArrayList<>();
-        pad.add(pad1);
-        pad.add(pad2);
+        List<Pad> pads = new ArrayList<>();
+        pads.add(pad1);
+        pads.add(pad2);
 
-        when(padDao.loadAll()).thenReturn(pad);
+        when(padDao.loadAll(person)).thenReturn(pads);
 
-        List<Pad> resultPad = padService.getAllPads();
-        assertThat(resultPad).isEqualTo(pad);
+        List<Pad> resultPad = padService.getAllPads(person);
+        assertThat(resultPad).isEqualTo(pads);
 
-        verify(padDao, times(1)).loadAll();
+        verify(padDao, times(1)).loadAll(person);
         verifyNoMoreInteractions(padDao);
     }
 
     @Test
     public void getPadById() throws Exception {
-        Long padId = 1L;
+        long padId = 1;
         String padName = "Name";
         Pad pad = Pad.builder()
                 .id(padId)
-                .personId(1L)
+                .personId(1)
                 .name(padName)
                 .build();
         when(padDao.load(padId)).thenReturn(pad);

@@ -2,6 +2,7 @@ package com.epam.evernote.controller;
 
 
 import com.epam.evernote.config.ApiControllerIntegrationTest;
+import com.epam.evernote.model.Pad;
 import com.epam.evernote.model.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,30 +29,30 @@ import static org.junit.Assert.assertThat;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ApiControllerIntegrationTest.class})
-public class PersonControllerIntegrationTest {
+public class PadControllerIntegrationTest {
 
-    private static final String BASE_URI = "http://localhost:8080/person";
+    private static final String BASE_URI = "http://localhost:8080/person/1/pad";
     private static final int UNKNOWN_ID = Integer.MAX_VALUE;
 
     @Autowired
     private RestTemplate template;
 
-    // =========================================== Get All the Persons ==========================================
+    // =========================================== Get All the Pads ==========================================
 
     @Test
     public void test_get_all_success(){
-        ResponseEntity<Person[]> response = template.getForEntity(BASE_URI, Person[].class);
+        ResponseEntity<Pad[]> response = template.getForEntity(BASE_URI, Pad[].class);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         validateCORSHttpHeaders(response.getHeaders());
     }
 
-    // =========================================== Get Person By ID =========================================
+    // =========================================== Get Pad By ID =========================================
 
     @Test
     public void test_get_by_id_success(){
-        ResponseEntity<Person> response = template.getForEntity(BASE_URI + "/1", Person.class);
-        Person person = response.getBody();
-        assertThat(person.getId(), is(1L));
+        ResponseEntity<Pad> response = template.getForEntity(BASE_URI + "/1", Pad.class);
+        Pad pad = response.getBody();
+        assertThat(pad.getId(), is(1L));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         validateCORSHttpHeaders(response.getHeaders());
     }
@@ -59,7 +60,7 @@ public class PersonControllerIntegrationTest {
     @Test
     public void test_get_by_id_failure_not_found(){
         try {
-            ResponseEntity<Person> response = template.getForEntity(BASE_URI + "/" + UNKNOWN_ID, Person.class);
+            ResponseEntity<Pad> response = template.getForEntity(BASE_URI + "/" + UNKNOWN_ID, Pad.class);
             fail("should return 404 not found");
         } catch (HttpClientErrorException e){
             assertThat(e.getStatusCode(), is(HttpStatus.NOT_FOUND));
@@ -67,28 +68,26 @@ public class PersonControllerIntegrationTest {
         }
     }
 
-    // =========================================== Create New Person ========================================
+    // =========================================== Create New Pad ========================================
 
     @Test
-    public void test_create_new_person_success(){
-        Person newPerson = Person.builder().id(777)
-                .name("new username" + Math.random())
-                .password("hashpassword")
-                .active(true)
+    public void test_create_new_pad_success(){
+        Pad newPad = Pad.builder().id(777)
+                .name("new notepad" + Math.random())
+                .personId(1)
                 .build();
-        URI location = template.postForLocation(BASE_URI, newPerson, Person.class);
+        URI location = template.postForLocation(BASE_URI, newPad, Pad.class);
         assertThat(location, notNullValue());
     }
 
     @Test
-    public void test_create_new_person_fail_exists(){
-        Person existingPerson = Person.builder().id(1)
-                .name("new username" + Math.random())
-                .password("hashpassword")
-                .active(true)
+    public void test_create_new_pad_fail_exists(){
+        Pad existingPad = Pad.builder().id(1)
+                .name("new notepad" + Math.random())
+                .personId(1)
                 .build();
         try {
-            URI location = template.postForLocation(BASE_URI, existingPerson, Person.class);
+            URI location = template.postForLocation(BASE_URI, existingPad, Pad.class);
             fail("should return 409 conflict");
         } catch (HttpClientErrorException e){
             assertThat(e.getStatusCode(), is(HttpStatus.CONFLICT));
@@ -96,27 +95,25 @@ public class PersonControllerIntegrationTest {
         }
     }
 
-    // =========================================== Update Existing Person ===================================
+    // =========================================== Update Existing Pad ===================================
 
     @Test
-    public void test_update_person_success(){
-        Person existingPerson = Person.builder().id(2)
-                .name("Name3")
-                .password("hashpassword")
-                .active(true)
+    public void test_update_pad_success(){
+        Pad existingPad = Pad.builder().id(2)
+                .name("PadName3")
+                .personId(1)
                 .build();
-        template.put(BASE_URI + "/" + existingPerson.getId(), existingPerson);
+        template.put(BASE_URI + "/" + existingPad.getId(), existingPad);
     }
 
     @Test
-    public void test_update_person_fail(){
-        Person existingPerson = Person.builder().id(UNKNOWN_ID)
+    public void test_update_pad_fail(){
+        Pad existingPad = Pad.builder().id(UNKNOWN_ID)
                 .name("update")
-                .password("hashpassword")
-                .active(true)
+                .personId(1)
                 .build();
         try {
-            template.put(BASE_URI + "/" + existingPerson.getId(), existingPerson);
+            template.put(BASE_URI + "/" + existingPad.getId(), existingPad);
             fail("should return 404 not found");
         } catch (HttpClientErrorException e){
             assertThat(e.getStatusCode(), is(HttpStatus.NOT_FOUND));
@@ -124,15 +121,15 @@ public class PersonControllerIntegrationTest {
         }
     }
 
-    // =========================================== Delete Person ============================================
+    // =========================================== Delete Pad ============================================
 
     @Test
-    public void test_delete_person_success(){
-        template.delete(BASE_URI + "/" + getLastPerson().getId());
+    public void test_delete_pad_success(){
+        template.delete(BASE_URI + "/" + getLastPad().getId());
     }
 
     @Test
-    public void test_delete_person_fail(){
+    public void test_delete_pad_fail(){
         try {
             template.delete(BASE_URI + "/" + UNKNOWN_ID);
             fail("should return 404 not found");
@@ -142,10 +139,10 @@ public class PersonControllerIntegrationTest {
         }
     }
 
-    private Person getLastPerson(){
-        ResponseEntity<Person[]> response = template.getForEntity(BASE_URI, Person[].class);
-        Person[] persons = response.getBody();
-        return persons[persons.length - 1];
+    private Pad getLastPad(){
+        ResponseEntity<Pad[]> response = template.getForEntity(BASE_URI, Pad[].class);
+        Pad[] pads = response.getBody();
+        return pads[pads.length - 1];
     }
 
     // =========================================== CORS Headers ===========================================

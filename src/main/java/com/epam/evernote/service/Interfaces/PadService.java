@@ -1,6 +1,7 @@
 package com.epam.evernote.service.Interfaces;
 
 import com.epam.evernote.model.Pad;
+
 import java.util.List;
 
 public interface PadService {
@@ -11,11 +12,17 @@ public interface PadService {
 
     List<Pad> getAllPads();
 
+    List<Pad> getAllPads(long person);
+
     Pad getPadById(Long person);
 
     Pad getPadWithNotes(long id);
 
-    Pad getPadByNameAndOwner(String name, long person);
+    Pad getPadByIdAndOwner(long id, long person);
+
+    boolean exists(Pad pad);
+
+    void updateName(long id, String name);
 
     void deletePad(Long name);
 }

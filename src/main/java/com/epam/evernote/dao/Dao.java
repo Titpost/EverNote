@@ -14,5 +14,4 @@ public interface Dao<T, K> {
     void update(T t);
 
     List<T> loadAll();
-
 }

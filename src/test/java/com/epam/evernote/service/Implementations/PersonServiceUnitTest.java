@@ -134,7 +134,7 @@ public class PersonServiceUnitTest {
                 .password("hashpassword")
                 .active(true)
                 .build();
-        Long personId = 1L;
+        long personId = 1;
         when(dao.load(personId)).thenReturn(person);
         Person resultPerson = personService.getPersonById(personId);
         assertThat(resultPerson).isEqualTo(person);
@@ -146,7 +146,7 @@ public class PersonServiceUnitTest {
 
     @Test
     public void updateName() throws Exception {
-        Long id = 1L;
+        long id = 1;
         String name = "Name";
         personService.updateName(id, name);
         verify(dao, times(1)).updateName(id, name);
@@ -156,7 +156,7 @@ public class PersonServiceUnitTest {
 
     @Test
     public void deletePerson() throws Exception {
-        Long id = 1L;
+        long id = 1;
         personService.deletePerson(id);
         verify(dao, times(1)).delete(id);
         verifyNoMoreInteractions(dao);

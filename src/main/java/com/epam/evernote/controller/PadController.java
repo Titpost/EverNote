@@ -1,53 +1,103 @@
 package com.epam.evernote.controller;
 
-
-import com.epam.evernote.controller.exception.NotFoundException;
 import com.epam.evernote.model.Pad;
 import com.epam.evernote.service.Interfaces.PadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
-@Controller
-@RequestMapping("/person")
-public class PadController {
+import java.util.List;
 
-  @Autowired
-  private PadService padService;
+@RestController
+@RequestMapping("/person/{personId}/pad")
+public class PadController extends Controller {
 
-  @RequestMapping(value = "/{id}/pads", method = RequestMethod.GET)
-  public String getAllPads(Long personId, Model model) {
-    model.addAttribute("allPads", padService.getAllPads());
-    return "pads";
-  }
+    @Autowired
+    private PadService padService;
 
-  @RequestMapping(value = "/{id}/pad/{name}", method = RequestMethod.GET)
-  public String getPad(Long id, String name, Model model) throws NotFoundException {
-    Pad pad = padService.getPadByNameAndOwner(name, id);
-    if (pad == null) {
-      throw new NotFoundException(Pad.class, id);
+    // =========================================== Get All Pads ==========================================
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<Pad>> getAll(@PathVariable("personId") long personId) {
+        LOG.info("getting all pads for person");
+        List<Pad> pads = padService.getAllPads(personId);
+
+        if (pads == null || pads.isEmpty()) {
+            LOG.info("no pads found");
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(pads, responseHeaders, HttpStatus.OK);
     }
-    model.addAttribute("pad", padService.getPadByNameAndOwner(name, id));
-    return "pad";
-  }
 
-  @RequestMapping(value = "/{id}/pad/{name}", method = RequestMethod.POST)
-  public void addPad(@ModelAttribute("Pad") Pad pad,
-      ModelMap model) {
-    padService.savePad(pad);
-  }
+    // =========================================== Get Pad By ID =========================================
 
-  @RequestMapping(value = "/{id}/pad/{name}", method = RequestMethod.DELETE)
-  public void deletePad(Long id, String name) throws NotFoundException {
-    Pad pad = padService.getPadByNameAndOwner(name, id);
-    if (pad == null) {
-      throw new NotFoundException(Pad.class, id);
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    public ResponseEntity<Pad> get(@PathVariable("id") long id, @PathVariable("personId") long personId) {
+        LOG.info("getting pad with name: {}", id);
+        Pad pad = padService.getPadByIdAndOwner(id, personId);
+
+        if (pad == null) {
+            LOG.info("pad with id {} not found", id);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(pad, responseHeaders, HttpStatus.OK);
     }
-    padService.deletePad(pad.getId());
-  }
 
+    // =========================================== Create New Pad ========================================
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> create(@RequestBody Pad pad, UriComponentsBuilder ucBuilder) {
+        LOG.info("creating new pad: {}", pad);
+
+        if (padService.exists(pad)) {
+            LOG.info("a pad with id " + pad.getId() + " already exists");
+            return new ResponseEntity<>(responseHeaders, HttpStatus.CONFLICT);
+        }
+
+        padService.savePad(pad);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/pad/{id}").buildAndExpand(pad.getId()).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    // =========================================== Update Existing Pad ===================================
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Pad> update(@PathVariable long id, @RequestBody Pad pad) {
+        LOG.info("updating pad: {}", pad);
+        Pad currentUser = padService.getPadById(id);
+
+        if (currentUser == null) {
+            LOG.info("Pad with id {} not found", id);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND);
+        }
+
+        currentUser.setId(pad.getId());
+        currentUser.setName(pad.getName());
+
+        padService.updateName(1, pad.getName());
+        return new ResponseEntity<>(currentUser, responseHeaders, HttpStatus.OK);
+    }
+
+    // =========================================== Delete Pad ============================================
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable("id") long id) {
+        LOG.info("deleting pad with id: {}", id);
+        Pad pad = padService.getPadById(id);
+
+        if (pad == null) {
+            LOG.info("Unable to delete. Pad with id {} not found", id);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND);
+        }
+
+        padService.deletePad(id);
+        return new ResponseEntity<>(responseHeaders, HttpStatus.OK);
+    }
 }
