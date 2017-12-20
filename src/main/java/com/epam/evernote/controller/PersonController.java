@@ -19,6 +19,14 @@ public class PersonController {
 
     private final Logger LOG = LoggerFactory.getLogger(PersonController.class);
 
+    private final static HttpHeaders responseHeaders = new HttpHeaders();
+    static {
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
+        responseHeaders.set("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
+        responseHeaders.set("Access-Control-Allow-Headers", "*");
+        responseHeaders.set("Access-Control-Max-Age", "3600");
+    }
+
     @Autowired
     private PersonService personService;
 
@@ -31,10 +39,10 @@ public class PersonController {
 
         if (persons == null || persons.isEmpty()) {
             LOG.info("no persons found");
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<>(persons, HttpStatus.OK);
+        return new ResponseEntity<>(persons, responseHeaders, HttpStatus.OK);
     }
 
     // =========================================== Get Person By ID =========================================
@@ -46,10 +54,10 @@ public class PersonController {
 
         if (person == null) {
             LOG.info("person with id {} not found", id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(person, HttpStatus.OK);
+        return new ResponseEntity<>(person, responseHeaders, HttpStatus.OK);
     }
 
     // =========================================== Create New Person ========================================
@@ -60,14 +68,14 @@ public class PersonController {
 
         if (personService.exists(person)) {
             LOG.info("a person with name " + person.getName() + " already exists");
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.CONFLICT);
         }
 
         personService.savePerson(person);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/person/{id}").buildAndExpand(person.getId()).toUri());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        //HttpHeaders headers = new HttpHeaders();
+        //headers.setLocation(ucBuilder.path("/person/{id}").buildAndExpand(person.getId()).toUri());
+        return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
     }
 
     // =========================================== Update Existing Person ===================================
@@ -79,14 +87,14 @@ public class PersonController {
 
         if (currentUser == null) {
             LOG.info("Person with id {} not found", id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND);
         }
 
         currentUser.setId(person.getId());
         currentUser.setName(person.getName());
 
         personService.updateName(1, person.getName());
-        return new ResponseEntity<>(currentUser, HttpStatus.OK);
+        return new ResponseEntity<>(currentUser, responseHeaders, HttpStatus.OK);
     }
 
     // =========================================== Delete Person ============================================
@@ -98,10 +106,10 @@ public class PersonController {
 
         if (person == null) {
             LOG.info("Unable to delete. Person with id {} not found", id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND);
         }
 
         personService.deletePerson(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(responseHeaders, HttpStatus.OK);
     }
 }
