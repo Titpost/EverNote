@@ -51,7 +51,8 @@ public class PersonController extends Controller {
     // =========================================== Create New Person ========================================
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> create(@RequestBody Person person, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Void> create(@RequestBody Person person,
+                                       UriComponentsBuilder ucBuilder) {
         LOG.info("creating new person: {}", person);
 
         if (personService.exists(person)) {
@@ -62,14 +63,17 @@ public class PersonController extends Controller {
         personService.savePerson(person);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/person/{id}").buildAndExpand(person.getId()).toUri());
+        headers.setLocation(ucBuilder.path("/person/{id}")
+                .buildAndExpand(person.getId())
+                .toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     // =========================================== Update Existing Person ===================================
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Person> update(@PathVariable int id, @RequestBody Person person) {
+    public ResponseEntity<Person> update(@PathVariable int id,
+                                         @RequestBody Person person) {
         LOG.info("updating person: {}", person);
         Person currentUser = personService.getPersonById(id);
 

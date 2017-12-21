@@ -36,7 +36,7 @@ public class PadServiceImpl implements PadService {
     }
 
     @Override
-    public Pad getPadById(Long id) {
+    public Pad getPadById(long id) {
         return padDao.load(id);
     }
 
@@ -61,7 +61,7 @@ public class PadServiceImpl implements PadService {
     }
 
     @Override
-    public void deletePad(Long id) {
+    public void deletePad(long id) {
         padDao.delete(id);
     }
 }

@@ -14,7 +14,7 @@ public interface PadService {
 
     List<Pad> getAllPads(long person);
 
-    Pad getPadById(Long person);
+    Pad getPadById(long pad);
 
     Pad getPadWithNotes(long id);
 
@@ -24,5 +24,5 @@ public interface PadService {
 
     void updateName(long id, String name);
 
-    void deletePad(Long name);
+    void deletePad(long name);
 }

@@ -10,13 +10,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ControllerUnitTest {
 
     String URL_BASE = "/api/person";
+    String URL_CURRENT;
 
     MockMvc mockMvc;
+
+    String getBaseUrl() {
+        return this.URL_BASE;
+    }
 
     // =========================================== CORS Headers ===========================================
 
     public void test_cors_headers() throws Exception {
-        mockMvc.perform(get(URL_BASE))
+        mockMvc.perform(get(getBaseUrl()))
                 .andExpect(header().string("Access-Control-Allow-Origin", "*"))
                 .andExpect(header().string("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE"))
                 .andExpect(header().string("Access-Control-Allow-Headers", "*"))

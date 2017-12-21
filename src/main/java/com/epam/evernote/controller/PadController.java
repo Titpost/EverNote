@@ -36,10 +36,9 @@ public class PadController extends Controller {
     // =========================================== Get Pad By ID =========================================
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<Pad> get(@PathVariable("id") long id,
-                                   @PathVariable("personId") long personId) {
+    public ResponseEntity<Pad> get(@PathVariable("id") long id) {
         LOG.info("getting pad with id: {}", id);
-        Pad pad = padService.getPadByIdAndOwner(id, personId);
+        Pad pad = padService.getPadById(id);
 
         if (pad == null) {
             LOG.info("pad with id {} not found", id);
@@ -52,7 +51,8 @@ public class PadController extends Controller {
     // =========================================== Create New Pad ========================================
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> create(@RequestBody Pad pad, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Void> create(@RequestBody Pad pad,
+                                       UriComponentsBuilder ucBuilder) {
         LOG.info("creating new pad: {}", pad);
 
         if (padService.exists(pad)) {
@@ -63,8 +63,8 @@ public class PadController extends Controller {
         padService.savePad(pad);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/pad/{id}")
-                .buildAndExpand(pad.getId())
+        headers.setLocation(ucBuilder.path("/person/{person}/pad/{pad}")
+                .buildAndExpand(pad.getPersonId(), pad.getId())
                 .toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
