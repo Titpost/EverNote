@@ -8,6 +8,7 @@ INSERT INTO pad VALUES (2, 1, 'Pad2');
 
 INSERT INTO note VALUES (1, 1, 'Note1', 'Text1');
 INSERT INTO note VALUES (2, 2, 'Note2', 'Text2');
+INSERT INTO note VALUES (3, 1, 'Note3', 'Text3');
 
 INSERT INTO tag VALUES ('Tag1', 1);
 INSERT INTO tag VALUES ('Tag2', 2);

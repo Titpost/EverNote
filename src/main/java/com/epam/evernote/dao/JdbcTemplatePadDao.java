@@ -112,7 +112,7 @@ public class JdbcTemplatePadDao implements PadDao {
 
     @Override
     public void updateName(long id, String newName) {
-        jdbcTemplate.update("UPDATE PAD SET name = ? WHERE id = ?"
+        jdbcTemplate.update("UPDATE pad SET name = ? WHERE id = ?"
                 , newName, id);
     }
 

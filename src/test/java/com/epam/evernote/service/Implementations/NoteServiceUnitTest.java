@@ -45,11 +45,11 @@ public class NoteServiceUnitTest {
     @Test
     public void getNoteCount() throws Exception {
         Long noteCount = 20L;
-        when(noteDao.getNoteCount()).thenReturn(noteCount);
-        Long resultNoteCount = noteService.getNoteCount();
+        when(noteDao.getNoteCount(1)).thenReturn(noteCount);
+        Long resultNoteCount = noteService.getPadNoteCount(1);
         assertThat(resultNoteCount).isEqualTo(noteCount);
 
-        verify(noteDao, times(1)).getNoteCount();
+        verify(noteDao, times(1)).getNoteCount(1);
         verifyNoMoreInteractions(noteDao);
     }
 

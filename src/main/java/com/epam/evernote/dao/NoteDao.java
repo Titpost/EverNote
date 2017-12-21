@@ -9,11 +9,13 @@ public interface NoteDao extends Dao<Note, Long> {
 
     Note findNoteById(long id);
 
-    long getNoteCount();
+    long getNoteCount(long pad);
 
     List<Note> loadAll(long pad);
 
     Note loadWithTags(long id);
 
     long getPad();
+
+    void updateName(long id, String newName);
 }

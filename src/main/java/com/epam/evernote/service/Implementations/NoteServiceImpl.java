@@ -21,8 +21,8 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public long getNoteCount() {
-        return noteDao.getNoteCount();
+    public long getPadNoteCount(long pad) {
+        return noteDao.getNoteCount(pad);
     }
 
     @Override
@@ -31,8 +31,13 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public List<Note> getAllNotes(long pad) {
+    public List<Note> getPadNotes(long pad) {
         return noteDao.loadAll(pad);
+    }
+
+    @Override
+    public List<Note> getAllNotes(long person) {
+        return noteDao.loadAll(person);
     }
 
     @Override
@@ -47,12 +52,12 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public boolean exists(Note note) {
-        return false;
+        return noteDao.exists(note);
     }
 
     @Override
     public void updateName(long id, String name) {
-
+        noteDao.updateName(id, name);
     }
 
     @Override

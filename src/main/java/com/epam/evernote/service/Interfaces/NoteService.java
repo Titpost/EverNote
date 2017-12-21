@@ -9,11 +9,13 @@ public interface NoteService {
 
     long saveNote(Note note);
 
-    long getNoteCount();
+    long getPadNoteCount(long pad);
 
     List<Note> getAllNotes();
 
-    List<Note> getAllNotes(long pad);
+    List<Note> getPadNotes(long pad);
+
+    List<Note> getAllNotes(long person);
 
     Note getNoteById(long id);
 

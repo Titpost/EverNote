@@ -104,11 +104,20 @@ public class JdbcTemplateNoteDao implements NoteDao {
     }
 
     @Override
+    public void updateName(long id, String newName) {
+        jdbcTemplate.update("UPDATE note SET name = ? WHERE id = ?"
+                , newName, id);
+    }
+
+    @Override
     public List<Note> loadAll() {
         return jdbcTemplate.query("SELECT * FROM note", (resultSet, i) -> toNote(resultSet));
-//        List<Note> notes = jdbcTemplate.query("SELECT * FROM note " +
-//                "JOIN pad ON pad.id = note.pad AND pad.person = ? WHERE note.id = ?",
+    }
 
+    public List<Note> loadAll(long pad, long person) {
+        return jdbcTemplate.query("SELECT * FROM note " +
+                "JOIN pad ON pad.id = note.pad AND pad.person = ? WHERE note.id = ?",
+                new Object[]{person, pad}, (resultSet, i) -> toNote(resultSet));
     }
 
     @Override
@@ -137,8 +146,8 @@ public class JdbcTemplateNoteDao implements NoteDao {
 
 
     @Override
-    public long getNoteCount() {
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM note",
+    public long getNoteCount(long pad) {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM note WHERE pad = " + pad,
                 Long.class);
     }
 

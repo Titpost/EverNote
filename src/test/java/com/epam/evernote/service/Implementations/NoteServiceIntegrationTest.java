@@ -39,7 +39,8 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
      */
     @Test
     public void getAll() {
-        assertEquals(getCount(), noteService.getAllNotes().size());
+        final long pad = 1;
+        assertEquals(getNotesCount(pad), noteService.getAllNotes( pad).size());
     }
 
     /**
@@ -60,16 +61,18 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     public void createNew() {
 
-        long prevCount = getCount();
+        final long pad = 2;
+
+        long prevCount = getNotesCount(pad);
 
         final String noteName = "NoteName";
 
         // create new note
-        Note note = Note.builder().name(noteName).padId(2).text("Some Text").build();
+        Note note = Note.builder().name(noteName).padId(pad).text("Some Text").build();
         noteService.saveNote(note);
 
         // check row count
-        assertEquals(prevCount + 1, getCount());
+        assertEquals(prevCount + 1, getNotesCount(pad));
     }
 
     /**
@@ -125,7 +128,7 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
         assertNull(noteService.getNoteById(id));
     }
 
-    private long getCount() {
-        return noteService.getNoteCount();
+    private long getNotesCount(long pad) {
+        return noteService.getPadNoteCount(pad);
     }
 }
