@@ -55,7 +55,7 @@ public class JdbcTemplateNoteDao implements NoteDao {
 
     @Override
     public Note loadWithTags(long id) {
-        String sql = "select name from tag where note = '" + id + "'";
+        String sql = "SELECT name FROM tag WHERE note = '" + id + "'";
         return jdbcTemplate.query(sql, new JdbcTemplateNoteDao.NoteWithTagsExtractor(id));
     }
 

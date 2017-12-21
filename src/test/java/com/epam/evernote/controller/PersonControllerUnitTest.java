@@ -3,30 +3,36 @@ package com.epam.evernote.controller;
 import com.epam.evernote.filter.CORSFilter;
 import com.epam.evernote.model.Person;
 import com.epam.evernote.service.Interfaces.PersonService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.*;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PersonControllerUnitTest {
 
-    private static String URL_BASE = "/api/person";
-
-    private MockMvc mockMvc;
+public class PersonControllerUnitTest extends ControllerUnitTest {
 
     @Mock
     private PersonService personService;
@@ -35,7 +41,7 @@ public class PersonControllerUnitTest {
     private PersonController personController;
 
     @Before
-    public void init(){
+    public void init() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(personController)
@@ -239,25 +245,8 @@ public class PersonControllerUnitTest {
         verifyNoMoreInteractions(personService);
     }
 
-    // =========================================== CORS Headers ===========================================
-
     @Test
     public void test_cors_headers() throws Exception {
-        mockMvc.perform(get(URL_BASE))
-                .andExpect(header().string("Access-Control-Allow-Origin", "*"))
-                .andExpect(header().string("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE"))
-                .andExpect(header().string("Access-Control-Allow-Headers", "*"))
-                .andExpect(header().string("Access-Control-Max-Age", "3600"));
-    }
-
-    /*
-     * converts a Java object into JSON representation
-     */
-    public static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        super.test_cors_headers();
     }
 }
