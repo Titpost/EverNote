@@ -87,7 +87,8 @@ public class PersonControllerUnitTest extends ControllerUnitTest {
 
     @Test
     public void test_get_by_id_success() throws Exception {
-        Person person = Person.builder().id(1)
+        final long id = 1;
+        Person person = Person.builder().id(id)
                 .name("Daenerys Targaryen")
                 .password("hashpassword")
                 .active(true)
@@ -95,14 +96,14 @@ public class PersonControllerUnitTest extends ControllerUnitTest {
 
         when(personService.getPersonById(1)).thenReturn(person);
 
-        mockMvc.perform(get(URL_BASE + "/{id}", 1))
+        mockMvc.perform(get(URL_BASE + "/{id}", id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.id", is((int)id)))
                 .andExpect(jsonPath("$.name", is("Daenerys Targaryen")))
         ;
 
-        verify(personService, times(1)).getPersonById(1);
+        verify(personService, times(1)).getPersonById(id);
         verifyNoMoreInteractions(personService);
     }
 
@@ -135,7 +136,8 @@ public class PersonControllerUnitTest extends ControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(person)))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("location", containsString("http://localhost/person/1")));
+                .andExpect(header().string("location",
+                        containsString("http://localhost/person/1")));
 
         verify(personService, times(1)).exists(person);
         verify(personService, times(1)).savePerson(person);

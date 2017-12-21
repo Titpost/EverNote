@@ -91,21 +91,22 @@ public class PadControllerUnitTest extends ControllerUnitTest {
 
     @Test
     public void test_get_by_id_success() throws Exception {
-        Pad pad = Pad.builder().id(1)
+        final long id = 1L;
+        Pad pad = Pad.builder().id(id)
                 .name("Daenerys Targaryen")
                 .personId(1)
                 .build();
 
         when(padService.getPadById(1)).thenReturn(pad);
 
-        mockMvc.perform(get(URL_CURRENT, 1))
+        mockMvc.perform(get(URL_CURRENT, id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.id", is((int)id)))
                 .andExpect(jsonPath("$.name", is("Daenerys Targaryen")))
         ;
 
-        verify(padService, times(1)).getPadById(1);
+        verify(padService, times(1)).getPadById(id);
         verifyNoMoreInteractions(padService);
     }
 
@@ -138,7 +139,8 @@ public class PadControllerUnitTest extends ControllerUnitTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(pad)))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("location", containsString("http://localhost/person/1/pad")));
+                .andExpect(header().string("location",
+                        containsString("http://localhost/person/1/pad")));
 
         verify(padService, times(1)).exists(pad);
         verify(padService, times(1)).savePad(pad);

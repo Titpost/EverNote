@@ -57,7 +57,7 @@ public class NoteController extends Controller {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> create(@RequestBody Note note,
-                                       @PathVariable("padId") long padId,
+                                       @PathVariable("personId") long personId,
                                        UriComponentsBuilder ucBuilder) {
         LOG.info("creating new note: {}", note);
 
@@ -69,8 +69,8 @@ public class NoteController extends Controller {
         noteService.saveNote(note);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/pad/{id}/note/{noteId}")
-                .buildAndExpand(padId, note.getId())
+        headers.setLocation(ucBuilder.path("/person/{person}/pad/{id}/note/{noteId}")
+                .buildAndExpand(personId, note.getPadId(), note.getId())
                 .toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
