@@ -21,6 +21,11 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public long getNoteTagCount(long note) {
+        return tagDao.getNoteTagCount(note);
+    }
+
+    @Override
     public Long getTagCount() {
         return tagDao.getTagCount();
     }
@@ -31,12 +36,27 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag getTagByOwnerAndName(long person, String id) {
-        return tagDao.load(id);
+    public List<Tag> getAllTags(long person) {
+        return tagDao.loadAll(person);
     }
 
     @Override
-    public void deleteTag(String id) {
-        tagDao.delete(id);
+    public List<Tag> getAllNoteTags(long note) {
+        return tagDao.loadAllForNote(note);
+    }
+
+    @Override
+    public Tag findTagByNameAndNote(String tag, long note) {
+        return tagDao.findTagByNameAndNote(tag, note);
+    }
+
+    @Override
+    public boolean exists(Tag tag) {
+        return tagDao.exists(tag);
+    }
+
+    @Override
+    public void deleteTag(String name, long note) {
+        tagDao.delete(name, note);
     }
 }

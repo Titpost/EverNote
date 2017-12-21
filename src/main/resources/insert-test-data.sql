@@ -12,4 +12,5 @@ INSERT INTO note VALUES (3, 1, 'Note3', 'Text3');
 
 INSERT INTO tag VALUES ('Tag1', 1);
 INSERT INTO tag VALUES ('Tag2', 2);
+INSERT INTO tag VALUES ('Tag3', 1);
 

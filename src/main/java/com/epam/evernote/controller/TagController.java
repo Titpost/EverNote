@@ -1,52 +1,53 @@
 package com.epam.evernote.controller;
 
-import com.epam.evernote.controller.exception.NotFoundException;
 import com.epam.evernote.model.Tag;
 import com.epam.evernote.service.Interfaces.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping("/person")
-public class TagController {
+import java.util.List;
 
-  @Autowired
-  private TagService tagService;
+@RestController
+@RequestMapping("/person/{personId}/tag")
+public class TagController extends Controller {
 
-  @RequestMapping(value = "/{id}/tags", method = RequestMethod.GET)
-  public String getAllTags(Long personId, Model model) {
-    model.addAttribute("allPads", tagService.getAllTags());
-    return "tags";
-  }
+    @Autowired
+    private TagService tagService;
 
-  @RequestMapping(value = "/{id}/tag/{tagName}", method = RequestMethod.GET)
-  public String getTag(Long id, String name, Model model) throws NotFoundException {
-    Tag tag = tagService.getTagByOwnerAndName(id, name);
-    if (tag == null) {
-      throw new NotFoundException(Tag.class, id);
+    // =========================================== Get All Tags ==========================================
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<Tag>> getAll(@PathVariable("personId") long personId) {
+        LOG.info("getting all tags for person");
+        List<Tag> tags = tagService.getAllTags(personId);
+
+        if (tags == null || tags.isEmpty()) {
+            LOG.info("no tags found");
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(tags, responseHeaders, HttpStatus.OK);
     }
-    model.addAttribute("tag", tagService.getTagByOwnerAndName(id, name));
-    return "tag";
-  }
 
-  @RequestMapping(value = "/{id}/tag/{tagName}", method = RequestMethod.POST)
-  public void addTag(@ModelAttribute("Tag") Tag tag,
-      ModelMap model) {
-    tagService.saveTag(tag);
-  }
+    // =========================================== Get Tags By Name ======================================
+/*
+    @RequestMapping(value = "{tagName}", method = RequestMethod.GET)
+    public ResponseEntity<List<Tag>> get(@PathVariable("tagName") String tagName,
+                                         @PathVariable("personId") long personId) {
+        LOG.info("getting tags with name {} for person", tagName);
+        List<Tag> tags = tagService.getAllTagsByName(tagName, personId);
 
-  @RequestMapping(value = "/{id}/tag/{tagName}", method = RequestMethod.DELETE)
-  public void deleteTag(Long id, String name) throws NotFoundException {
-    Tag tag = tagService.getTagByOwnerAndName(id, name);
-    if (tag == null) {
-      throw new NotFoundException(Tag.class, id);
+        if (tags == null || tags.isEmpty()) {
+            LOG.info("no tags found for person");
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(tags, responseHeaders, HttpStatus.OK);
     }
-    tagService.deleteTag(name);
-  }
-
+*/
 }

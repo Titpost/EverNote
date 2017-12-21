@@ -47,9 +47,21 @@ public class JdbcTemplateTagDao implements TagDao {
         return null;
     }
 
+    public boolean exists(Tag tag) {
+        List<Tag> tags = jdbcTemplate.query("SELECT * FROM tag WHERE " +
+                        "id = ? AND note = ?",
+                new Object[]{tag.getName(), getNote()}, (resultSet, i) -> toTag(resultSet));
+
+        return (tags.size() > 0);
+    }
+
+
     @Override
-    public void delete(String id) {
-        jdbcTemplate.update("DELETE FROM tag WHERE name = ?", id);
+    public void delete(String name) {}
+
+    @Override
+    public void delete(String name, long note) {
+        jdbcTemplate.update("DELETE FROM tag WHERE name = ? AND note = ?", name, note);
     }
 
     @Override
@@ -61,6 +73,15 @@ public class JdbcTemplateTagDao implements TagDao {
         return jdbcTemplate.query("SELECT * FROM tag", (resultSet, i) -> toTag(resultSet));
     }
 
+    @Override
+    public List<Tag> loadAll(long person) {
+        return jdbcTemplate.query("SELECT * FROM tag " +
+                        "JOIN note ON note.id = tag.note " +
+                        "JOIN pad ON pad.id = note.pad AND pad.person = ? " +
+                        "WHERE tag.name = ?",
+                new Object[]{person}, (resultSet, i) -> toTag(resultSet));
+    }
+
     private Tag toTag(ResultSet resultSet) throws SQLException {
         Tag tag = new Tag();
         tag.setName(resultSet.getString("name"));
@@ -69,19 +90,22 @@ public class JdbcTemplateTagDao implements TagDao {
     }
 
     @Override
-    public Tag findTagByOwnerAndName(String id, long person) {
-        List<Tag> tags = jdbcTemplate.query("SELECT * FROM tag " +
-                        "JOIN note ON note.id = tag.note " +
-                        "JOIN pad ON pad.id = note.pad AND pad.person = ? " +
-                        "WHERE tag.name = ?",
-                new Object[]{person, id}, (resultSet, i) -> toTag(resultSet));
+    public List<Tag> loadAllForNote(long note) {
+        return jdbcTemplate.query("SELECT * FROM tag WHERE tag.note = ?",
+                new Object[]{note}, (resultSet, i) -> toTag(resultSet));
+    }
+
+    @Override
+    public Tag findTagByNameAndNote(String name, long note) {
+        List<Tag> tags = jdbcTemplate.query("SELECT * FROM tag WHERE name = ? AND note = ?",
+                new Object[]{name, note}, (resultSet, i) -> toTag(resultSet));
 
         if (tags.size() == 1) {
             return tags.get(0);
         }
+
         return null;
     }
-
 
     @Override
     public long getTagCount() {
@@ -90,7 +114,13 @@ public class JdbcTemplateTagDao implements TagDao {
     }
 
     @Override
-    public String getNote() {
-        return null;
+    public long getNoteTagCount(long note) {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM tag WHERE note = " + note,
+                Long.class);
+    }
+
+    @Override
+    public long getNote() {
+        return -1;
     }
 }

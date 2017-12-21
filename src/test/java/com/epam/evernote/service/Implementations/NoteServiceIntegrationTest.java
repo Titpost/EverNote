@@ -40,7 +40,7 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
     @Test
     public void getAll() {
         final long pad = 1;
-        assertEquals(getNotesCount(pad), noteService.getAllNotes( pad).size());
+        assertEquals(getNotesCount(pad), noteService.getAllNotes(pad).size());
     }
 
     /**

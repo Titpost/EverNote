@@ -8,11 +8,19 @@ public interface TagService {
 
     void saveTag(Tag tag);
 
+    long getNoteTagCount(long pad);
+
     Long getTagCount();
 
     List<Tag> getAllTags();
 
-    Tag getTagByOwnerAndName(long person, String name);
+    List<Tag> getAllTags(long person);
 
-    void deleteTag(String name);
+    List<Tag> getAllNoteTags(long note);
+
+    Tag findTagByNameAndNote(String tag, long note);
+
+    boolean exists(Tag tag);
+
+    void deleteTag(String name, long note);
 }

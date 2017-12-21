@@ -38,7 +38,8 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
      */
     @Test
     public void getAll() {
-        assertEquals((long)tagService.getTagCount(), tagService.getAllTags().size());
+        final long note = 1;
+        assertEquals(getTagsCount(note), tagService.getAllNoteTags(note).size());
     }
 
     /**
@@ -100,7 +101,7 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
     public void findByOwnerAndName() {
 
         final String name = "Tag1";
-        Tag tag = tagService.getTagByOwnerAndName(3L, name);
+        Tag tag = tagService.findTagByNameAndNote(name, 1);
         assertNotNull(tag);
         assertEquals(name, tag.getName());
     }
@@ -112,7 +113,7 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
     public void findNotExisting() {
 
         // find tag by its name
-        Tag tag = tagService.getTagByOwnerAndName(1L, hardName);
+        Tag tag = tagService.findTagByNameAndNote(hardName, 1);
         assertNull(tag);
     }
 
@@ -123,15 +124,16 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
     public void deleteByIdAndCheckCount() {
 
         // create new tag
+        final long note = 1;
         final String tagName = "toDelete";
-        Tag tag = Tag.builder().name(tagName).note(1).build();
+        Tag tag = Tag.builder().name(tagName).note(note).build();
         tagService.saveTag(tag);
-        assertNotNull(tagService.getTagByOwnerAndName(1L, tagName));
+        assertNotNull(tagService.findTagByNameAndNote(tagName, note));
         final int count = tagService.getAllTags().size();
 
         // delete just created tag
-        tagService.deleteTag(tagName);
-        assertNull(tagService.getTagByOwnerAndName(1L, tagName));
+        tagService.deleteTag(tagName, note);
+        assertNull(tagService.findTagByNameAndNote(tagName, note));
 
         // check if table's row count decremented
         assertEquals(count - 1, tagService.getAllTags().size());
@@ -139,5 +141,9 @@ public class TagServiceIntegrationTest extends ServiceIntegrationTest {
 
     private long getCount() {
         return tagService.getTagCount();
+    }
+
+    private long getTagsCount(long pad) {
+        return tagService.getNoteTagCount(pad);
     }
 }

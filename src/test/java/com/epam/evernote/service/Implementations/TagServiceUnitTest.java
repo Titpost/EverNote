@@ -54,48 +54,50 @@ public class TagServiceUnitTest {
     }
 
     @Test
-    public void getAllTags() throws Exception {
+    public void getAllNoteTags() throws Exception {
+        final long noteId = 1;
         Tag tag1 = Tag.builder()
                 .name("Name1")
-                .note(1)
+                .note(noteId)
                 .build();
         Tag tag2 = Tag.builder()
                 .name("Name2")
-                .note(1)
+                .note(noteId)
                 .build();
         List<Tag> tag = new ArrayList<>();
         tag.add(tag1);
         tag.add(tag2);
 
-        when(tagDao.loadAll()).thenReturn(tag);
+        when(tagDao.loadAllForNote(noteId)).thenReturn(tag);
 
-        List<Tag> resultTag = tagService.getAllTags();
+        List<Tag> resultTag = tagService.getAllNoteTags(1);
         assertThat(resultTag).isEqualTo(tag);
 
-        verify(tagDao, times(1)).loadAll();
+        verify(tagDao, times(1)).loadAllForNote(noteId);
         verifyNoMoreInteractions(tagDao);
     }
 
     @Test
-    public void getTagById() throws Exception {
-        String tagId = "Name";
+    public void getTagByNameAndNote() throws Exception {
+        final long noteId = 1;
+        String tagName = "Tag1";
         Tag tag = Tag.builder()
-                .name(tagId)
-                .note(1)
+                .name(tagName)
+                .note(noteId)
                 .build();
-        when(tagDao.load(tagId)).thenReturn(tag);
-        Tag resultTag = tagService.getTagByOwnerAndName(1L, tagId);
+        when(tagDao.findTagByNameAndNote(tagName, noteId)).thenReturn(tag);
+        Tag resultTag = tagService.findTagByNameAndNote(tagName, noteId);
         assertThat(resultTag).isEqualTo(tag);
 
-        verify(tagDao, times(1)).load(tagId);
+        verify(tagDao, times(1)).findTagByNameAndNote(tagName, noteId);
         verifyNoMoreInteractions(tagDao);
     }
 
     @Test
     public void deleteTag() throws Exception {
-        String tagId = "Name";
-        tagService.deleteTag(tagId);
-        verify(tagDao, times(1)).delete(tagId);
+        String tagName = "Name1";
+        tagService.deleteTag(tagName, 1);
+        verify(tagDao, times(1)).delete(tagName, 1);
         verifyNoMoreInteractions(tagDao);
     }
 }
