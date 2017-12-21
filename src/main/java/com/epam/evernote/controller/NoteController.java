@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 @RestController
-@RequestMapping("/person/{personId}/pad/{padId}/note")
+@RequestMapping("/api/person/{personId}/pad/{padId}/note")
 public class NoteController extends Controller {
 
     @Autowired

@@ -24,6 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PersonControllerUnitTest {
 
+    private static String URL_BASE = "/api/person";
+
     private MockMvc mockMvc;
 
     @Mock
@@ -61,7 +63,7 @@ public class PersonControllerUnitTest {
 
         when(personService.getAllPersons()).thenReturn(persons);
 
-        mockMvc.perform(get("/person"))
+        mockMvc.perform(get(URL_BASE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -87,7 +89,7 @@ public class PersonControllerUnitTest {
 
         when(personService.getPersonById(1)).thenReturn(person);
 
-        mockMvc.perform(get("/person/{id}", 1))
+        mockMvc.perform(get(URL_BASE + "/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id", is(1)))
@@ -103,7 +105,7 @@ public class PersonControllerUnitTest {
 
         when(personService.getPersonById(9999)).thenReturn(null);
 
-        mockMvc.perform(get("/person/{id}", 1))
+        mockMvc.perform(get(URL_BASE + "/{id}", 1))
                 .andExpect(status().isNotFound());
 
         verify(personService, times(1)).getPersonById(1);
@@ -123,7 +125,7 @@ public class PersonControllerUnitTest {
         when(personService.exists(person)).thenReturn(false);
 
         mockMvc.perform(
-                post("/person")
+                post(URL_BASE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(person)))
                 .andExpect(status().isCreated())
@@ -145,7 +147,7 @@ public class PersonControllerUnitTest {
         when(personService.exists(person)).thenReturn(true);
 
         mockMvc.perform(
-                post("/person")
+                post(URL_BASE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(person)))
                 .andExpect(status().isConflict());
@@ -167,7 +169,7 @@ public class PersonControllerUnitTest {
         doNothing().when(personService).updateName(1, person.getName());
 
         mockMvc.perform(
-                put("/person/{id}", person.getId())
+                put(URL_BASE + "/{id}", person.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(person)))
                 .andExpect(status().isOk());
@@ -188,7 +190,7 @@ public class PersonControllerUnitTest {
         when(personService.getPersonById(person.getId())).thenReturn(null);
 
         mockMvc.perform(
-                put("/person/{id}", person.getId())
+                put(URL_BASE + "/{id}", person.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(person)))
                 .andExpect(status().isNotFound());
@@ -211,7 +213,7 @@ public class PersonControllerUnitTest {
         doNothing().when(personService).deletePerson(person.getId());
 
         mockMvc.perform(
-                delete("/person/{id}", person.getId()))
+                delete(URL_BASE + "/{id}", person.getId()))
                 .andExpect(status().isOk());
 
         verify(personService, times(1)).getPersonById(person.getId());
@@ -230,7 +232,7 @@ public class PersonControllerUnitTest {
         when(personService.getPersonById(person.getId())).thenReturn(null);
 
         mockMvc.perform(
-                delete("/person/{id}", person.getId()))
+                delete(URL_BASE + "/{id}", person.getId()))
                 .andExpect(status().isNotFound());
 
         verify(personService, times(1)).getPersonById(person.getId());
@@ -241,7 +243,7 @@ public class PersonControllerUnitTest {
 
     @Test
     public void test_cors_headers() throws Exception {
-        mockMvc.perform(get("/person"))
+        mockMvc.perform(get(URL_BASE))
                 .andExpect(header().string("Access-Control-Allow-Origin", "*"))
                 .andExpect(header().string("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE"))
                 .andExpect(header().string("Access-Control-Allow-Headers", "*"))

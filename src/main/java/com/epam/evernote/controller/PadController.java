@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 @RestController
-@RequestMapping("/person/{personId}/pad")
+@RequestMapping("/api/person/{personId}/pad")
 public class PadController extends Controller {
 
     @Autowired

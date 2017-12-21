@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 
 class ControllerIntegrationTest {
 
-    String BASE_URI = "http://localhost:8080/person";
+    String BASE_URI = "http://localhost:8080/api/person";
     static final int UNKNOWN_ID = Integer.MAX_VALUE;
 
     @Autowired
