@@ -36,8 +36,9 @@ public class PadController extends Controller {
     // =========================================== Get Pad By ID =========================================
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<Pad> get(@PathVariable("id") long id, @PathVariable("personId") long personId) {
-        LOG.info("getting pad with name: {}", id);
+    public ResponseEntity<Pad> get(@PathVariable("id") long id,
+                                   @PathVariable("personId") long personId) {
+        LOG.info("getting pad with id: {}", id);
         Pad pad = padService.getPadByIdAndOwner(id, personId);
 
         if (pad == null) {
@@ -62,27 +63,30 @@ public class PadController extends Controller {
         padService.savePad(pad);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/pad/{id}").buildAndExpand(pad.getId()).toUri());
+        headers.setLocation(ucBuilder.path("/pad/{id}")
+                .buildAndExpand(pad.getId())
+                .toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     // =========================================== Update Existing Pad ===================================
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Pad> update(@PathVariable long id, @RequestBody Pad pad) {
+    public ResponseEntity<Pad> update(@PathVariable long id,
+                                      @RequestBody Pad pad) {
         LOG.info("updating pad: {}", pad);
-        Pad currentUser = padService.getPadById(id);
+        Pad currentPad = padService.getPadById(id);
 
-        if (currentUser == null) {
+        if (currentPad == null) {
             LOG.info("Pad with id {} not found", id);
             return new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND);
         }
 
-        currentUser.setId(pad.getId());
-        currentUser.setName(pad.getName());
+        currentPad.setId(pad.getId());
+        currentPad.setName(pad.getName());
 
         padService.updateName(1, pad.getName());
-        return new ResponseEntity<>(currentUser, responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(currentPad, responseHeaders, HttpStatus.OK);
     }
 
     // =========================================== Delete Pad ============================================
