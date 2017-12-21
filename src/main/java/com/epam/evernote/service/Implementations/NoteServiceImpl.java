@@ -31,6 +31,11 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    public List<Note> getAllNotes(long pad) {
+        return noteDao.loadAll(pad);
+    }
+
+    @Override
     public Note getNoteById(long id) {
         return noteDao.load(id);
     }
@@ -41,8 +46,13 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Note getNoteByNameAndOwner(String name, long person) {
-        return noteDao.findNoteByNameAndOwner(name, person);
+    public boolean exists(Note note) {
+        return false;
+    }
+
+    @Override
+    public void updateName(long id, String name) {
+
     }
 
     @Override

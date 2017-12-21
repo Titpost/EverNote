@@ -1,51 +1,108 @@
 package com.epam.evernote.controller;
 
-import com.epam.evernote.controller.exception.NotFoundException;
 import com.epam.evernote.model.Note;
 import com.epam.evernote.service.Interfaces.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
-@Controller
-@RequestMapping("/person")
-public class NoteController {
+import java.util.List;
 
-  @Autowired
-  private NoteService noteService;
+@RestController
+@RequestMapping("/person/{personId}/pad/{padId}/note")
+public class NoteController extends Controller {
 
-  @RequestMapping(value = "/{id}/pad/{padName}/all", method = RequestMethod.GET)
-  public String getAllNotes(Long personId, String padName, Model model) {
-    model.addAttribute("allNotes", noteService.getAllNotes());
-    return "notes";
-  }
+    @Autowired
+    private NoteService noteService;
 
-  @RequestMapping(value = "/{id}/pad/{padName}/note/{noteId}", method = RequestMethod.GET)
-  public String getNote(Long id, Long noteId, String name, Model model) throws NotFoundException {
-    Note note = noteService.getNoteById(noteId);
-    if (note == null) {
-      throw new NotFoundException(Note.class, noteId);
+    // =========================================== Get All Notes ==========================================
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<Note>> getAll(@PathVariable("padId") long padId) {
+        LOG.info("getting all notes for the pad");
+        List<Note> notes = noteService.getAllNotes(padId);
+
+        if (notes == null || notes.isEmpty()) {
+            LOG.info("no notes found");
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(notes, responseHeaders, HttpStatus.OK);
     }
-    model.addAttribute("note", note);
-    return "note";
-  }
 
-  @RequestMapping(value = "/{id}/pad/{padName}/note/{noteId}", method = RequestMethod.POST)
-  public void addNote(@ModelAttribute("Note") Note note,
-      ModelMap model) {
-    noteService.saveNote(note);
-  }
+    // =========================================== Get Note By ID =========================================
 
-  @RequestMapping(value = "/{id}/pad/{padName}/note/{noteId}", method = RequestMethod.DELETE)
-  public void deleteNote(Long noteId) throws NotFoundException {
-    Note note = noteService.getNoteById(noteId);
-    if (note == null) {
-      throw new NotFoundException(Note.class, noteId);
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    public ResponseEntity<Note> get(@PathVariable("id") long id) {
+        LOG.info("getting note with id: {}", id);
+        Note note = noteService.getNoteById(id);
+
+        if (note == null) {
+            LOG.info("note with id {} not found", id);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(note, responseHeaders, HttpStatus.OK);
     }
-    noteService.deleteNote(noteId);
-  }
+
+    // =========================================== Create New Note ========================================
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> create(@RequestBody Note note,
+                                       @PathVariable("padId") long padId,
+                                       UriComponentsBuilder ucBuilder) {
+        LOG.info("creating new note: {}", note);
+
+        if (noteService.exists(note)) {
+            LOG.info("a note with id " + note.getId() + " already exists");
+            return new ResponseEntity<>(responseHeaders, HttpStatus.CONFLICT);
+        }
+
+        noteService.saveNote(note);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/pad/{id}/note/{noteId}")
+                .buildAndExpand(padId, note.getId())
+                .toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    // =========================================== Update Existing Note ===================================
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Note> update(@PathVariable long id,
+                                       @RequestBody Note note) {
+        LOG.info("updating note: {}", note);
+        Note currentNote = noteService.getNoteById(id);
+
+        if (currentNote == null) {
+            LOG.info("Note with id {} not found", id);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND);
+        }
+
+        currentNote.setId(note.getId());
+        currentNote.setName(note.getName());
+
+        noteService.updateName(1, note.getName());
+        return new ResponseEntity<>(currentNote, responseHeaders, HttpStatus.OK);
+    }
+
+    // =========================================== Delete Note ============================================
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable("id") long id) {
+        LOG.info("deleting note with id: {}", id);
+        Note note = noteService.getNoteById(id);
+
+        if (note == null) {
+            LOG.info("Unable to delete. Note with id {} not found", id);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND);
+        }
+
+        noteService.deleteNote(id);
+        return new ResponseEntity<>(responseHeaders, HttpStatus.OK);
+    }
 }

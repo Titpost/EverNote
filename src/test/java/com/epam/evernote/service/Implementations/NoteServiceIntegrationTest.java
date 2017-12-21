@@ -73,18 +73,6 @@ public class NoteServiceIntegrationTest extends ServiceIntegrationTest {
     }
 
     /**
-     * Find note by its owner and Name
-     */
-    @Test
-    public void findByOwnerAndName() {
-
-        final String name = "Note1";
-        Note note = noteService.getNoteByNameAndOwner(name, 1);
-        assertNotNull(note);
-        assertEquals(name, note.getName());
-    }
-
-    /**
      * Find note with its tags
      */
     @Test

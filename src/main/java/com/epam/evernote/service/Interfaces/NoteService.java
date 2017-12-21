@@ -1,6 +1,7 @@
 package com.epam.evernote.service.Interfaces;
 
 import com.epam.evernote.model.Note;
+import com.epam.evernote.model.Pad;
 
 import java.util.List;
 
@@ -12,11 +13,15 @@ public interface NoteService {
 
     List<Note> getAllNotes();
 
+    List<Note> getAllNotes(long pad);
+
     Note getNoteById(long id);
 
     Note getNoteWithTags(long id);
 
-    Note getNoteByNameAndOwner(String name, long person);
+    boolean exists(Note note);
+
+    void updateName(long id, String name);
 
     void deleteNote(long id);
 }

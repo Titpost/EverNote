@@ -81,6 +81,14 @@ public class JdbcTemplateNoteDao implements NoteDao {
         }
     }
 
+    public boolean exists(Note note) {
+        List<Note> notes = jdbcTemplate.query("SELECT * FROM note WHERE " +
+                        "id = ?",
+                new Object[]{note.getId()}, (resultSet, i) -> toNote(resultSet));
+
+        return (notes.size() > 0);
+    }
+
     @Override
     public void delete(Long id) {
 
@@ -98,8 +106,16 @@ public class JdbcTemplateNoteDao implements NoteDao {
     @Override
     public List<Note> loadAll() {
         return jdbcTemplate.query("SELECT * FROM note", (resultSet, i) -> toNote(resultSet));
+//        List<Note> notes = jdbcTemplate.query("SELECT * FROM note " +
+//                "JOIN pad ON pad.id = note.pad AND pad.person = ? WHERE note.id = ?",
+
     }
 
+    @Override
+    public List<Note> loadAll(long pad) {
+        return jdbcTemplate.query("SELECT * FROM note WHERE pad = ?",
+                new Object[]{pad}, (resultSet, i) -> toNote(resultSet));
+    }
     private Note toNote(ResultSet resultSet) throws SQLException {
         Note note = new Note();
         note.setId(resultSet.getLong("id"));
@@ -109,10 +125,9 @@ public class JdbcTemplateNoteDao implements NoteDao {
     }
 
     @Override
-    public Note findNoteByNameAndOwner(String name, long person) {
-        List<Note> notes = jdbcTemplate.query("SELECT * FROM note " +
-                "JOIN pad ON pad.id = note.pad AND pad.person = ? WHERE note.name = ?",
-                new Object[]{person, name}, (resultSet, i) -> toNote(resultSet));
+    public Note findNoteById(long id) {
+        List<Note> notes = jdbcTemplate.query("SELECT * FROM note WHERE id = ?",
+                new Object[]{id}, (resultSet, i) -> toNote(resultSet));
 
         if (notes.size() == 1) {
             return notes.get(0);
