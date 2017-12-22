@@ -1,6 +1,7 @@
 package com.epam.evernote.controller;
 
 import com.epam.evernote.filter.CORSFilter;
+import com.epam.evernote.model.Note;
 import com.epam.evernote.model.Tag;
 import com.epam.evernote.service.Interfaces.TagService;
 import org.junit.Before;
@@ -34,9 +35,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class TagControllerUnitTest extends ControllerUnitTest {
 
+    final String URL_WITH_NOTE_BASE;
     {
+        URL_WITH_NOTE_BASE = URL_BASE + "/{person}/pad/{pad}/note/{note}/tag";
+        URL_CURRENT = URL_WITH_NOTE_BASE + "/{tag}";
         URL_BASE += "/1/tag";
-        URL_CURRENT = URL_BASE + "/{id}";
     }
 
     @Mock
@@ -81,6 +84,30 @@ public class TagControllerUnitTest extends ControllerUnitTest {
                 .andExpect(jsonPath("$[1].name", is("JohnSnow")));
 
         verify(tagService, times(1)).getAllTags(noteId);
+        verifyNoMoreInteractions(tagService);
+    }
+
+    // =========================================== Get Tag By ID =========================================
+
+    @Test
+    public void test_get_by_id_success() throws Exception {
+        final String name = "Daenerys Targaryen";
+        final long note = 1;
+        Tag tag = Tag.builder().name(name)
+                .name(name)
+                .note(note)
+                .build();
+
+        when(tagService.findTagByNameAndNote(name, note)).thenReturn(tag);
+
+        mockMvc.perform(get(URL_CURRENT, 1, 1, note, name))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.name", is(name)))
+                .andExpect(jsonPath("$.note", is((int)note)))
+        ;
+
+        verify(tagService, times(1)).findTagByNameAndNote(name, note);
         verifyNoMoreInteractions(tagService);
     }
 

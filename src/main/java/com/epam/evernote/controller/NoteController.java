@@ -131,6 +131,22 @@ public class NoteController extends Controller {
         return new ResponseEntity<>(tags, responseHeaders, HttpStatus.OK);
     }
 
+    // =========================================== Get Tag by Note and Name ==============================
+
+    @RequestMapping(value = "{note}/tag/{tag}", method = RequestMethod.GET)
+    public ResponseEntity<Tag> getTag(@PathVariable("name") String tagName,
+                                       @PathVariable("note") long noteId) {
+        LOG.info("getting note with noteId: {}", noteId);
+        Tag tag = tagService.findTagByNameAndNote(tagName, noteId);
+
+        if (tag == null) {
+            LOG.info("tag with id {} not found", tagName);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(tag, responseHeaders, HttpStatus.OK);
+    }
+
     // =========================================== Create New Tag ========================================
 
     @RequestMapping(value = "{note}/tag/{tag}", method = RequestMethod.POST)
