@@ -28,7 +28,7 @@ public class NoteControllerIntegrationTest extends ControllerIntegrationTest {
         BASE_URI += "/1/pad/1/note";
     }
 
-    // =========================================== Get All the Notes ==========================================
+    // ======================================= Get All the Notes ==========================================
 
     @Test
     public void test_get_all_success(){
