@@ -1,4 +1,4 @@
-package com.epam.evernote.service.Implementations;
+package com.epam.evernote.service.implementations;
 
 import com.epam.evernote.dao.JdbcTemplateTagDao;
 import com.epam.evernote.model.Tag;

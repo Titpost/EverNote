@@ -2,7 +2,7 @@ package com.epam.evernote.controller;
 
 import com.epam.evernote.filter.CORSFilter;
 import com.epam.evernote.model.Tag;
-import com.epam.evernote.service.Interfaces.TagService;
+import com.epam.evernote.service.interfaces.TagService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

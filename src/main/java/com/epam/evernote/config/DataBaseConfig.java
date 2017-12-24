@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = {
-        "com.epam.evernote.service.Implementations",
+        "com.epam.evernote.service.implementations",
         "com.epam.evernote.dao"
 })
 class DataBaseConfig {

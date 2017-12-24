@@ -1,4 +1,4 @@
-package com.epam.evernote.service.Interfaces;
+package com.epam.evernote.service.interfaces;
 
 import com.epam.evernote.model.Pad;
 

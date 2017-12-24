@@ -2,7 +2,7 @@ package com.epam.evernote.controller;
 
 import com.epam.evernote.filter.CORSFilter;
 import com.epam.evernote.model.Pad;
-import com.epam.evernote.service.Interfaces.PadService;
+import com.epam.evernote.service.interfaces.PadService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

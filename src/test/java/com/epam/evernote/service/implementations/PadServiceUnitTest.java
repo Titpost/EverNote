@@ -1,4 +1,4 @@
-package com.epam.evernote.service.Implementations;
+package com.epam.evernote.service.implementations;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;

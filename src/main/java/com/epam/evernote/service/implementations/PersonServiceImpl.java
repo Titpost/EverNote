@@ -1,9 +1,9 @@
-package com.epam.evernote.service.Implementations;
+package com.epam.evernote.service.implementations;
 
 
 import com.epam.evernote.dao.JdbcTemplatePersonDao;
 import com.epam.evernote.model.Person;
-import com.epam.evernote.service.Interfaces.PersonService;
+import com.epam.evernote.service.interfaces.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

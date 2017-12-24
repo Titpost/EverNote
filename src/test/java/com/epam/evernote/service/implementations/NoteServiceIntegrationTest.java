@@ -1,9 +1,9 @@
-package com.epam.evernote.service.Implementations;
+package com.epam.evernote.service.implementations;
 
 import com.epam.evernote.config.NoteServiceIntegrationTestConfig;
 import com.epam.evernote.model.Note;
 import com.epam.evernote.model.Tag;
-import com.epam.evernote.service.Interfaces.NoteService;
+import com.epam.evernote.service.interfaces.NoteService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.epam.evernote.Aspect;
+package com.epam.evernote.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,7 +16,7 @@ import java.time.LocalTime;
 @Slf4j
 public class AspectLogging {
 
-    @Pointcut("within(com.epam.evernote.service.Implementations.*)")
+    @Pointcut("within(com.epam.evernote.service.implementations.*)")
     public void interceptServiceMethod() {
     }
 

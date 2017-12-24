@@ -2,7 +2,7 @@ package com.epam.evernote.controller;
 
 import com.epam.evernote.filter.CORSFilter;
 import com.epam.evernote.model.Person;
-import com.epam.evernote.service.Interfaces.PersonService;
+import com.epam.evernote.service.interfaces.PersonService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

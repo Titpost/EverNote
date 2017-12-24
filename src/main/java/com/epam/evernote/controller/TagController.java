@@ -1,7 +1,7 @@
 package com.epam.evernote.controller;
 
 import com.epam.evernote.model.Tag;
-import com.epam.evernote.service.Interfaces.TagService;
+import com.epam.evernote.service.interfaces.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

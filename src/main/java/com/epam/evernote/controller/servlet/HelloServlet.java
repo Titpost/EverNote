@@ -4,7 +4,7 @@ package com.epam.evernote.controller.servlet;
  * Created by anon on 1/10/2017.
  */
 
-import com.epam.evernote.service.Interfaces.NoteService;
+import com.epam.evernote.service.interfaces.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.*;

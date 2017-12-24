@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(basePackages = {
-        "com.epam.evernote.service.Implementations",
+        "com.epam.evernote.service.implementations",
         "com.epam.evernote.dao"
 })
 public class NoteServiceIntegrationTestConfig extends ServiceIntegrationTestConfig {}

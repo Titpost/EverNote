@@ -1,8 +1,8 @@
-package com.epam.evernote.service.Implementations;
+package com.epam.evernote.service.implementations;
 
 import com.epam.evernote.model.Person;
 import com.epam.evernote.config.PersonServiceIntegrationTestConfig;
-import com.epam.evernote.service.Interfaces.PersonService;
+import com.epam.evernote.service.interfaces.PersonService;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

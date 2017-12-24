@@ -1,7 +1,7 @@
 package com.epam.evernote.controller;
 
 import com.epam.evernote.model.Pad;
-import com.epam.evernote.service.Interfaces.PadService;
+import com.epam.evernote.service.interfaces.PadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

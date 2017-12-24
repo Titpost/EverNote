@@ -1,9 +1,9 @@
-package com.epam.evernote.service.Implementations;
+package com.epam.evernote.service.implementations;
 
 
 import com.epam.evernote.dao.JdbcTemplateTagDao;
 import com.epam.evernote.model.Tag;
-import com.epam.evernote.service.Interfaces.TagService;
+import com.epam.evernote.service.interfaces.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.epam.evernote.service.Implementations;
+package com.epam.evernote.service.implementations;
 
 import org.junit.AfterClass;
 import org.springframework.beans.factory.annotation.Autowired;
