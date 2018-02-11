@@ -6,9 +6,9 @@ import org.springframework.http.HttpHeaders;
 
 public class Controller {
 
-    protected final Logger LOG = LoggerFactory.getLogger(PersonController.class);
+    final Logger LOG = LoggerFactory.getLogger(Controller.class);
 
-    protected final static HttpHeaders responseHeaders = new HttpHeaders();
+    final static HttpHeaders responseHeaders = new HttpHeaders();
 
     static {
         responseHeaders.set("Access-Control-Allow-Origin", "*");
