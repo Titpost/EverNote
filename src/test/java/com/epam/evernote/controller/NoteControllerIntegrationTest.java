@@ -1,7 +1,6 @@
 package com.epam.evernote.controller;
 
 
-import com.epam.evernote.config.ApiControllerIntegrationTest;
 import com.epam.evernote.model.Note;
 import org.junit.Test;
 import org.junit.runner.RunWith;
